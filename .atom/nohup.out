@@ -1,0 +1,4 @@
+Couldn't retain /home/sean/.atom/recovery/.bash_profile-42e7d3. Code: ENOENT. Message: ENOENT: no such file or directory, open '/home/sean/.atom/recovery/.bash_profile-42e7d3'
+Attempting to call a function in a renderer window that has been closed or released.
+Function provided here: worker.js:71:22
+Remote event names: destroyed, crashed

@@ -1,0 +1,21 @@
+"*":
+  "atom-beautify":
+    general:
+      _analyticsUserId: "3d1ed738-900f-467b-803d-635e6b61d26c"
+  core:
+    autoHideMenuBar: true
+    closeDeletedFileTabs: true
+    telemetryConsent: "limited"
+    themes: [
+      "one-dark-ui"
+      "base16-tomorrow-dark-theme"
+    ]
+  editor:
+    fontFamily: "Fira Code, Menlo, Consolas, DejaVu Sans Mono, monospace"
+    fontSize: 16
+    scrollPastEnd: true
+    softWrap: true
+  "exception-reporting":
+    userId: "abfd0d1c-80ec-4d1b-b2af-bd4d903af4ca"
+  welcome:
+    showOnStartup: false

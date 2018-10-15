@@ -1,0 +1,60 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "/tmp/d-118826-3876-4opylw.p6uqdgf1or/package.tgz",
+        "scope": null,
+        "escapedName": null,
+        "name": null,
+        "rawSpec": "/tmp/d-118826-3876-4opylw.p6uqdgf1or/package.tgz",
+        "spec": "/tmp/d-118826-3876-4opylw.p6uqdgf1or/package.tgz",
+        "type": "local"
+      },
+      "/tmp/apm-install-dir-118826-3876-iregab.fl6h3bx1or"
+    ]
+  ],
+  "_from": "../d-118826-3876-4opylw.p6uqdgf1or/package.tgz",
+  "_id": "vim-mode-plus-keymaps-for-surround@0.2.1",
+  "_inCache": true,
+  "_location": "/vim-mode-plus-keymaps-for-surround",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "/tmp/d-118826-3876-4opylw.p6uqdgf1or/package.tgz",
+    "scope": null,
+    "escapedName": null,
+    "name": null,
+    "rawSpec": "/tmp/d-118826-3876-4opylw.p6uqdgf1or/package.tgz",
+    "spec": "/tmp/d-118826-3876-4opylw.p6uqdgf1or/package.tgz",
+    "type": "local"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "file:../d-118826-3876-4opylw.p6uqdgf1or/package.tgz",
+  "_shasum": "2ba69fd1c180c505b61e57b71d6473fda4acca3b",
+  "_shrinkwrap": null,
+  "_spec": "/tmp/d-118826-3876-4opylw.p6uqdgf1or/package.tgz",
+  "_where": "/tmp/apm-install-dir-118826-3876-iregab.fl6h3bx1or",
+  "bugs": {
+    "url": "https://github.com/t9md/atom-vim-mode-plus-keymaps-for-surround/issues"
+  },
+  "dependencies": {},
+  "description": "Provides default keymap for surround(keymap only)",
+  "devDependencies": {},
+  "engines": {
+    "atom": ">=1.1.0 <2.0.0"
+  },
+  "homepage": "https://github.com/t9md/atom-vim-mode-plus-keymaps-for-surround#readme",
+  "keywords": [],
+  "license": "MIT",
+  "main": "./lib/main",
+  "name": "vim-mode-plus-keymaps-for-surround",
+  "optionalDependencies": {},
+  "readme": "# Whats' this?\n\n:rotating_light: ***This package provide keymaps only. surround feature itself is provided by vim-mode-plus itself.***  \n\nProvides default surround keymaps for [vim-mode-plus](https://atom.io/packages/vim-mode-plus).\n\nProvides following keymaps.  \n\nUnlike tpop's vim-surround. `d s`, `c s` **auto-detect** pair char to delete/change.  \nBut this is not perfect, if fail, try manual version `d S`, `c S`.  \n\n| Mode     | Keystroke | Description                                                            |\n|:---------|:----------|:-----------------------------------------------------------------------|\n| `normal` | `y s`     | `surround` e.g. `y s i w (`                                            |\n| `normal` | `d s`     | `delete-surround-any-pair`. auto-detect surrounding char. e.g. `d s`   |\n| `normal` | `d S`     | `delete-surround` e.g. `d s (`                                         |\n| `normal` | `c s`     | `change-surround-any-pair`. auto-detect surrounding char. e.g. `c s {` |\n| `normal` | `c S`     | `change-surround`. auto-detect e.g. `c s ( {`                          |\n| `visual` | `S`       | `surround` selected text. `S (`                                        |\n\n# Don't want to move cursor after surround operator?\n\nFrom setting-view of vim-mode-plus, Check `stayOnTransformString`.\n\n# Explain behavior details in pseudo DSL\n\n```coffeescript\n\n# Normal-mode\n# -------------------------\n# Set base text. cursor is `|`.\n\ntext = \"\"\"\n  pen pin|eapple\n  apple pen\n  \"\"\"\n\n# y s\n# -------------------------\nsetText(text)\nnormal 'y s i w {',\n  text: \"\"\"\n  pen {pineapple}\n  apple pen\n  \"\"\"\n\n# `y s s` surround current line\nsetText(text)\nnormal 'y s s {',\n  text: \"\"\"\n  {pen pineapple}\n  apple pen\n  \"\"\"\n\n# d s\n# -------------------------\ntext = \"\"\"\n  pen pineapple\n  (apple {pe|n})\n  \"\"\"\n\n# `d s` delete surrounding char by auto-detect\nsetText(text)\nnormal 'd s',\n  desc: \"auto detect `{`\"\n  text: \"\"\"\n  pen pineapple\n  (apple pen)\n  \"\"\"\n\nnormal 'd s',\n  desc: \"auto detect `(`\"\n  text: \"\"\"\n  pen pineapple\n  apple pen\n  \"\"\"\n\nsetText(text)\nnormal 'd S (',\n  desc: \"manually specify surrounding char\"\n  text: \"\"\"\n  pen pineapple\n  apple {pen}\n  \"\"\"\n\n# c s\n# -------------------------\ntext = \"\"\"\n  pen pineapple\n  (apple {pe|n})\n  \"\"\"\nsetText(text)\n\nnormal 'c s \"',\n  text: \"\"\"\n  pen pineapple\n  (apple \"pen\")\n  \"\"\"\nnormal 'c s [',\n  text: \"\"\"\n  pen pineapple\n  (apple [pen])\n  \"\"\"\n\nnormal 'c S [ <',\n  text: \"\"\"\n  pen pineapple\n  (apple <pen>)\n  \"\"\"\n\nnormal 'c S ( {',\n  text: \"\"\"\n  pen pineapple\n  {apple <pen>}\n  \"\"\"\n\n# Visual-mode selected-area is | to |\n# -------------------------\ntext = \"\"\"\n  pen pi|neap|ple\n  apple pen\n  \"\"\"\nsetText(text)\n\nvisual 'S {',\n  text: \"\"\"\n  pen pi{neap}ple\n  apple pen\n  \"\"\"\n```\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/t9md/atom-vim-mode-plus-keymaps-for-surround.git"
+  },
+  "version": "0.2.1"
+}
