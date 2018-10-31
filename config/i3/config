@@ -30,7 +30,7 @@ font pango:Ubuntu Mono 16
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec konsole
+bindsym $mod+Return exec qterminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -40,7 +40,7 @@ bindsym $mod+d exec dmenu_run
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
-bindsym $mod+m exec --no-startup-id i3-dmenu-desktop
+# bindsym $mod+m exec --no-startup-id i3-dmenu-desktop
 
 # change focus
 bindsym $mod+h focus left
@@ -92,29 +92,40 @@ bindsym $mod+a focus parent
 # focus the child container
 #bindsym $mod+d focus child
 
+# Workspace variables
+set $WS1 term
+set $WS2 browser
+set $WS3 3
+set $WS4 4
+set $WS5 5
+set $WS6 6
+set $WS7 7
+set $WS8 8
+set $WS9 email
+set $WS0 media
 # switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
-bindsym $mod+4 workspace 4
-bindsym $mod+5 workspace 5
-bindsym $mod+6 workspace 6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
+bindsym $mod+1 workspace $WS1
+bindsym $mod+2 workspace $WS2
+bindsym $mod+3 workspace $WS3
+bindsym $mod+4 workspace $WS4
+bindsym $mod+5 workspace $WS5
+bindsym $mod+6 workspace $WS6
+bindsym $mod+7 workspace $WS7
+bindsym $mod+8 workspace $WS8
+bindsym $mod+9 workspace $WS9
+bindsym $mod+0 workspace $WS0
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
-bindsym $mod+Shift+4 move container to workspace 4
-bindsym $mod+Shift+5 move container to workspace 5
-bindsym $mod+Shift+6 move container to workspace 6
-bindsym $mod+Shift+7 move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
-bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
+bindsym $mod+Shift+1 move container to workspace $WS1
+bindsym $mod+Shift+2 move container to workspace $WS2
+bindsym $mod+Shift+3 move container to workspace $WS3
+bindsym $mod+Shift+4 move container to workspace $WS4
+bindsym $mod+Shift+5 move container to workspace $WS5
+bindsym $mod+Shift+6 move container to workspace $WS6
+bindsym $mod+Shift+7 move container to workspace $WS7
+bindsym $mod+Shift+8 move container to workspace $WS8
+bindsym $mod+Shift+9 move container to workspace $WS9
+bindsym $mod+Shift+0 move container to workspace $WS0
 
 # Keybindings to move workspaces between outputs
 bindsym $mod+Shift+less move workspace to output left
@@ -124,10 +135,18 @@ bindsym $mod+Shift+greater move workspace to output right
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
+
+# LXQt-i3 bindings
+# exit lxqt-i3
+# bindsym $mod+Shift+e exec --no-startup-id lxqt-leave
+# Lock lxqt-i3
+# bindsym $mod+Shift+F12 exec --no-startup-id xscreensaver-command -lock
+
+# i3-session bindings
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-# lock screen?
-bindsym $mod+Shift+F12 exec --no-startup-id bash $HOME/.config/i3/locker.sh
+# bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+# lock screen
+# bindsym $mod+Shift+F12 exec --no-startup-id bash $HOME/.config/i3/locker.sh
 
 # Volume controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
@@ -165,25 +184,25 @@ for_window [class="^Gvim$"] floating enable
 # for_window [class="^Gvim$"] resize set 768 px 960 px
 for_window [class="^Gvim$"] move position center
 for_window [title="^Friends List$"] floating enable
-assign [class="^spotify$"] → 10
-assign [class="^NeovimGtk$"] → 2
+for_window [class="^Spotify$"] move to $WS0
+assign [class="^NeovimGtk$"] → $WS1
 
 # Colors
 # class                 border  backgr. text    indicator child_border
-client.focused          #444444 #444444 #ffffff #2e9ef4   #444444
-client.focused_inactive #333333 #333333 #ffffff #484e50   #333333
-client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-client.urgent           #2f343a #900000 #ffffff #900000   #900000
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.focused          #2f343f #2f343f #d2d8e0 #2e9ef4   #2f343f
+client.focused_inactive #292e38 #292e38 #d2d8e0 #484e50   #292e38
+client.unfocused        #292e38 #292e38 #888888 #292d2e   #292e38
+client.urgent           #2f343a #900000 #d2d8e0 #900000   #900000
+client.placeholder      #000000 #0c0c0c #d2d8e0 #000000   #0c0c0c
 
 client.background       #ffffff
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-        status_command i3blocks
-        tray_output primary
-}
+# bar {
+        # status_command i3blocks
+        # tray_output primary
+# }
 
 # For reasons I’m too lazy to troubleshoot, exec directives weren’t working 
 # right. So we run a custom Bash script.

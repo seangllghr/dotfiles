@@ -44,8 +44,8 @@ set nohlsearch
 set spelllang=en_us
 
 let &colorcolumn="80"
-highlight ColorColumn ctermbg=black guibg=gray18
 highlight Pmenu ctermbg=darkgray
+highlight ColorColumn ctermbg=darkgray guibg=gray18
 
 " Buffer handling
 set switchbuf=useopen,newtab
