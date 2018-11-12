@@ -43,9 +43,9 @@ set noshowcmd
 set nohlsearch
 set spelllang=en_us
 
-let &colorcolumn="80"
+" let &colorcolumn="80"
 highlight Pmenu ctermbg=darkgray
-highlight ColorColumn ctermbg=darkgray guibg=gray18
+" highlight ColorColumn ctermbg=darkgray guibg=gray18
 
 " Buffer handling
 set switchbuf=useopen,newtab
@@ -58,9 +58,9 @@ au WinEnter,WinNew * call ResizePane()
 au WinLeave * set nowrap
 au WinEnter * set wrap
 au WinEnter * set lbr
-au BufRead,BufNewFile *.md setlocal spell
-au BufRead,BufNewFile *.txt setlocal spell
+" Spell checking for content files
 au BufRead,BufNewFile *.html setlocal spell
+au BufRead,BufNewFile *.tex setlocal spell
 " Jump to last cursor position on reopen
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
@@ -68,6 +68,12 @@ endif
 augroup pandoc_syntax
 	au! BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
   au BufNewFile,BufFilePre,BufRead *.md setlocal textwidth=80
+  au BufRead,BufNewFile *.md setlocal spell
+augroup END
+augroup dos_plaintext
+  au BufRead,BufNewFile *.txt setlocal textwidth=80
+  au BufRead,BufNewFile *.txt setlocal spell
+  au BufRead,BufNewFile *.txt setlocal fileformat=dos
 augroup END
 
 " Mappings
@@ -124,7 +130,7 @@ let g:airline_right_sep = '◀'
 let g:airline_symbols.linenr = '␊'
 let g:airline_symbols.linenr = '␤'
 let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.branch = ''
 let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
