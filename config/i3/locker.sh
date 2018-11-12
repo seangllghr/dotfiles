@@ -1,4 +1,6 @@
 #!/bin/bash
+# This script is no longer utilized in my Manjaro installation. It remains
+# as reference.
 
 CONNECTION=$(xrandr | grep "HDMI-1-1" | cut -d' ' -f2)
 
