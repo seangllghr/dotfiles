@@ -58,9 +58,6 @@ au WinEnter,WinNew * call ResizePane()
 au WinLeave * set nowrap
 au WinEnter * set wrap
 au WinEnter * set lbr
-" Spell checking for content files
-au BufRead,BufNewFile *.html setlocal spell
-au BufRead,BufNewFile *.tex setlocal spell
 " Jump to last cursor position on reopen
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
@@ -75,6 +72,22 @@ augroup dos_plaintext
   au BufRead,BufNewFile *.txt setlocal spell
   au BufRead,BufNewFile *.txt setlocal fileformat=dos
 augroup END
+augroup evolution_email
+  au BufRead,BufNewFile /tmp/evo* setlocal textwidth=71
+  au BufRead,BufNewFile /tmp/evo* setlocal spell
+augroup END
+augroup qutebrowser_formfield
+  au BufRead,BufNewFile /tmp/qutebrowser* setlocal textwidth=80
+  au BufRead,BufNewFile /tmp/qutebrowser* set filetype=html
+  au BufRead,BufNewFile /tmp/qutebrowser* setlocal spell
+augroup html
+  au BufNewFile,BufRead *.html setlocal textwidth=80
+  au BufNewFile,BufRead *.html setlocal spell
+augroup END
+augroup latex
+  au BufRead,BufNewFile *.tex setlocal spell
+  au BufRead,BufNewFile *.tex setlocal textwidth=80
+augroup END
 
 " Mappings
 let mapleader = '\'
@@ -84,6 +97,8 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+nnoremap <Leader>] :w<CR>:bn<CR>
+nnoremap <Leader>[ :w<CR>:bp<CR>
 
 " Tame strange behaviour
 nnoremap <leader><space> :noh<cr>
