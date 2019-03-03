@@ -43,9 +43,15 @@ set noshowcmd
 set nohlsearch
 set spelllang=en_us
 
-" let &colorcolumn="80"
+" Change some highlights so they're less obtrusive
+highlight clear ColorColumn
+highlight clear SpellBad
+highlight clear SpellLocal
+let &colorcolumn="80"
 highlight Pmenu ctermbg=darkgray
-" highlight ColorColumn ctermbg=darkgray guibg=gray18
+highlight ColorColumn ctermbg=236 guibg=gray18
+highlight SpellBad cterm=underline,italic ctermfg=196
+highlight SpellLocal cterm=italic ctermfg=44
 
 " Buffer handling
 set switchbuf=useopen,newtab
@@ -113,6 +119,7 @@ Plug 'townk/vim-autoclose'
 Plug 'ryanoasis/vim-devicons'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
+Plug 'lervag/vimtex'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
