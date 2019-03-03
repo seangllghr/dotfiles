@@ -26,7 +26,7 @@ order += "tztime local"
 # order += "ipv6"
 
 cpu_usage {
-        format = " cpu  %usage "
+        format = "  %usage "
 }
 
 load {
@@ -36,7 +36,7 @@ load {
 
 disk "/" {
         # format = " hdd %avail "
-        format = " ⛁ %avail "
+        format = "  %avail "
 }
 
 ethernet _first_ {
@@ -66,5 +66,5 @@ battery all {
 
 tztime local {
         # format = "%Y-%m-%d %H:%M:%S"
-        format = " %Y.%m.%d.%H:%M "
+        format = " %Y.%m.%d|%H:%M "
 }
