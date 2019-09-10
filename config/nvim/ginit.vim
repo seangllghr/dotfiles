@@ -6,7 +6,7 @@ if exists('g:GtkGuiLoaded')
 	call rpcnotify(1, 'Gui', 'Font', 'Fira Code 16')
 	call rpcnotify(1, 'Gui', 'Option', 'Tabline', 0)
 el
-	Guifont Fira\ Code:h12
+	Guifont Fira\ Code:h10
 endif
 
 if !exists('g:GtkGuiLoaded')

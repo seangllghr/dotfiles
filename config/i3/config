@@ -27,7 +27,7 @@ font xft:URWGothic-Book 9
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec qterminal
+bindsym $mod+Return exec konsole
 bindsym $mod+grave exec qterminal -d
 bindsym $mod+Shift+Return exec --no-startup-id urxvt
 
@@ -258,6 +258,7 @@ for_window [title="Virtual Machine Manager"] floating enable
 for_window [title="Bluetooth Devices"] floating enable
 for_window [title="Event Tester"] floating enable
 for_window [title="Email"] floating enable
+for_window [title="Java Test*"] floating enable
 
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
@@ -272,7 +273,7 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # Set shut down, restart and locking, and display management features
-set $mode_displays Display Management: Desktop (s)ingle, Desktop (e)xtend, (m)irror, (l)aptop, (b)ack
+set $mode_displays Display Management: Desktop (s)ingle, (e)xtend, (E)xtend 1600x900 (m)irror, (l)aptop, (b)ack
 mode "$mode_displays" {
     bindsym s exec --no-startup-id /home/sean/.screenlayout/desktop-single.sh; mode "default"
     bindsym e exec --no-startup-id /home/sean/.screenlayout/desktop-multiple.sh; mode "default"
@@ -346,6 +347,7 @@ exec_always --no-startup-id fix_xcursor
 exec --no-startup-id bash /home/sean/.i3/swapescape.sh -s
 exec --no-startup-id xinput disable "USBest Technology SiS HID Touch Controller"
 exec --no-startup-id SpiderOakONE
+exec --no-startup-id dropbox
 
 # Color palette used for the terminal ( ~/.Xresources file )
 # Colors are gathered based on the documentation:

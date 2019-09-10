@@ -152,5 +152,7 @@ ex ()
 export YAOURT_COLORS="nb=1:pkg=1:ver=1;32:lver=1;45:installed=1;42:grp=1;34:od=1;41;5:votes=1;44:dsc=0:other=1;35"
 
 # Aliases make everything better
+alias ls='ls --color=auto'
 alias la='ls -A'
-alias ll='ls -la'
+alias ll='ls -lah'
+alias xo='xdg-open'

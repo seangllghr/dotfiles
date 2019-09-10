@@ -89,10 +89,17 @@ augroup qutebrowser_formfield
 augroup html
   au BufNewFile,BufRead *.html setlocal textwidth=80
   au BufNewFile,BufRead *.html setlocal spell
+  au BufNewFile,BufRead *.html source ~/.local/share/nvim/site/autoload/closetag.vim
 augroup END
 augroup latex
   au BufRead,BufNewFile *.tex setlocal spell
   au BufRead,BufNewFile *.tex setlocal textwidth=80
+augroup END
+augroup java
+  au BufRead,BufNewFile *.java setlocal tabstop=3
+  au BufRead,BufNewFile *.java setlocal softtabstop=3
+  au BufRead,BufNewFile *.java setlocal shiftwidth=3
+  au BufRead,BufNewFile *.java setlocal expandtab
 augroup END
 
 " Mappings
@@ -120,6 +127,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'lervag/vimtex'
+Plug 'alvan/vim-closetag'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
