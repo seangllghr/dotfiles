@@ -2,15 +2,10 @@
 " away and do something totally different.
 
 function ResizePane()
-  if @% =~# 'NERD_tree'
-    if winwidth(0) != 35
-      vertical resize 35
-    endif
-  else
-    if winwidth(0) < 90
-      vertical resize 90
-    endif
-  endif
+  let hmax = max([winwidth(0), float2nr(&columns*0.66), 90])
+  let vmax = max([winheight(0), float2nr(&columns*0.66), 25])
+  exe "vertical resize" . (min([hmax, 140]))
+  exe "resize" . (min([vmax,60]))
 endfunction
 
 set background=dark
@@ -47,11 +42,13 @@ set spelllang=en_us
 highlight clear ColorColumn
 highlight clear SpellBad
 highlight clear SpellLocal
+highlight clear SpellCap
 let &colorcolumn="80"
 highlight Pmenu ctermbg=darkgray
 highlight ColorColumn ctermbg=236 guibg=gray18
 highlight SpellBad cterm=underline,italic ctermfg=196
 highlight SpellLocal cterm=italic ctermfg=44
+highlight SpellCap cterm=underline,italic ctermfg=44
 
 " Buffer handling
 set switchbuf=useopen,newtab
@@ -60,7 +57,6 @@ set switchbuf=useopen,newtab
 autocmd!
 au FocusLost * :wa
 " au WinEnter * if (bufname('') !~ '^NERD_tree') && (winwidth(0) < 85) | vertical resize 85 | endif
-au WinEnter,WinNew * call ResizePane()
 au WinLeave * set nowrap
 au WinEnter * set wrap
 au WinEnter * set lbr
@@ -106,10 +102,10 @@ augroup END
 let mapleader = '\'
 nnoremap <tab> %
 vnoremap <tab> %
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+nnoremap <C-h> <C-w>h:call ResizePane()<CR>
+nnoremap <C-j> <C-w>j:call ResizePane()<CR>
+nnoremap <C-k> <C-w>k:call ResizePane()<CR>
+nnoremap <C-l> <C-w>l:call ResizePane()<CR>
 nnoremap <Leader>] :w<CR>:bn<CR>
 nnoremap <Leader>[ :w<CR>:bp<CR>
 
@@ -128,6 +124,8 @@ Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'lervag/vimtex'
 Plug 'alvan/vim-closetag'
+Plug 'https://bitbucket.org/natemaia/vim-jinx'
+Plug 'rainglow/vim'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
