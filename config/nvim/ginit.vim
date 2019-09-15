@@ -8,7 +8,7 @@ if exists('g:GtkGuiLoaded')
 	call rpcnotify(1, 'Gui', 'Font', 'Fira Code 16')
 	call rpcnotify(1, 'Gui', 'Option', 'Tabline', 0)
 el
-	Guifont Source\ Code\ Pro:h14
+	Guifont Fira\ Code\ Light:h10
   GuiTabline 0
 endif
 
@@ -17,5 +17,5 @@ if !exists('g:GtkGuiLoaded')
 endif
 
 " Keybinds to switch font sizes
-nnoremap <Leader>1 :GuiFont Source\ Code\ Pro:h11<CR>
-nnoremap <Leader>2 :GuiFont Source\ Code\ Pro:h14<CR>
+nnoremap <Leader>1 :GuiFont Fira\ Code\ Light:h10<CR>
+nnoremap <Leader>2 :GuiFont Fira\ Code\ Light:h12<CR>
