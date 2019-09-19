@@ -3,3 +3,4 @@ set recolor-darkcolor "#15b8ae"
 set window-title-basename true
 set zoom-step 5
 set recolor true
+set scroll-full-overlap 0.1
