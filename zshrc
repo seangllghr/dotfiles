@@ -1,18 +1,18 @@
 ## Options section
-setopt correct                                                  # Auto correct mistakes
-setopt extendedglob                                             # Extended globbing. Allows using regular expressions with *
-setopt nocaseglob                                               # Case insensitive globbing
-setopt rcexpandparam                                            # Array expension with parameters
-setopt nocheckjobs                                              # Don't warn about running processes when exiting
-setopt numericglobsort                                          # Sort filenames numerically when it makes sense
-setopt nobeep                                                   # No beep
-setopt appendhistory                                            # Immediately append history instead of overwriting
-setopt histignorealldups                                        # If a new command is a duplicate, remove the older one
-setopt autocd                                                   # if only directory path is entered, cd there.
+setopt correct           # Auto correct mistakes
+setopt extendedglob      # Extended globbing. Allows regex with *
+setopt nocaseglob        # Case insensitive globbing
+setopt rcexpandparam     # Array expension with parameters
+setopt nocheckjobs       # Don't warn about running processes when exiting
+setopt numericglobsort   # Sort filenames numerically when it makes sense
+setopt nobeep            # No beep
+setopt appendhistory     # Immediately append history instead of overwriting
+setopt histignorealldups # If a new command is a duplicate, remove the older one
+setopt autocd            # if only directory path is entered, cd there.
 
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'       # Case insensitive tab completion
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"         # Colored completion (different colors for dirs/files/etc)
-zstyle ':completion:*' rehash true                              # automatically find new executables in path 
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' # Case insensitive tab completion
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"   # Colored completion
+zstyle ':completion:*' rehash true  # automatically find new executables in path 
 # Speed up completions
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
@@ -22,7 +22,7 @@ HISTSIZE=1000
 SAVEHIST=500
 export EDITOR=/usr/bin/nvim
 export VISUAL=/usr/bin/nvim
-WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
+WORDCHARS=${WORDCHARS//\/[&.;]} # Don't consider certain characters part of the word
 
 
 ## Keybindings section
@@ -30,12 +30,12 @@ bindkey -e
 bindkey '^[[7~' beginning-of-line                               # Home key
 bindkey '^[[H' beginning-of-line                                # Home key
 if [[ "${terminfo[khome]}" != "" ]]; then
-  bindkey "${terminfo[khome]}" beginning-of-line                # [Home] - Go to beginning of line
+  bindkey "${terminfo[khome]}" beginning-of-line # [Home] - Beginning of line
 fi
 bindkey '^[[8~' end-of-line                                     # End key
 bindkey '^[[F' end-of-line                                     # End key
 if [[ "${terminfo[kend]}" != "" ]]; then
-  bindkey "${terminfo[kend]}" end-of-line                       # [End] - Go to end of line
+  bindkey "${terminfo[kend]}" end-of-line        # [End] - Go to end of line
 fi
 bindkey '^[[2~' overwrite-mode                                  # Insert key
 bindkey '^[[3~' delete-char                                     # Delete key
@@ -49,20 +49,24 @@ bindkey '^[Oc' forward-word                                     #
 bindkey '^[Od' backward-word                                    #
 bindkey '^[[1;5D' backward-word                                 #
 bindkey '^[[1;5C' forward-word                                  #
-bindkey '^H' backward-kill-word                                 # delete previous word with ctrl+backspace
-bindkey '^[[Z' undo                                             # Shift+tab undo last action
+bindkey '^H' backward-kill-word       # delete previous word with ctrl+backspace
+bindkey '^[[Z' undo                  # Shift+tab undo last action
 
 ## Alias section 
-alias cp="cp -i"                                                # Confirm before overwriting something
-alias df='df -h'                                                # Human-readable sizes
-alias free='free -m'                                            # Show sizes in MB
+alias cp="cp -i"                   # Confirm before overwriting something
+alias df='df -h'                   # Human-readable sizes
+alias free='free -m'               # Show sizes in MB
 alias gitu='git add . && git commit && git push'
 
+# Convenient and pretty ls aliases
 alias ls='ls --color=auto'
 alias la='ls -a'
 alias ll='ls -lah'
 
+# Shorten some commonly-used commands
 alias nqt='nvim-qt'
+alias xo="xdg-open"
+alias zth="zathura" # You try typing 'za'. zth is easier.
 
 # Theming section  
 autoload -U compinit colors zcalc
