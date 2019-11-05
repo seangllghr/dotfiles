@@ -38,17 +38,19 @@ set noshowcmd
 set nohlsearch
 set spelllang=en_us
 
-" Change some highlights so they're less obtrusive
+" Load 16-bit default colorscheme and change some of the irritating colors
+colorscheme dim
 highlight clear ColorColumn
 highlight clear SpellBad
 highlight clear SpellLocal
 highlight clear SpellCap
 let &colorcolumn="80"
-highlight Pmenu ctermbg=darkgray
-highlight ColorColumn ctermbg=236 guibg=gray18
+highlight ColorColumn ctermbg=16
 highlight SpellBad cterm=underline,italic ctermfg=196
 highlight SpellLocal cterm=italic ctermfg=44
 highlight SpellCap cterm=underline,italic ctermfg=44
+
+" let base16colorspace=256
 
 " Buffer handling
 set switchbuf=useopen,newtab
@@ -56,7 +58,6 @@ set switchbuf=useopen,newtab
 " Autocommands
 autocmd!
 au FocusLost * :wa
-" au WinEnter * if (bufname('') !~ '^NERD_tree') && (winwidth(0) < 85) | vertical resize 85 | endif
 au WinLeave * set nowrap
 au WinEnter * set wrap
 au WinEnter * set lbr
@@ -97,6 +98,10 @@ augroup java
   au BufRead,BufNewFile *.java setlocal shiftwidth=3
   au BufRead,BufNewFile *.java setlocal expandtab
 augroup END
+augroup firenvim
+  au BufEnter *.com_*.txt colorscheme bold-light
+  au BufEnter outlook.office.com_*.txt colorscheme bold
+augroup END
 
 " Mappings
 let mapleader = '\'
@@ -126,6 +131,8 @@ Plug 'lervag/vimtex'
 Plug 'alvan/vim-closetag'
 Plug 'https://bitbucket.org/natemaia/vim-jinx'
 Plug 'rainglow/vim'
+Plug 'glacambre/firenvim'
+" Plug 'chriskempson/base16-vim'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
@@ -180,3 +187,13 @@ let g:NERDDefaultAlighn = 'left'
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
+
+" Firenvim config. So I can write in Firefox with Neovim. What a world...
+let g:firenvim_config = {
+    \ 'localSettings': {
+        \ '.*': {
+            \ 'selector': 'textarea',
+            \ 'priority': 0,
+        \ }
+    \ }
+\ }

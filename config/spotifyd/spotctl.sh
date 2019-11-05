@@ -47,6 +47,9 @@ if [ $# -eq 0 ]
 then
   print_help
 else
+  echo 'This script is deprecated. Please start spotifyd with'
+  echo '`systemctl --user start spotifyd`'
+  exit
   case $1 in
     "start")
       echo "Starting"

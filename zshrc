@@ -59,14 +59,29 @@ alias free='free -m'               # Show sizes in MB
 alias gitu='git add . && git commit && git push'
 
 # Convenient and pretty ls aliases
-alias ls='ls --color=auto'
+alias ls='ls --color=always'
 alias la='ls -a'
 alias ll='ls -lah'
+alias lal='ls -la --color=always | less -r'
+
+# And tell less to keep color
+alias less='less -r' # This may be redundant with L164
 
 # Shorten some commonly-used commands
 alias nqt='nvim-qt'
 alias xo="xdg-open"
 alias zth="zathura" # You try typing 'za'. zth is easier.
+alias mutt="neomutt"
+alias kvim="konsole_nvim"
+alias emc="emacsclient -n"
+alias emcc="emacsclient -c -n"
+alias oth="urxvt &"
+
+# Wouldn't it be neat to have an alias open files in a new terminal window in nvim?
+function konsole_nvim() {
+  # Note that this function fails if no args are passed
+  konsole -e nvim $@ &> /dev/null &
+}
 
 # Theming section  
 autoload -U compinit colors zcalc
@@ -204,3 +219,4 @@ case $(basename "$(cat "/proc/$PPID/comm")") in
   		ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
     ;;
 esac
+bindkey -v # enable vim keys

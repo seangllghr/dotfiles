@@ -8,13 +8,18 @@ if exists('g:GtkGuiLoaded')
 	call rpcnotify(1, 'Gui', 'Font', 'Fira Code 16')
 	call rpcnotify(1, 'Gui', 'Option', 'Tabline', 0)
 el
-	Guifont Fira\ Code\ Light:h10
-  GuiTabline 0
+  if exists('g:gui_firenvim')
+    colorscheme desert
+  el
+    Guifont Fira\ Code\ Light:h10
+    GuiTabline 0
+  endif
 endif
 
-if !exists('g:GtkGuiLoaded')
-  set lines=40 columns=85
-endif
+" I don't use floating WMs anymore... So...
+" if !exists('g:GtkGuiLoaded')
+  " set lines=40 columns=85
+" endif
 
 " Keybinds to switch font sizes
 nnoremap <Leader>1 :GuiFont Fira\ Code\ Light:h10<CR>
