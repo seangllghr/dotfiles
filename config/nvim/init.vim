@@ -14,6 +14,9 @@ filetype off
 set noswapfile
 set smartcase
 
+" Add autoload to runtime path
+set runtimepath+=$HOME/.config/nvim/autoload
+
 " Colorschemes I like:
 " colorscheme desert		" Very muted dark with black-on-white status
 " colorscheme industry	" Like desert, but better contrast
