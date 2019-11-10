@@ -28,7 +28,7 @@ floating_modifier $mod
 
 # start a terminal
 # bindsym $mod+Return exec --no-startup-id konsole
-bindsym $mod+grave exec --no-startup-id qterminal -d
+# bindsym $mod+grave exec --no-startup-id qterminal -d
 bindsym $mod+Return exec --no-startup-id urxvt
 
 # kill focused window
