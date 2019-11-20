@@ -276,6 +276,7 @@ for_window [title="Bluetooth Devices"] floating enable
 for_window [title="Event Tester"] floating enable
 for_window [title="Email"] floating enable
 for_window [title="Java Test*"] floating enable
+for_window [title="WoeUSB"]  floating enable
 
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
