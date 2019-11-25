@@ -57,7 +57,7 @@ bindsym $mod+Ctrl+m exec pavucontrol
 # bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
 
 # FN Keys
-bindsym XF86TouchpadToggle exec --no-startup-id /home/sean/.i3/touchpad_toggle.sh
+bindsym XF86TouchpadToggle exec --no-startup-id touchpad-toggle
 # Playerctl controls/Launch Media Player(s)
 bindsym XF86Tools exec --no-startup-id spotify
 bindsym XF86AudioPrev exec --no-startup-id playerctl previous
@@ -82,9 +82,9 @@ bindsym Print exec --no-startup-id i3-scrot
 bindsym $mod+Print --release exec --no-startup-id i3-scrot -w
 bindsym $mod+Shift+Print --release exec --no-startup-id i3-scrot -s
 bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
-bindsym $mod+Caps_Lock exec --no-startup-id /home/sean/.i3/swapescape.sh -s
-bindsym $mod+Escape exec --no-startup-id /home/sean/.i3/swapescape.sh -r
-bindsym $mod+n exec --no-startup-id /home/sean/dotfiles/bin/scripts/compton-winvert.sh
+bindsym $mod+Caps_Lock exec --no-startup-id swapescape -s
+bindsym $mod+Escape exec --no-startup-id swapescape -r
+bindsym $mod+n exec --no-startup-id compton-winvert
 bindsym $mod+m exec --no-startup-id virt-manager
 
 # focus_follows_mouse no
@@ -291,24 +291,25 @@ bindsym $mod+Shift+r restart
 # bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # Set shut down, restart and locking, and display management features
-set $mode_displays Display Management: Desktop (s)ingle, (e)xtend, (E)xtend 1600x900 (m)irror, (l)aptop, (b)ack
+set $mode_displays Display Management: Desktop (s)ingle, (e)xtend, (l)aptop, (b)ack
 mode "$mode_displays" {
-    bindsym s exec --no-startup-id /home/sean/.screenlayout/desktop-single.sh; mode "default"
-    bindsym e exec --no-startup-id /home/sean/.screenlayout/desktop-multiple.sh; mode "default"
-    bindsym l exec --no-startup-id /home/sean/.screenlayout/laptop.sh; mode "default"
-    bindsym m exec --no-startup-id /home/sean/.screenlayout/mirror.sh; mode "default"
+    bindsym s exec --no-startup-id i3-display-config --single; mode "default"
+    bindsym e exec --no-startup-id i3-display-config --extend; mode "default"
+    bindsym l exec --no-startup-id i3-display-config --laptop; mode "default"
+    # bindsym m exec --no-startup-id /home/sean/.screenlayout/mirror.sh; mode "default"
     # bindsym b mode "$mode_system"
 
     # exit display mode: "Escape"
     bindsym Escape mode "default"
 }
 bindsym $mod+equal mode "$mode_system"
-set $mode_system Switch_(u)ser, (l)ock, (e)xit, (r)eboot, (Shift+s)hutdown
+set $mode_system Switch_(u)ser, (l)ock, (e)xit, (r)eboot, (s)uspend, (Shift+s)hutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id i3exit lock, mode "default"
     bindsym u exec --no-startup-id i3exit switch_user, mode "default"
     bindsym e exec --no-startup-id i3exit logout, mode "default"
     bindsym r exec --no-startup-id i3exit reboot, mode "default"
+    bindsym s exec --no-startup-id i3-suspend, mode "default"
     bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
 
     # exit system mode: "Enter" or "Escape"
@@ -358,10 +359,11 @@ exec --no-startup-id gnome-keyring-daemon --start --components=pkcsll,secrets,ss
 exec --no-startup-id xautolock -time 10 -locker blurlock
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
-exec --no-startup-id bash /home/sean/.i3/swapescape.sh -s
-exec --no-startup-id xinput disable "USBest Technology SiS HID Touch Controller"
-exec --no-startup-id SpiderOakONE
-exec --no-startup-id dropbox
+exec --no-startup-id bash /home/sean/.config/i3/swapescape.sh -s
+# exec --no-startup-id xinput disable "USBest Technology SiS HID Touch Controller"
+# TODO: Install SpiderOakONE. And possibly Dropbox.
+# exec --no-startup-id SpiderOakONE
+# exec --no-startup-id dropbox
 
 # Color palette used for the terminal ( ~/.Xresources file )
 # Colors are gathered based on the documentation:
