@@ -108,6 +108,7 @@ case $1 in
     '--extend')
         extend_display
         ;;
+    # TODO: Definitely auto config.
     # TODO: Mirroring?
     # TODO: Probably the dock, however the fuck that works...
 esac
