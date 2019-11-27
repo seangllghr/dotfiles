@@ -1,6 +1,10 @@
 # i3 config file (v4)
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
+### NOTE: There are subtle differences between machines, even on Manjaro
+#         installs. Mostly between auto-started applications.
+#         I HAVE BEEN WARNED!
+
 # Set mod key (Mod1=<Alt>, Mod4=<Super>)
 set $mod Mod4
 
@@ -176,7 +180,7 @@ bindsym $mod+Ctrl+l workspace next
 # something like: set $ws1 1:mail
 #                 set $ws2 2:
 
-# WS 1: FontAwesome Terminal
+# WS 1: FontAwesome File Code
 # WS 2: FontAwesome Firefox
 # WS 3: FontAwesome Laptop
 # WS 4: FontAwesome Image
@@ -185,7 +189,7 @@ bindsym $mod+Ctrl+l workspace next
 # WS 7: FontAwesome Archive
 # WS 8: FontAwesome Server
 # WS 9: FontAwesome PDF
-# WS10: FontAwesome File Code
+# WS10: FontAwesome Terminal
 set $ws1 1:
 set $ws2 2:
 set $ws3 3:
@@ -195,7 +199,7 @@ set $ws6 6:
 set $ws7 7:
 set $ws8 8:
 set $ws9 9:
-set $ws0 10:
+set $ws0 0:
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -347,7 +351,7 @@ bindsym $mod+F1 mode "$mode_displays"
 bindsym $mod+F12 exec --no-startup-id blurlock
 
 # Autostart applications
-exec --no-startup-id i3-display-config --single
+exec --no-startup-id i3-display-config --extend
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 # exec --no-startup-id nitrogen --restore; sleep 1; compton -b
 exec --no-startup-id nitrogen --restore

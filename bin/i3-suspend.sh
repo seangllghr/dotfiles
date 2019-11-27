@@ -1,4 +1,4 @@
 #!/bin/sh
 
-blurlock &&
-systemctl suspend
+blurlock &
+sleep 3 && systemctl suspend
