@@ -22,17 +22,17 @@ single_display () {
         xrandr --output HDMI1 --primary --mode ${displayArray[HDMI1]} --pos 0x0 --rotate normal \
                --output VIRTUAL1 --off --output eDP1 --off
         configmsg="Configured HDMI1 as Primary at ${displayArray['HDMI1']}"
+        configError=0
     elif test "${displayArray['LVDS-0']+isset}"; then
         xrandr --output VGA-0 --primary --mode ${displayArray[VGA-0]} --pos 0x0 --rotate normal \
                --output LVDS-0 --off
         configmsg="Configured VGA-0 as Primary at ${displayArray['VGA-0']}"
+        configError=0
     else
-        echo "Unrecognized system. Please configure manually."
+        configmsg="Unrecognized system. Please configure manually."
+        configError=1
     fi
-    pkill conky
-    conky -c ~/.config/conky/conky_maia.conkyrc &
-    nitrogen --restore
-    notify-send -u low -t 5000 "$configmsg"
+    post_config
 }
 
 laptop_display () {
@@ -40,17 +40,17 @@ laptop_display () {
         xrandr --output eDP1 --primary --mode ${displayArray[eDP1]} --pos 0x0 --rotate normal \
                --output HDMI1 --off --output VIRTUAL1 --off
         configmsg="Configured eDP1 as Primary at ${displayArray['eDP1']}"
+        configError=0
     elif test "${displayArray['LVDS-0']+isset}"; then
         xrandr --output LVDS-0 --primary --mode ${displayArray[LVDS-0]} --pos 0x0 --rotate normal \
                --output VGA-0 --off
         configmsg="Configured LVDS-0 as Primary at ${displayArray['LVDS-0']}"
+        configError=0
     else
-        echo "Unrecognized system. Please configure manually."
+        configmsg="Unrecognized system. Please configure manually."
+        configError=1
     fi
-    pkill conky
-    conky -c ~/.config/conky/conky_maia.conkyrc &
-    nitrogen --restore
-    notify-send -u low -t 5000 "$configmsg"
+    post_config
 }
 
 extend_display () {
@@ -60,8 +60,9 @@ extend_display () {
         xrandr --output HDMI1 --primary --mode ${displayArray[HDMI1]} --pos 0x0 --rotate normal \
                --output VIRTUAL1 --off --output eDP1 --mode ${displayArray[eDP1]} \
                --pos $(echo ${displayArray[HDMI1]} | cut -d'x' -f 1)x0
-               --rotate normal --output VIRTUAL1 --off
+               --rotate normal
         configmsg="Configured HDMI1 as Primary at ${displayArray['HDMI1']} and eDP1 as secondary at ${displayArray[eDP1]}"
+        configError=0
     elif test "${displayArray['LVDS-0']+isset}"; then
         #LVDS-0 is a low-resolution panel that tends to sit low. Calculate a good position for it:
         primaryWidth=$(echo ${displayArray[VGA-0]} | cut -d'x' -f 1)
@@ -73,13 +74,37 @@ extend_display () {
                --output LVDS-0 --rotate normal --mode ${displayArray[LVDS-0]} \
                --pos ${primaryWidth}x$(($primaryHeight - $secondaryHeight))
         configmsg="Configured VGA-0 as Primary at ${displayArray['VGA-0']} and LVDS-0 as secondary at ${displayArray[LVDS-0]}"
+        configError=0
     else
-        echo "Unrecognized system. Please configure manually."
+        configmsg="Unrecognized system. Please configure manually."
+        configError=1
     fi
-    pkill conky
-    conky -c ~/.config/conky/conky_maia.conkyrc &
-    nitrogen --restore
-    notify-send -u low -t 5000 "$configmsg"
+    post_config
+}
+
+mirror_display() {
+    if test "${displayArray['eDP1']+isset}"; then
+        xrandr --output HDMI1 --primary --mode ${displayArray[HDMI1]} --pos 0x0 --rotate normal \
+               --output VIRTUAL1 --off --output eDP1 --off
+        xrandr --output HDMI1 --primary --mode ${displayArray[HDMI1]} --pos 0x0 --rotate normal \
+               --output VIRTUAL1 --off --output eDP1 --mode ${displayArray[eDP1]} --pos 0x0 \
+               --rotate normal
+        configmsg="Configured Mirrored Display on HDMI1 and eDP1 at ${displayArray[HDMI1]}"
+        configError=0
+    else
+        configmsg="Mirroring is not currently supported on this system. Please configure manually."
+        configError=1
+    fi
+    post_config
+}
+
+post_config() {
+    if [ ! $configError -eq 1 ]; then
+       pkill conky
+       conky -c ~/.config/conky/conky_maia.conkyrc &
+       nitrogen --restore
+    fi
+    notify-send "$configmsg"
 }
 
 # NOTE: Currently supported display configurations:
@@ -92,6 +117,8 @@ extend_display () {
 # Initial loading
 str=$(readlink -f $(which i3-display-config))
 installdir=${str%/*}
+configmsg=""
+configError=0
 declare -A displayArray
 read_connected_displays
 
@@ -108,8 +135,11 @@ case $1 in
     '--extend')
         extend_display
         ;;
+    '-m') : ;&
+    '--mirror')
+        mirror_display
+        ;;
     # TODO: Definitely auto config.
-    # TODO: Mirroring?
     # TODO: Probably the dock, however the fuck that works...
 esac
 

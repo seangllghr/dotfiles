@@ -291,11 +291,12 @@ bindsym $mod+Shift+r restart
 # bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # Set shut down, restart and locking, and display management features
-set $mode_displays Display Management: Desktop (s)ingle, (e)xtend, (l)aptop, (b)ack
+set $mode_displays Display Management: Desktop (s)ingle, (e)xtend, (l)aptop, (m)irror, (b)ack
 mode "$mode_displays" {
     bindsym s exec --no-startup-id i3-display-config --single; mode "default"
     bindsym e exec --no-startup-id i3-display-config --extend; mode "default"
     bindsym l exec --no-startup-id i3-display-config --laptop; mode "default"
+    bindsym m exec --no-startup-id i3-display-config --mirror; mode "default"
     # bindsym m exec --no-startup-id /home/sean/.screenlayout/mirror.sh; mode "default"
     # bindsym b mode "$mode_system"
 
@@ -346,7 +347,7 @@ bindsym $mod+F1 mode "$mode_displays"
 bindsym $mod+F12 exec --no-startup-id blurlock
 
 # Autostart applications
-exec --no-startup-id /home/sean/dotfiles/bin/scripts/i3-display-config.sh
+exec --no-startup-id i3-display-config --single
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 # exec --no-startup-id nitrogen --restore; sleep 1; compton -b
 exec --no-startup-id nitrogen --restore
@@ -359,11 +360,11 @@ exec --no-startup-id gnome-keyring-daemon --start --components=pkcsll,secrets,ss
 exec --no-startup-id xautolock -time 10 -locker blurlock
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
-exec --no-startup-id bash /home/sean/.config/i3/swapescape.sh -s
-# exec --no-startup-id xinput disable "USBest Technology SiS HID Touch Controller"
+exec --no-startup-id bash swapescape -s
+exec --no-startup-id xinput disable "USBest Technology SiS HID Touch Controller"
 # TODO: Install SpiderOakONE. And possibly Dropbox.
-# exec --no-startup-id SpiderOakONE
-# exec --no-startup-id dropbox
+exec --no-startup-id SpiderOakONE
+exec --no-startup-id dropbox
 
 # Color palette used for the terminal ( ~/.Xresources file )
 # Colors are gathered based on the documentation:
