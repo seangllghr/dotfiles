@@ -295,11 +295,12 @@ bindsym $mod+Shift+r restart
 # bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # Set shut down, restart and locking, and display management features
-set $mode_displays Display Management: Desktop (s)ingle, (e)xtend, (l)aptop, (m)irror, (b)ack
+set $mode_displays Display Management: Desktop (s)ingle, (e)xtend, (l)aptop, (d)ock, (m)irror, (b)ack
 mode "$mode_displays" {
     bindsym s exec --no-startup-id i3-display-config --single; mode "default"
     bindsym e exec --no-startup-id i3-display-config --extend; mode "default"
     bindsym l exec --no-startup-id i3-display-config --laptop; mode "default"
+    bindsym d exec --no-startup-id i3-display-config --dock; mode "default"
     bindsym m exec --no-startup-id i3-display-config --mirror; mode "default"
     # bindsym m exec --no-startup-id /home/sean/.screenlayout/mirror.sh; mode "default"
     # bindsym b mode "$mode_system"

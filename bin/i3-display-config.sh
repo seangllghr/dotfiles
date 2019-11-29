@@ -25,7 +25,8 @@ single_display () {
         configError=0
     elif test "${displayArray['LVDS-0']+isset}"; then
         xrandr --output VGA-0 --primary --mode ${displayArray[VGA-0]} --pos 0x0 --rotate normal \
-               --output LVDS-0 --off
+               --output LVDS-0 --off --output DP-0 --off --output DP-1 --off --output DP-2 --off \
+               --output DP-3 --off
         configmsg="Configured VGA-0 as Primary at ${displayArray['VGA-0']}"
         configError=0
     else
@@ -43,7 +44,8 @@ laptop_display () {
         configError=0
     elif test "${displayArray['LVDS-0']+isset}"; then
         xrandr --output LVDS-0 --primary --mode ${displayArray[LVDS-0]} --pos 0x0 --rotate normal \
-               --output VGA-0 --off
+               --output VGA-0 --off --output DP-0 --off --output DP-1 --off --output DP-2 --off \
+               --output DP-3 --off
         configmsg="Configured LVDS-0 as Primary at ${displayArray['LVDS-0']}"
         configError=0
     else
@@ -59,8 +61,7 @@ extend_display () {
                --output VIRTUAL1 --off --output eDP1 --off
         xrandr --output HDMI1 --primary --mode ${displayArray[HDMI1]} --pos 0x0 --rotate normal \
                --output VIRTUAL1 --off --output eDP1 --mode ${displayArray[eDP1]} \
-               --pos $(echo ${displayArray[HDMI1]} | cut -d'x' -f 1)x0
-               --rotate normal
+               --pos $(echo ${displayArray[HDMI1]} | cut -d'x' -f 1)x0 --rotate normal
         configmsg="Configured HDMI1 as Primary at ${displayArray['HDMI1']} and eDP1 as secondary at ${displayArray[eDP1]}"
         configError=0
     elif test "${displayArray['LVDS-0']+isset}"; then
@@ -69,10 +70,11 @@ extend_display () {
         primaryHeight=$(echo ${displayArray[VGA-0]} | cut -d'x' -f 2)
         secondaryHeight=$(echo ${displayArray[LVDS-0]} | cut -d'x' -f 2)
         xrandr --output VGA-0 --primary --mode ${displayArray[VGA-0]} --pos 0x0 --rotate normal \
-               --output LVDS-0 --off
+               --output LVDS-0 --off --output DP-1 --off --output DP-2 --off --output DP-3 --off
         xrandr --output VGA-0 --primary --mode ${displayArray[VGA-0]} --pos 0x0 --rotate normal \
                --output LVDS-0 --rotate normal --mode ${displayArray[LVDS-0]} \
-               --pos ${primaryWidth}x$(($primaryHeight - $secondaryHeight))
+               --pos ${primaryWidth}x$(($primaryHeight - $secondaryHeight)) --output DP-0 --off \
+               --output DP-1 --off --output DP-2 --off --output DP-3 --off
         configmsg="Configured VGA-0 as Primary at ${displayArray['VGA-0']} and LVDS-0 as secondary at ${displayArray[LVDS-0]}"
         configError=0
     else
@@ -93,6 +95,22 @@ mirror_display() {
         configError=0
     else
         configmsg="Mirroring is not currently supported on this system. Please configure manually."
+        configError=1
+    fi
+    post_config
+}
+
+dock_display() {
+    if test "${displayArray['LVDS-0']+isset}"; then
+        xrandr --output VGA-0 --primary --mode ${displayArray[VGA-0]} --pos 0x0 --rotate normal \
+               --output LVDS-0 --off --output DP-1 --off --output DP-2 --off --output DP-3 --off
+        xrandr --output VGA-0 --mode ${displayArray[VGA-0]} --pos 0x0 --rotate normal \
+               --output DP-0 --mode ${displayArray[DP-0]} --pos 1920x0 --rotate normal \
+               --output LVDS-0 --off --output DP-1 --off --output DP-2 --off --output DP-3 --off
+        configmsg="Configured VGA-0 as Primary at ${displayArray['VGA-0']} and DP-0 as secondary at ${displayArray['DP-0']}"
+        configError=0
+    else
+        configmsg="This system is not configured for dock output. Please configure manually."
         configError=1
     fi
     post_config
@@ -139,8 +157,11 @@ case $1 in
     '--mirror')
         mirror_display
         ;;
+    '-d') : ;&
+    '--dock')
+        dock_display
+        ;;
     # TODO: Definitely auto config.
-    # TODO: Probably the dock, however the fuck that works...
 esac
 
 # xset dpms 0 0 600
