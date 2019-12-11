@@ -3,7 +3,7 @@
 
 function ResizePane()
   let hmax = max([winwidth(0), float2nr(&columns*0.66), 90])
-  let vmax = max([winheight(0), float2nr(&columns*0.66), 25])
+  let vmax = max([winheight(0), float2nr(&lines*0.66), 25])
   exe "vertical resize" . (min([hmax, 140]))
   exe "resize" . (min([vmax,60]))
 endfunction
