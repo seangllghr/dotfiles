@@ -28,8 +28,8 @@ wait_for_network () {
 wait_for_server () {
     timer=15
     while [ $timer -gt 0 ]; do
-        if ! ping -c 1 -w 1 asgard>&/dev/null; then
-            echo -ne "Asgard is not online. Waiting $timer seconds.\033[0K\r"
+        if ! ping -c 1 -w 1 alfheim>&/dev/null; then
+            echo -ne "Alfheim is not online. Waiting $timer seconds.\033[0K\r"
             : $((timer--))
         else
             return 0
@@ -47,7 +47,7 @@ if wait_for_network; then
         mount /home/sean/Downloads
         notify-send -u low -t 3000 "Mount successful."
     else
-        notify-send -u normal -t 5000 "Asgard is not online. Mount failed."
+        notify-send -u normal -t 5000 "Alfheim is not online. Mount failed."
     fi
 else
     echo "Home network not found. Cannot mount network shares."
