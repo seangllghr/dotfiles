@@ -30,14 +30,14 @@ single_display () {
         configError=0
     elif test "${displayArray['LVDS-0']+isset}"; then
         if [ $singleSide = "right" ]; then
-            xrandr --output DP-0 --primary --mode ${displayArray[DP-0]} --pos 0x0 --rotate normal \
-                   --output LVDS-0 --off --output VGA-0 --off
-            configmsg="Configured DP-0 as Primary at ${displayArray['DP-0']}"
+            xrandr --output DP-1 --primary --mode ${displayArray[DP-1]} --pos 0x0 --rotate normal \
+                   --output LVDS-0 --off --output VGA-0 --off --output DP-0 --off
+            configmsg="Configured DP-1 as Primary at ${displayArray['DP-1']}"
             configError=0
         else
-            xrandr --output VGA-0 --primary --mode ${displayArray[VGA-0]} --pos 0x0 --rotate normal \
-                --output LVDS-0 --off --output DP-0 --off
-            configmsg="Configured VGA-0 as Primary at ${displayArray['VGA-0']}"
+            xrandr --output DP-0 --primary --mode ${displayArray[DP-0]} --pos 0x0 --rotate normal \
+                --output LVDS-0 --off --output DP-1 --off
+            configmsg="Configured DP-0 as Primary at ${displayArray['DP-0']}"
             configError=0
         fi
     else
@@ -71,7 +71,7 @@ extend_display () {
                --output VIRTUAL1 --off --output eDP1 --off
         xrandr --output HDMI1 --primary --mode ${displayArray[HDMI1]} --pos 0x0 --rotate normal \
                --output VIRTUAL1 --off --output eDP1 --mode ${displayArray[eDP1]} \
-               --pos $(echo ${displayArray[HDMI1]} | cut -d'x' -f 1)x0 --rotate normal
+               --right-of HDMI1 --rotate normal
         configmsg="Configured HDMI1 as Primary at ${displayArray['HDMI1']} and eDP1 as secondary at ${displayArray[eDP1]}"
         configError=0
     elif test "${displayArray['LVDS-0']+isset}"; then
@@ -111,10 +111,10 @@ mirror_display() {
 
 dock_dual() {
     if test "${displayArray['LVDS-0']+isset}"; then
-        xrandr --output VGA-0 --primary --mode ${displayArray[VGA-0]} --pos 0x0 --rotate normal \
-               --output DP-0 --mode ${displayArray[DP-0]} --pos 1920x15 --rotate normal \
-               --output LVDS-0 --off
-        configmsg="Configured DP-0 as Primary at ${displayArray['DP-0']} and VGA-0 as secondary at ${displayArray['VGA-0']}"
+        xrandr --output DP-0 --primary --mode ${displayArray[DP-0]} --pos 0x0 --rotate normal \
+               --output DP-1 --mode ${displayArray[DP-1]} --right-of DP-0 --rotate normal \
+               --output LVDS-0 --off --output VGA-0 --off
+        configmsg="Configured DP-0 as Primary at ${displayArray['DP-0']} and DP-1 as secondary at ${displayArray['DP-1']}"
         configError=0
     else
         configmsg="This system is not configured for dock output. Please configure manually."
