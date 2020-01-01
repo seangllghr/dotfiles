@@ -33,13 +33,16 @@ floating_modifier $mod
 # start a terminal
 # bindsym $mod+Return exec --no-startup-id konsole
 # bindsym $mod+grave exec --no-startup-id qterminal -d
-bindsym $mod+Return exec --no-startup-id urxvt
+# bindsym $mod+Return exec --no-startup-id urxvt
+bindsym $mod+Return exec --no-startup-id termite
+bindsym $mod+Shift+Return exec --no-startup-id termite -r dropdown
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # start program launcher
-bindsym $mod+d exec --no-startup-id dmenu_recency
+# bindsym $mod+d exec --no-startup-id rofr -r
+bindsym $mod+space exec --no-startup-id rofr -r
 
 # launch categorized menu
 bindsym $mod+z exec --no-startup-id morc_menu
@@ -48,11 +51,11 @@ bindsym $mod+z exec --no-startup-id morc_menu
 ## sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> Pulseaudio later! ##
 ################################################################################################
 
-exec --no-startup-id volumeicon
-bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
-# exec --no-startup-id pulseaudio
+# exec --no-startup-id volumeicon
+# bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
+exec --no-startup-id pulseaudio
 # exec --no-startup-id pa-applet
-# bindsym $mod+Ctrl+m exec pavucontrol
+bindsym $mod+Ctrl+m exec pavucontrol
 
 ################################################################################################
 
@@ -145,10 +148,10 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+bindsym $mod+equal focus mode_toggle
 
 # center floating window
-bindsym $mod+mod1+space move position center
+bindsym $mod+mod1+equal move position center
 
 # resize and center to designed for scratchpad console
 bindsym $mod+mod1+minus resize set 1024px 768px; move position center
@@ -282,6 +285,7 @@ for_window [title="Event Tester"] floating enable
 for_window [title="Email"] floating enable
 for_window [title="Java Test*"] floating enable
 for_window [title="WoeUSB"]  floating enable
+for_window [window_role="dropdown"] floating enable, resize set 1024px 600px, move position 0 0, move scratchpad
 
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
@@ -310,7 +314,9 @@ mode "$mode_displays" {
     # exit display mode: "Escape"
     bindsym Escape mode "default"
 }
-bindsym $mod+equal mode "$mode_system"
+
+bindsym $mod+End exec --no-startup-id rofr -l
+# bindsym $mod+equal mode "$mode_system"
 set $mode_system Switch_(u)ser, (l)ock, (e)xit, (r)eboot, (s)uspend, (Shift+s)hutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id i3exit lock, mode "default"
@@ -362,13 +368,15 @@ exec --no-startup-id nm-applet
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id clipit
 exec --no-startup-id blueman-applet
-exec --no-startup-id start_conky_maia
+exec --no-startup-id conky -c ~/.config/conky/conky-maia.conkyrc
 exec --no-startup-id gnome-keyring-daemon --start --components=pkcsll,secrets,ssh
 exec --no-startup-id xautolock -time 10 -locker blurlock
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
+exec_always --no-startup-id pkill polybar; polybar -c ~/.config/polybar/config i3-bar
 exec --no-startup-id bash swapescape -s
 exec --no-startup-id local-startup
+exec --no-startup-id termite -r dropdown
 
 # Color palette used for the terminal ( ~/.Xresources file )
 # Colors are gathered based on the documentation:
@@ -402,34 +410,34 @@ set_from_resource $term_color14    color14
 set_from_resource $term_color15    color15
 
 # Start i3bar to display a workspace bar (plus the system information i3status if available)
-bar {
-	i3bar_command i3bar
-	status_command i3status
-	position bottom
+# bar {
+# 	i3bar_command i3bar
+# 	status_command i3status
+# 	position bottom
 
-## please set your primary output first. Example: 'xrandr --output eDP1 --primary'
-  tray_output primary
-#	tray_output eDP1
+# ## please set your primary output first. Example: 'xrandr --output eDP1 --primary'
+#   tray_output primary
+# #	tray_output eDP1
 
-	bindsym button4 nop
-	bindsym button5 nop
-#   font xft:URWGothic-Book 11
-	strip_workspace_numbers yes
-  font xft:Fira-Code 11
+# 	bindsym button4 nop
+# 	bindsym button5 nop
+# #   font xft:URWGothic-Book 11
+# 	strip_workspace_numbers yes
+#   font xft:Fira-Code 11
 
-    colors {
-        background #222D31
-        statusline #F9FAF9
-        separator  #454947
+#     colors {
+#         background #222D31
+#         statusline #F9FAF9
+#         separator  #454947
 
-#                           border  backgr. text
-        focused_workspace  #F9FAF9 #16a085 #FDF6E3
-        active_workspace   #595B5B #353836 #FDF6E3
-        inactive_workspace #595B5B #222D31 #EEE8D5
-        binding_mode       #16a085 #2C2C2C #F9FAF9
-        urgent_workspace   #16a085 #FDF6E3 #E5201D
-    }
-}
+# #                           border  backgr. text
+#         focused_workspace  #F9FAF9 #16a085 #FDF6E3
+#         active_workspace   #595B5B #353836 #FDF6E3
+#         inactive_workspace #595B5B #222D31 #EEE8D5
+#         binding_mode       #16a085 #2C2C2C #F9FAF9
+#         urgent_workspace   #16a085 #FDF6E3 #E5201D
+#     }
+# }
 
 # hide/unhide i3status bar
 bindsym $mod+Shift+m bar mode toggle
