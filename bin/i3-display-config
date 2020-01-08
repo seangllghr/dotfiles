@@ -18,7 +18,7 @@ print_connected_displays () {
         echo "$display --- ${displayArray[$display]}"
     done
     echo "$(for display in ${!disconnectedArray[@]}; do
-        echo "${disconnectedArray[$display]} --- disconnected \\"
+        echo "${disconnectedArray[$display]} --- disconnected"
     done)"
 }
 
@@ -147,8 +147,9 @@ post_config() {
     done
     if [ ! $configError -eq 1 ]; then
        pkill conky
-       conky -c ~/.config/conky/conky_maia.conkyrc &
+       conky -c ~/.config/conky/conky-maia.conkyrc &
        nitrogen --restore
+       local-polybar
     fi
     notify-send "$configmsg"
 }

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# This script is customized, based on rofr.sh. Which I got from Manjaro-Openbox...
+
 Name=$(basename "$0")
 Version="0.1"
 
@@ -22,7 +24,7 @@ EOF
 }
 
 #  Handle command line arguments
-while getopts ":hvqwcbmrl" opt; do
+while getopts ":hvqwcbmrld" opt; do
     case $opt in
         h)
             _usage
@@ -77,6 +79,19 @@ while getopts ":hvqwcbmrl" opt; do
                 *Shutdown) systemctl poweroff
             esac
             ;;
+        d)
+            layout=$(echo "Single|Right|Extend|Laptop|Dock|Mirror" | \
+                rofi -sep "|" -dmenu -i -p 'Displays ' "" -width 20 \
+                -hide-scrollbar -eh 1 -line-padding 4 -padding 50 -lines 6)
+            case "$layout" in
+                Single) i3-display-config --single ;;
+                Right) i3-display-config --right ;;
+                Extend) i3-display-config --extend ;;
+                Laptop) i3-display-config --laptop ;;
+                Dock) i3-display-config --dock ;;
+                Mirror) i3-display-config --mirror ;;
+            esac
+            ;;
         *)
             echo -e "Option does not exist: -$OPTARG"
             _usage
@@ -87,6 +102,3 @@ shift $((OPTIND - 1))
 
 
 exit 0
-
-# DO NOT EDIT! This file will be overwritten by LXAppearance.
-# Any customization should be done in ~/.gtkrc-2.0.mine instead.
