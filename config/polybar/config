@@ -46,3 +46,12 @@ tray-background = #0063ff
 modules-left   = manjaro i3ws
 modules-center = clock
 modules-right  = pulseaudio battery pkg network memory temperature coreuse
+
+[bar/i3-bar-secondary]
+
+inherit = bar/master
+
+monitor = DP-1
+
+modules-left = i3ws
+modules-center = clock

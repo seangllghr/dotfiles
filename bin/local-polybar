@@ -1,0 +1,19 @@
+#!/bin/bash
+
+machine=$(cat /etc/hostname | awk -F "." '{print tolower($0)}')
+
+killall polybar
+
+case $machine in
+    "jotunheim")
+        if [ $(xrandr --listactivemonitors | awk '/Monitors/ {print $NF}') -eq 2 ]; then
+            polybar -c ~/.config/polybar/config i3-bar &
+            polybar -c ~/.config/polybar/config i3-bar-secondary &
+        else
+            polybar -c ~/.config/polybar/config i3-bar &
+        fi
+        ;;
+    "vanaheim")
+        polybar -c ~/.config/polybar/config i3-bar &
+        ;;
+esac

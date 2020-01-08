@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# This script handles locally variable startup operations, using the hostname
+# to identify the machine on which it is running.
+
+# Currently, local startup doesn't differ. This may change in the future. This
+# script serves as a placeholder containing the logic for pulling the base machine
+# name from the hostname, regardless of how it's formatted.
+
+machine=$(cat /etc/hostname | awk -F "." '{print tolower($0)}')
+echo $machine
