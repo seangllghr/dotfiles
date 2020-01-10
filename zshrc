@@ -75,7 +75,7 @@ alias mutt="neomutt"
 alias kvim="konsole_nvim"
 alias emc="emacsclient -n"
 alias emcc="emacsclient -c -n"
-alias oth="urxvt &"
+alias oth="termite &"
 
 # Wouldn't it be neat to have an alias open files in a new terminal window in nvim?
 function konsole_nvim() {

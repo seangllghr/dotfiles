@@ -40,12 +40,11 @@ monitor-fallback =
 
 tray-position = right
 tray-padding =
-tray-transparent = true
-tray-background = #0063ff
+tray-background = ${colors.background}
 
 modules-left   = manjaro i3ws
 modules-center = clock
-modules-right  = pulseaudio battery pkg network memory temperature coreuse
+modules-right  = battery pkg network memory temperature coreuse
 
 [bar/i3-bar-secondary]
 
