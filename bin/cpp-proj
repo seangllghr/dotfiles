@@ -1,0 +1,38 @@
+#!/bin/bash
+
+if mkdir $1; then
+    cd $1
+    curl -O https://raw.githubusercontent.com/mbcrawfo/GenericMakefile/master/cpp/Makefile
+    sed --in-place "s/hello/${1}/" Makefile
+    sed --in-place "s/ \.$/ src/" Makefile
+    mkdir "src"
+    cat << EOF > "src/main.cpp"
+#include <iostream>
+
+using namespace std;
+
+#include "functions.hpp"
+
+int main() {
+  print_hello();
+  return 0;
+}
+EOF
+    cat << EOF > "src/${1}.cpp"
+#include <iostream>
+
+using namespace std;
+
+#include "functions.hpp"
+
+void print_hello() {
+  cout << "Hello, World" << endl;
+}
+EOF
+    cat << EOF > "src/functions.hpp"
+void print_hello();
+EOF
+    sed --in-place "s/print_hello/${1}/" src/{main.cpp,functions.hpp,${1}.cpp}
+else
+    exit 1
+fi
