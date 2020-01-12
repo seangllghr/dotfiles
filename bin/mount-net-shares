@@ -1,21 +1,14 @@
 #!/bin/bash
 
-test_network () {
-    if nmcli connection | grep "wlp12s0b1">&/dev/null; then
-        if [ $(nmcli connection | grep "wlp12s0b1" | awk '{print $1}') = "Yggdrasil" ]; then
-            return 0
-        else
-            return 1
-        fi
-    else
-        return 1
-    fi
-}
+netshares=(
+    "/home/sean/Documents"
+    "/home/sean/Downloads"
+)
 
 wait_for_network () {
     timer=120
     while [ $timer -gt 0 ]; do
-        if test_network; then
+        if nmcli connection | grep "\<wl" | grep "Yggdrasil" > /dev/null 2>&1; then
             return 0
         fi
         echo -ne "Home network not detected. Waiting $timer seconds.\033[0K\r"
@@ -38,17 +31,43 @@ wait_for_server () {
     return 1
 }
 
-sleep 30
-if wait_for_network; then
-    echo "Home network found. Attempting to mount network shares."
-    notify-send -u low -t 3000 "Home network found. Attempting to mount network shares."
-    if wait_for_server; then
-        mount /home/sean/Documents
-        mount /home/sean/Downloads
-        notify-send -u low -t 3000 "Mount successful."
+mount_net_shares () {
+    if wait_for_network; then
+        echo "Home network found. Attempting to mount network shares."
+        notify-send -u low -t 3000 "Home network found. Attempting to mount network shares."
+        if wait_for_server; then
+            for i in "${netshares[@]}"; do
+                mount $i;
+            done
+            notify-send -u low -t 3000 "Mount successful."
+        else
+            notify-send -u normal -t 5000 "Alfheim is not online. Mount failed."
+        fi
     else
-        notify-send -u normal -t 5000 "Alfheim is not online. Mount failed."
+        echo "Home network not found. Cannot mount network shares."
     fi
-else
-    echo "Home network not found. Cannot mount network shares."
-fi
+
+}
+
+unmount_net_shares () {
+    for i in "${netshares[@]}"; do
+        umount $i
+        notify-send -u low -t 3000 "Network shares unmounted."
+    done
+}
+
+case $1 in
+    "-m") : ;&
+    "--mount")
+        mount_net_shares
+        ;;
+    "-u") : ;&
+    "--unmount")
+        unmount_net_shares
+        ;;
+    *)
+        echo "Usage: mount-net-shares [command]" >&2
+        echo "    --mount    -m" >&2
+        echo "    --unmount  -u" >&2
+        ;;
+esac
