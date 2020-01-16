@@ -24,19 +24,28 @@ print_connected_displays () {
 
 single_display () {
     if test "${displayArray['eDP1']+isset}"; then
-        xrandr --output HDMI1 --primary --mode ${displayArray[HDMI1]} --pos 0x0 --rotate normal \
-               --output VIRTUAL1 --off --output eDP1 --off
+        xrandr --output HDMI1 --primary --auto \
+               --output eDP1 --off \
+               --output VIRTUAL1 --off
         configmsg="Configured HDMI1 as Primary at ${displayArray['HDMI1']}"
         configError=0
     elif test "${displayArray['LVDS-0']+isset}"; then
         if [ $singleSide = "right" ]; then
-            xrandr --output DP-1 --primary --mode ${displayArray[DP-1]} --pos 0x0 --rotate normal \
-                   --output LVDS-0 --off --output VGA-0 --off --output DP-0 --off
+            xrandr --output DP-0 --off \
+                   --output DP-1 --primary --auto \
+                   --output DP-2 --off \
+                   --output DP-3 --off \
+                   --output VGA-0 --off \
+                   --output LVDS-0 --off
             configmsg="Configured DP-1 as Primary at ${displayArray['DP-1']}"
             configError=0
         else
-            xrandr --output DP-0 --primary --mode ${displayArray[DP-0]} --pos 0x0 --rotate normal \
-                --output LVDS-0 --off --output DP-1 --off
+            xrandr --output DP-0 --primary --auto \
+                   --output DP-1 --off \
+                   --output DP-2 --off \
+                   --output DP-3 --off \
+                   --output VGA-0 --off \
+                   --output LVDS-0 --off
             configmsg="Configured DP-0 as Primary at ${displayArray['DP-0']}"
             configError=0
         fi
@@ -49,13 +58,18 @@ single_display () {
 
 laptop_display () {
     if test "${displayArray['eDP1']+isset}"; then
-        xrandr --output eDP1 --primary --mode ${displayArray[eDP1]} --pos 0x0 --rotate normal \
-               --output HDMI1 --off --output VIRTUAL1 --off
+        xrandr --output HDMI1 --off \
+               --output eDP1 --primary --auto \
+               --output VIRTUAL1 --off
         configmsg="Configured eDP1 as Primary at ${displayArray['eDP1']}"
         configError=0
     elif test "${displayArray['LVDS-0']+isset}"; then
-        xrandr --output LVDS-0 --primary --mode ${displayArray[LVDS-0]} --pos 0x0 --rotate normal \
-               --output VGA-0 --off
+        xrandr --output DP-0 --off \
+               --output DP-1 --off \
+               --output DP-2 --off \
+               --output DP-3 --off \
+               --output VGA-0 --off \
+               --output LVDS-0 --primary --auto
         configmsg="Configured LVDS-0 as Primary at ${displayArray['LVDS-0']}"
         configError=0
     else
@@ -67,23 +81,20 @@ laptop_display () {
 
 extend_display () {
     if test "${displayArray['eDP1']+isset}"; then
-        xrandr --output HDMI1 --primary --mode ${displayArray[HDMI1]} --pos 0x0 --rotate normal \
-               --output VIRTUAL1 --off --output eDP1 --off
-        xrandr --output HDMI1 --primary --mode ${displayArray[HDMI1]} --pos 0x0 --rotate normal \
-               --output VIRTUAL1 --off --output eDP1 --mode ${displayArray[eDP1]} \
-               --right-of HDMI1 --rotate normal
+        xrandr --output HDMI1 --primary --auto \
+               --output eDP1 --auto --right-of HDMI1 \
+               --output VIRTUAL1 --off
         configmsg="Configured HDMI1 as Primary at ${displayArray['HDMI1']} and eDP1 as secondary at ${displayArray[eDP1]}"
         configError=0
     elif test "${displayArray['LVDS-0']+isset}"; then
-        #LVDS-0 is a low-resolution panel that tends to sit low. Calculate a good position for it:
-        primaryWidth=$(echo ${displayArray[VGA-0]} | cut -d'x' -f 1)
-        primaryHeight=$(echo ${displayArray[VGA-0]} | cut -d'x' -f 2)
-        secondaryHeight=$(echo ${displayArray[LVDS-0]} | cut -d'x' -f 2)
-        xrandr --output VGA-0 --primary --mode ${displayArray[VGA-0]} --pos 0x0 --rotate normal \
-               --output LVDS-0 --off --output DP-1 --off --output DP-2 --off --output DP-3 --off
-        xrandr --output VGA-0 --primary --mode ${displayArray[VGA-0]} --pos 0x0 --rotate normal \
-               --output LVDS-0 --rotate normal --mode ${displayArray[LVDS-0]} \
-               --pos ${primaryWidth}x$(($primaryHeight - $secondaryHeight))
+        # This system isn't physically configured for this setup anymore. This
+        # is theoretical and retained for emergencies, I guess.
+        xrandr --output DP-0 --off \
+               --output DP-1 --off \
+               --output DP-2 --off \
+               --output DP-3 --off \
+               --output VGA-0 --primary --auto \
+               --output LVDS-0 --auto --right-of VGA-0
         configmsg="Configured VGA-0 as Primary at ${displayArray['VGA-0']} and LVDS-0 as secondary at ${displayArray[LVDS-0]}. Manual positioning may be required."
         configError=0
     else
@@ -95,11 +106,9 @@ extend_display () {
 
 mirror_display() {
     if test "${displayArray['eDP1']+isset}"; then
-        xrandr --output HDMI1 --primary --mode ${displayArray[HDMI1]} --pos 0x0 --rotate normal \
-               --output VIRTUAL1 --off --output eDP1 --off
-        xrandr --output HDMI1 --primary --mode ${displayArray[HDMI1]} --pos 0x0 --rotate normal \
-               --output VIRTUAL1 --off --output eDP1 --mode ${displayArray[eDP1]} --pos 0x0 \
-               --rotate normal
+        xrandr --output HDMI1 --primary --auto \
+               --output eDP1 --auto \
+               --output VIRTUAL1 --off
         configmsg="Configured Mirrored Display on HDMI1 and eDP1 at ${displayArray[HDMI1]}"
         configError=0
     else
@@ -111,9 +120,12 @@ mirror_display() {
 
 dock_dual() {
     if test "${displayArray['LVDS-0']+isset}"; then
-        xrandr --output DP-0 --primary --mode ${displayArray[DP-0]} --pos 0x0 --rotate normal \
-               --output DP-1 --mode ${displayArray[DP-1]} --right-of DP-0 --rotate normal \
-               --output LVDS-0 --off --output VGA-0 --off
+        xrandr --output DP-0 --primary --auto \
+               --output DP-1 --auto --right-of DP-0\
+               --output DP-2 --off \
+               --output DP-3 --off \
+               --output VGA-0 --off \
+               --output LVDS-0 --off
         configmsg="Configured DP-0 as Primary at ${displayArray['DP-0']} and DP-1 as secondary at ${displayArray['DP-1']}"
         configError=0
     else
@@ -134,7 +146,7 @@ auto_config() {
         fi
     elif test "${displayArray[eDP1]+isset}"; then
         if test "${displayArray[HDMI1]+isset}"; then
-            mirror_display
+            extend_display
         else
             laptop_display
         fi

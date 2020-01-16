@@ -383,6 +383,7 @@ exec --no-startup-id bash swapescape -s
 exec --no-startup-id termite -r dropdown
 exec_always --no-startup-id local-polybar
 exec --no-startup-id barriers --enable-crypto -c ~/dotfiles/config/barrier/jotunheim.conf
+exec --no-startup-id mount-net-shares --mount
 
 # Color palette used for the terminal ( ~/.Xresources file )
 # Colors are gathered based on the documentation:
