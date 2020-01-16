@@ -240,6 +240,18 @@ bindsym $mod+Shift+8 move container to workspace $ws8; workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9; workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws0; workspace $ws0
 
+# Assign some workspaces to different displays
+workspace $ws1 output DP-0 HDMI1 primary
+workspace $ws2 output DP-0 HDMI1 primary
+workspace $ws3 output DP-0 HDMI1 primary
+workspace $ws4 output DP-0 HDMI1 primary
+workspace $ws5 output DP-1 eDP1 primary
+workspace $ws6 output DP-1 eDP1 primary
+workspace $ws7 output DP-1 eDP1 primary
+workspace $ws8 output DP-1 eDP1 primary
+workspace $ws9 output DP-1 eDP1 primary
+workspace $ws0 output DP-1 eDP1 primary
+
 # Move workspaces between displays
 bindsym $mod+Shift+comma move workspace to output left
 bindsym $mod+Shift+period move workspace to output right
