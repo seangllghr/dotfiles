@@ -51,6 +51,7 @@ modules-right  = battery pkg network memory temperature coreuse
 inherit = bar/master
 
 monitor = DP-1
+monitor-fallback = eDP1
 
 modules-left = i3ws
 modules-center = clock
