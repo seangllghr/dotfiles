@@ -45,6 +45,7 @@ mount_net_shares () {
         fi
     else
         echo "Home network not found. Cannot mount network shares."
+        notify-send -u normal -t 5000 "Home network not found. Cannot mount network shares."
     fi
 
 }
