@@ -396,7 +396,7 @@ exec --no-startup-id xfce4-power-manager
 exec --no-startup-id clipit
 exec --no-startup-id conky -c ~/.config/conky/conky-maia.conkyrc
 exec --no-startup-id gnome-keyring-daemon --start --components=pkcsll,secrets,ssh
-exec --no-startup-id xautolock -time 10 -locker lockscreen
+# exec --no-startup-id xautolock -time 10 -locker lockscreen
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
 exec --no-startup-id bash swapescape -s
