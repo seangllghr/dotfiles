@@ -1,38 +1,82 @@
 #!/bin/bash
 
-if mkdir $1; then
-    cd $1
+usagestr="cpp-proj simple|complex project_name
+Creates a C++ project using the specified template:
+
+    simple   A simple project consists of a single .cpp file in the src/ directory,
+             along with the necessary Makefile to enable compilation at the command
+             line.
+    complex  A complex project creates a main file, a functions .cpp file, and a
+             functions header file, along with the necessary Makefile to enable
+             compilation at the command line.
+"
+
+print_usage() {
+    printf "$usagestr"
+}
+
+create_project_dir() {
+    if mkdir $1; then
+        cd $1
+    else
+        exit 1
+    fi
+}
+
+prepare_makefile() {
     curl -O https://raw.githubusercontent.com/mbcrawfo/GenericMakefile/master/cpp/Makefile
     sed --in-place "s/hello/${1}/" Makefile
     sed --in-place "s/ \.$/ src/" Makefile
-    mkdir "src"
-    cat << EOF > "src/main.cpp"
-#include <iostream>
+}
 
+create_complex_project() {
+    create_project_dir $1
+    prepare_makefile $1
+    mkdir src
+    printf "#include <iostream>
+#include \"functions.hpp\"
 using namespace std;
-
-#include "functions.hpp"
 
 int main() {
-  print_hello();
+  ${1}();
   return 0;
-}
-EOF
-    cat << EOF > "src/${1}.cpp"
-#include <iostream>
-
+}" > "src/main.cpp"
+    printf "#include <iostream>
+#include \"functions.hpp\"
 using namespace std;
 
-#include "functions.hpp"
-
-void print_hello() {
-  cout << "Hello, World" << endl;
+void ${1}() {
+   cout << \"${1}\" << endl;
+}" > "src/${1}.cpp"
+    printf "void ${1}();" > "src/functions.hpp"
 }
-EOF
-    cat << EOF > "src/functions.hpp"
-void print_hello();
-EOF
-    sed --in-place "s/print_hello/${1}/" src/{main.cpp,functions.hpp,${1}.cpp}
+
+create_simple_project() {
+    create_project_dir $1
+    prepare_makefile $1
+    mkdir src
+    printf " #include <iostream>
+using namespace std;
+
+int main() {
+  cout << \"${1}\" << endl;
+}" > "src/main.cpp"
+}
+
+if [ $# -eq 2 ]; then
+    case $1 in
+        simple)
+            create_simple_project $2
+            ;;
+        complex)
+            create_complex_project $2
+            ;;
+        -h|--help)
+            print_usage
+            ;;
+    esac
+elif [ $# -eq 1 ]; then
+    create_simple_project $1
 else
-    exit 1
+    print_usage
 fi

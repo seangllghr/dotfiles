@@ -92,7 +92,8 @@ bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
 bindsym $mod+Caps_Lock exec --no-startup-id swapescape -s
 bindsym $mod+Escape exec --no-startup-id swapescape -r
 bindsym $mod+n exec --no-startup-id compton-winvert
-bindsym $mod+m exec --no-startup-id virt-manager
+bindsym $mod+m exec --no-startup-id termite -e "neomutt"
+# bindsym $mod+m exec --no-startup-id virt-manager
 
 # focus_follows_mouse no
 
@@ -299,6 +300,14 @@ for_window [title="Java Test*"] floating enable
 for_window [title="WoeUSB"]  floating enable
 for_window [window_role="dropdown"] floating enable, resize set 1024px 600px, move position 0 0, move scratchpad
 for_window [class="Arandr"] floating enable, resize set 480px 320px, move position center
+
+# Open certain applications on specific workspaces
+assign [title="emacs@*"] $ws1
+assign [class="firefox"] $ws2
+assign [class="Inkscape"] $ws4
+assign [class="Gimp-*"] $ws4
+assign [title="neomutt"] $ws5
+assign [class="tm"] $ws7
 
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus

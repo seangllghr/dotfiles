@@ -139,8 +139,9 @@ auto_config() {
     if test "${displayArray[LVDS-0]+isset}"; then
         if test "${displayArray[DP-0]+isset}"; then
             dock_dual
-        elif test "${displayArray[VGA-0]+isset}"; then
-            extend_display
+        elif test "${displayArray[DP-1]+isset}"; then
+            singleside=right
+            single_display
         else
             laptop_display
         fi
