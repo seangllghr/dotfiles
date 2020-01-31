@@ -72,9 +72,9 @@ while getopts ":hvqwcbmrld" opt; do
                 rofi -sep "|" -dmenu -i -p 'System ' "" -width 20 \
                 -hide-scrollbar -eh 1 -line-padding 4 -padding 50 -lines 5)
             case "$ANS" in
-                *Lock) lockscreen ;;
+                *Lock) i3lock -i ~/Pictures/lock.png -c 000000 -e ;;
                 *Logout) loginctl terminate-session $(loginctl session-status | head -n 1 | awk '{print $1}') ;;
-                *Suspend) i3-suspend ;;
+                *Suspend) i3lock -i ~/Pictures/lock.png -c 000000 -e & sleep 3 && systemctl suspend ;;
                 *Reboot) systemctl reboot ;;
                 *Shutdown) systemctl poweroff
             esac
