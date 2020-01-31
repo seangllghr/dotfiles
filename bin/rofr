@@ -74,7 +74,7 @@ while getopts ":hvqwcbmrld" opt; do
             case "$ANS" in
                 *Lock) lockscreen ;;
                 *Logout) loginctl terminate-session $(loginctl session-status | head -n 1 | awk '{print $1}') ;;
-                *Suspend) lockscreen & sleep 1 && systemctl suspend ;;
+                *Suspend) i3-suspend ;;
                 *Reboot) systemctl reboot ;;
                 *Shutdown) systemctl poweroff
             esac
