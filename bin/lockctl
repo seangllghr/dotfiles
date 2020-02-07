@@ -1,0 +1,49 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]]; then
+    echo "Usage: lockctl <option>"
+    echo "    -d | --disable-autolock"
+    echo "    -e | --enable-autolock"
+    echo "    -h | --help"
+    echo "    -l | --lock"
+    echo "    -s | --sleep"
+    echo "    -t | --toggle-autolock"
+elif [[ $# -eq 1 ]]; then
+    case $1 in
+        "-d" | "--disable-autolock")
+            pkill xautolock
+            echo 'lockstate=disabled' > ~/.lockstate
+            notify-send -u low -t 3000 "Autolock disabled"
+            ;;
+        "-e" | "--enable-autolock")
+            xautolock -time 10 -locker 'lockctl --lock' &
+            echo 'lockstate=enabled' > ~/.lockstate
+            notify-send -u low -t 3000 "Autolock enabled"
+            ;;
+        "-h" | "--help")
+            lockctl
+            ;;
+        "-l" | "--lock")
+            # TODO Suspend after lock period?
+            i3lock -i /home/sean/Pictures/lock.png -c 000000 -e
+            ;;
+        "-s" | "--sleep")
+            lockctl --lock
+            sleep 3
+            systemctl suspend
+            ;;
+        "-t" | "--toggle-autolock")
+            source ~/.lockstate
+            if [[ $lockstate == "enabled" ]]; then
+                lockctl --disable-autolock
+            else
+                lockctl --enable-autolock
+            fi
+            ;;
+        *)
+            echo "Unrecognized argument"
+            lockctl
+    esac
+else
+    echo "Wrong number of arguments."
+fi

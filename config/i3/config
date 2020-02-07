@@ -384,7 +384,8 @@ bindsym $mod+F1 exec --no-startup-id rofr -d
 # }
 
 # Lock screen
-bindsym $mod+F12 exec --no-startup-id lockscreen
+bindsym $mod+F12 exec --no-startup-id lockctl --lock
+bindsym $mod+Mod1+F12 exec --no-startup-id lockctl --toggle-autolock
 
 # Autostart applications
 exec --no-startup-id i3-display-config --auto
@@ -396,7 +397,7 @@ exec --no-startup-id xfce4-power-manager
 exec --no-startup-id clipit
 exec --no-startup-id conky -c ~/.config/conky/conky-maia.conkyrc
 exec --no-startup-id gnome-keyring-daemon --start --components=pkcsll,secrets,ssh
-# exec --no-startup-id xautolock -time 10 -locker lockscreen
+exec --no-startup-id lockctl --enable-autolock
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
 exec --no-startup-id bash swapescape -s
