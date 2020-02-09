@@ -1,0 +1,4 @@
+#!/bin/sh
+
+sudo cryptsetup luksOpen /dev/sdb1 crypt-docs
+sudo mount -o rw /dev/mapper/crypt-docs /home/sean/Documents
