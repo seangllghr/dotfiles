@@ -68,22 +68,13 @@ alias lal='ls -la --color=always | less -r'
 alias less='less -r' # This may be redundant with L164
 
 # Shorten some commonly-used commands
-alias nqt='nvim-qt'
 alias xo="xdg-open"
+alias sf="st &"
 alias zth="zathura" # You try typing 'za'. zth is easier.
 alias mutt="neomutt"
-alias kvim="konsole_nvim"
 alias emc="emacsclient -n"
 alias emcc="emacsclient -c -n"
-alias oth="termite &"
 alias cpj="cpp-proj" # Yep, I'm aliasing a script I wrote. Deal.
-
-## Alias-like functions
-# Open files in new konsole neovim. No longer used; kept for reference
-function konsole_nvim() {
-  # Note that this function fails if no args are passed
-  konsole -e nvim $@ &> /dev/null &
-}
 
 # Theming section
 autoload -U compinit colors zcalc
