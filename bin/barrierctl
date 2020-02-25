@@ -1,0 +1,55 @@
+#!/bin/bash
+
+barriers_start() {
+    if barriers_running; then
+        echo "Server was already running"
+    else
+        barrier.barriers --config ~/dotfiles/config/barrier/jotunheim.conf \
+                --debug "DEBUG" \
+                --enable-crypto \
+                --no-daemon > ~/.local/log/barrier &
+        echo "Server started"
+    fi
+}
+
+barriers_stop() {
+    if barriers_running; then
+        killall barriers
+        while pidof barriers >& /dev/null; do : ; done
+        echo "Server stopped"
+    else
+        echo "Server is not running"
+    fi
+}
+
+barriers_running() {
+    pidof barriers >& /dev/null
+}
+
+barriers_status() {
+    if barriers_running; then
+        echo "Server is running, pid $(pidof barriers)"
+        tail -n 5 ~/.local/log/barrier
+    else
+        echo "Server is not running"
+    fi
+}
+
+case $1 in
+    "-s" | "--start" | "start")
+        barriers_start
+        sleep 1 && barriers_status
+        ;;
+    "-k" | "--stop" | "stop")
+        barriers_stop
+        ;;
+    "--status" | "status")
+        barriers_status
+        ;;
+    "-w" | "--watch" | "watch")
+        tail -f ~/.local/log/barrier
+        ;;
+    *)
+        echo "Unsupported Option"
+        ;;
+esac
