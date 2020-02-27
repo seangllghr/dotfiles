@@ -72,8 +72,7 @@ alias xo="xdg-open"
 alias sf="st &"
 alias zth="zathura" # You try typing 'za'. zth is easier.
 alias mutt="neomutt"
-alias emc="emacsclient -n"
-alias emcc="emacsclient -c -n"
+alias vim="emacsclient -nw"
 alias cpj="cpp-proj" # Yep, I'm aliasing a script I wrote. Deal.
 
 # Theming section

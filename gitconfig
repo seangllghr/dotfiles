@@ -2,6 +2,6 @@
 	name = Sean Gallagher
 	email = seangllghr@gmail.com
 [core]
-	editor = nvim
+	editor = emacsclient -nw
 [credential]
 	helper = cache
