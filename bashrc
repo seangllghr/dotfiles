@@ -89,6 +89,7 @@ if ${use_color} ; then
 	alias grep='grep --colour=auto'
 	alias egrep='egrep --colour=auto'
 	alias fgrep='fgrep --colour=auto'
+  alias diff='diff --color=auto'
 else
 	if [[ ${EUID} == 0 ]] ; then
 		# show root@ when we don't have colors
@@ -156,5 +157,9 @@ alias ls='ls --color=auto'
 alias la='ls -A'
 alias ll='ls -lah'
 alias xo='xdg-open'
-alias nqt='nvim-qt'
-alias ssA='ssh -X Asgard'
+alias emacs="emacsclient -c -n -a emacs"
+alias vim="emacsclient -t -a vim"
+
+# Local Variables:
+# mode: sh
+# End:
