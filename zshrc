@@ -215,6 +215,15 @@ esac
 
 bindkey -v # enable vim keys
 
+# Make sure the path includes ~/dotfiles/bin
+
+case $PATH in
+    *dotfiles/bin*) : ;;
+    *)
+        PATH="$HOME/dotfiles/bin:$PATH"
+        ;;
+esac
+
 # Local Variables:
 # mode: sh
 # End:
