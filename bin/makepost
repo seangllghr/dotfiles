@@ -26,6 +26,11 @@ elif [ $# -eq 2 ]; then
                output=$(pandoc --to=html --wrap=preserve $2 | tee /dev/fd/5)
                echo $output | xsel --input --primary
                echo "Post copied to PRIMARY."
+               ;;
+           '-c')
+               pandoc --to=html --wrap=preserve $2 | xsel --input --clipboard
+               echo 'Post copied to CLIPBOARD.'
+               ;;
        esac
     else
         echo 'Error: expected Markdown source.'
