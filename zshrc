@@ -12,7 +12,7 @@ setopt autocd            # if only directory path is entered, cd there.
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' # Case insensitive tab completion
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"   # Colored completion
-zstyle ':completion:*' rehash true  # automatically find new executables in path 
+zstyle ':completion:*' rehash true  # automatically find new executables in path
 # Speed up completions
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
@@ -20,8 +20,8 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 HISTFILE=~/.zhistory
 HISTSIZE=1000
 SAVEHIST=500
-export EDITOR=/usr/bin/nvim
-export VISUAL=/usr/bin/nvim
+export EDITOR="/usr/bin/emacsclient -t"
+export VISUAL="/usr/bin/emacsclient -c -a emacs"
 WORDCHARS=${WORDCHARS//\/[&.;]} # Don't consider certain characters part of the word
 
 
@@ -72,7 +72,8 @@ alias xo="xdg-open"
 alias sf="st &"
 alias zth="zathura" # You try typing 'za'. zth is easier.
 alias mutt="neomutt"
-alias vim="emacsclient -nw"
+alias vim="emacsclient -nw -a /usr/bin/vim"
+alias emacs="emacsclient -n -c -a emacs"
 alias cpj="cpp-proj" # Yep, I'm aliasing a script I wrote. Deal.
 
 # Theming section

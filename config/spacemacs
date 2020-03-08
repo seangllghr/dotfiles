@@ -200,8 +200,9 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(doom-opera
-                         spacemacs-dark)
+   dotspacemacs-themes '(zenburn)
+   ;; Themes I've liked: material-dark
+   ;;                    doom-opera
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -480,6 +481,8 @@ except for variables that should be set before packages are loaded."
   (setq org-agenda-files '("/home/sean/orgfiles/notes.org"))
   (setq org-agenda-skip-deadline-prewarning-if-scheduled '("t"))
   (setq org-todo-keywords '((sequence "TODO" "HOLD" "|" "DONE")))
+  ;; Mutt support.
+  (setq auto-mode-alist (append '(("/tmp/neomutt.*" . mail-mode)) auto-mode-alist))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will

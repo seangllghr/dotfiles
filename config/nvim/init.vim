@@ -137,7 +137,7 @@ Plug 'rainglow/vim'
 Plug 'glacambre/firenvim'
 " Plug 'chriskempson/base16-vim'
 
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " Plug 'valloric/youcompleteme'
 call plug#end()
