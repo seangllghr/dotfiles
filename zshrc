@@ -74,6 +74,7 @@ alias zth="zathura" # You try typing 'za'. zth is easier.
 alias mutt="neomutt"
 alias vim="emacsclient -nw -a /usr/bin/vim"
 alias emacs="emacsclient -n -c -a emacs"
+alias emo="emacsclient -n -a emacs"
 alias cpj="cpp-proj" # Yep, I'm aliasing a script I wrote. Deal.
 
 # Theming section
