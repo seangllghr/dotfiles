@@ -93,6 +93,7 @@ bindsym $mod+Caps_Lock exec --no-startup-id swapescape -s
 bindsym $mod+Escape exec --no-startup-id swapescape -r
 bindsym $mod+n exec --no-startup-id compton-winvert
 bindsym $mod+m exec --no-startup-id termite -e "neomutt"
+bindsym $mod+Mod1+space exec --no-startup-id emacsclient -c -a emacs
 # bindsym $mod+m exec --no-startup-id virt-manager
 
 # focus_follows_mouse no
