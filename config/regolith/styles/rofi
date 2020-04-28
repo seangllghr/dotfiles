@@ -1,0 +1,5 @@
+rofi.theme:             rofi_theme
+rofi.font:              typeface_rofi
+rofi.show-icons:        false
+rofi.drun-icon-theme:   Arc
+rofi.fullscreen:        true

@@ -1,0 +1,4 @@
+#define gtk_theme           Yaru-dark
+#define icon_theme          Paper
+#define desktop_wallpaper   /home/sean/.config/regolith/styles/cahuella/regolith-structure-7-dark.png
+#define rofi_theme          /etc/regolith/styles/cahuella/rofi.rasi
