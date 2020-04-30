@@ -1,0 +1,4 @@
+#define gtk_theme           Ayu-Dark
+#define icon_theme          Arc
+#define desktop_wallpaper   /home/sean/Pictures/regolith-structure-7-midnight-1610.png
+#define rofi_theme          /etc/regolith/styles/ayu-dark/rofi.rasi

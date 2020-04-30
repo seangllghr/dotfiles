@@ -1,0 +1,2 @@
+! -- Use our custom style root
+#include "/home/sean/.config/regolith/styles/personal/root"
