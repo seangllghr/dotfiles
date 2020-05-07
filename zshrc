@@ -76,6 +76,7 @@ alias vim="emacsclient -nw -a /usr/bin/vim"
 alias emacs="emacsclient -n -c -a emacs"
 alias emo="emacsclient -n -a emacs"
 alias cpj="cpp-proj" # Yep, I'm aliasing a script I wrote. Deal.
+alias ssa="ssh alfheim"
 
 # Theming section
 autoload -U compinit colors zcalc
@@ -216,14 +217,16 @@ esac
 
 bindkey -v # enable vim keys
 
-# Make sure the path includes ~/dotfiles/bin
+# Make sure the path includes any of my user bins
 
-case $PATH in
-    *dotfiles/bin*) : ;;
-    *)
-        PATH="$HOME/dotfiles/bin:$PATH"
-        ;;
-esac
+for userbin in {"dotfiles/bin",".local/bin"}; do
+    case $PATH in
+        *${userbin}*) : ;;
+        *)
+            PATH="$HOME/$userbin:$PATH"
+            ;;
+    esac
+done
 
 # Local Variables:
 # mode: sh
