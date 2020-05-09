@@ -246,6 +246,7 @@ for_window [title="st - dropdown"] floating enable, resize set 1024px 600px, mov
 for_window [title="Zotero Preferences"] floating enable
 for_window [title="GNOME Tweaks"] floating enable
 for_window [title="Test*"] floating enable
+for_window [title="CrossOver Software Installer"] floating enable
 
 # Scratchpad Terminal Bindings:
 
