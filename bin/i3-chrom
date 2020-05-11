@@ -1,3 +1,21 @@
 #!/bin/bash
 
-chromium --app=https://duckduckgo.com --force-dark-mode --enable-features=WebUIDarkMode
+gtktheme=Matcha-dark-azul
+
+case $1 in
+    "-h" | "--home")
+        GTK_THEME=$gtktheme chromium --app=https://duckduckgo.com \
+                 --force-dark-mode \
+                 --enable-features=WebUIDarkMode
+        ;;
+    "-t" | "--tab-open")
+        GTK_THEME=$gtktheme chromium --app=$(xclip -o) \
+                 --force-dark-mode \
+                 --enable-features=WebUIDarkMode
+        ;;
+    "-u" | "--with-ui")
+        GTK_THEME=$gtktheme chromium \
+                 --force-dark-mode \
+                 --enable-features=WebUIDarkMode
+        ;;
+esac
