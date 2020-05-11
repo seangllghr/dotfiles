@@ -101,10 +101,13 @@ bindsym $mod+Ctrl+Shift+space exec $i3-wm.program.file_search
 bindsym $mod+$alt+space exec emacsclient -c -n -a emacs
 
 ## Launch // Chrome (Borderless) // <> a ##
-bindsym $mod+a exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom
+bindsym $mod+a exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -h
 
-## Launch // Chrome (With UI) // <><Shift> a ##
-bindsym $mod+Shift+a exec --no-startup-id chromium --force-dark-mode --enable-features=WebUIDarkMode
+## Launch // Chrome (New Tab from Clipboard) // <><Shift> a ##
+bindsym $mod+Shift+a exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -t
+
+## Launch // Chrome (With UI) // <><Alt> a ##
+bindsym $mod+$alt+a exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -u
 
 ###############################################################################
 # Window and Workspace Navigation
@@ -563,7 +566,7 @@ exec --no-startup-id $i3-wm.program.unclutter
 exec --no-startup-id st -t "st - dropdown"
 
 # Try to mount network shares
-# exec --no-startup-id /home/sean/dotfiles/bin/mount-net-shares -m
+exec --no-startup-id /home/sean/dotfiles/bin/mount-net-shares -m
 
 # Launch barrier for software KVM
 # exec --no-startup-id /home/sean/dotfiles/bin/barrierctl start
