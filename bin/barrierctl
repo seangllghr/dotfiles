@@ -4,7 +4,12 @@ barriers_start() {
     if barriers_running; then
         echo "Server was already running"
     else
-        barrier.barriers --config ~/dotfiles/config/barrier/jotunheim.conf \
+        if [[ -d /snap/barrier ]]; then
+            barrierscmd="barrier.barriers"
+        else
+            barrierscmd="barriers"
+        fi
+        $barrierscmd --config ~/dotfiles/config/barrier/jotunheim.conf \
                 --debug "DEBUG" \
                 --enable-crypto \
                 --no-daemon > ~/.local/log/barrier &
