@@ -25,8 +25,14 @@ create_project_dir() {
 
 prepare_makefile() {
     curl -O https://raw.githubusercontent.com/mbcrawfo/GenericMakefile/master/cpp/Makefile
-    sed --in-place "s/hello/${1}/" Makefile
-    sed --in-place "s/ \.$/ src/" Makefile
+    if [[ $# -eq 1 ]]; then
+        sed --in-place "s/hello/${1}/" Makefile
+        sed --in-place "s/ \.$/ src/" Makefile
+    elif [[ $# -eq 2 && $1 == "--opengl"  ]]; then
+        sed --in-place "s/hello/${2}/" Makefile
+        sed --in-place "s/ \.$/ src/" Makefile
+        sed --in-place 's/LINK_FLAGS =/LINK_FLAGS = -lGL -lglut/' Makefile
+    fi
 }
 
 create_complex_project() {
@@ -51,6 +57,32 @@ void ${1}() {
     printf "void ${1}();" > "src/functions.hpp"
 }
 
+create_opengl_project() {
+    create_project_dir $1
+    prepare_makefile --opengl $1
+    mkdir src
+    printf "#include<stdio.h>
+    #include<GL/glut.h>
+
+    /* Display Callback Header */
+    void displayGraphics() {
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glFlush();
+    }
+
+    int main(int argc, char** argv) {
+        glutInit(&argc, argv);
+        // Create a window. The \"Test\" prefix is a cue to my WM
+        glutCreateWindow(\"Test — Sean Gallagher\");
+        glutInitWindowSize(640, 480);
+        glutInitWindowPosition(0,0);
+        glutDisplayFunc(displayGraphics);
+        glutMainLoop();
+        return 0;
+    }" > "src/main.cpp"
+}
+
 create_simple_project() {
     create_project_dir $1
     prepare_makefile $1
@@ -70,6 +102,9 @@ if [ $# -eq 2 ]; then
             ;;
         complex)
             create_complex_project $2
+            ;;
+        opengl)
+            create_opengl_project $2
             ;;
         -h|--help)
             print_usage
