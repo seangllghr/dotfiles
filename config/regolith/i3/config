@@ -185,7 +185,7 @@ bindsym $mod+Shift+f floating toggle
 bindsym $mod+Ctrl+minus move to scratchpad
 
 ## Modify // Tile/Float Focus Toggle // <><Shift> t ##
-bindsym $mod+Shift+t focus mode_toggle
+bindsym $mod+$alt+f focus mode_toggle
 
 ## Modify // Window Layout Mode: Tabbed // <> t ##
 bindsym $mod+t layout tabbed
@@ -248,7 +248,7 @@ for_window [title="Event Tester"] floating enable
 for_window [title="st - dropdown"] floating enable, resize set 1024px 600px, move position 0 0, move scratchpad
 for_window [title="Zotero Preferences"] floating enable
 for_window [title="GNOME Tweaks"] floating enable
-for_window [title="Test*"] floating enable
+for_window [title="Test*"] floating enable, resize set 640px 480px, move position center
 for_window [title="CrossOver Software Installer"] floating enable
 
 # Scratchpad Terminal Bindings:
@@ -373,6 +373,7 @@ assign [class="Firefox"] $ws2
 assign [class="Inkscape"] $ws4
 assign [class="Gimp-*"] $ws4
 assign [class="Zathura"] $ws9
+assign [title="Test*"] $ws10
 
 ###############################################################################
 # Window Resize and Gaps
