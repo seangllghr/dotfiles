@@ -3,7 +3,26 @@
 netshares=(
     "/home/sean/Documents"
     "/home/sean/Downloads"
+    "/home/sean/mnt/Brenda-Documents"
 )
+
+dry_run () {
+    if wait_for_network; then
+        echo "Home network found. Attempting to mount network shares."
+        notify-send -u low -t 3000 "Home network found. Attempting to mount network shares."
+        if wait_for_server; then
+            for i in "${netshares[@]}"; do
+                echo $i
+            done
+            notify-send -u low -t 3000 "Mount successful."
+        else
+            notify-send -u normal -t 5000 "Alfheim is not online. Mount failed."
+        fi
+    else
+        echo "Home network not found. Cannot mount network shares."
+        notify-send -u normal -t 5000 "Home network not found. Cannot mount network shares."
+    fi
+}
 
 wait_for_network () {
     timer=120
@@ -52,7 +71,6 @@ mount_net_shares () {
         echo "Home network not found. Cannot mount network shares."
         notify-send -u normal -t 5000 "Home network not found. Cannot mount network shares."
     fi
-
 }
 
 unmount_net_shares () {
@@ -63,16 +81,18 @@ unmount_net_shares () {
 }
 
 case $1 in
-    "-m") : ;&
-    "--mount")
+    "-d" | "--dry-run")
+        dry_run
+        ;;
+    "-m" | "--mount")
         mount_net_shares
         ;;
-    "-u") : ;&
-    "--unmount")
+    "-u" | "--unmount")
         unmount_net_shares
         ;;
     *)
         echo "Usage: mount-net-shares [command]" >&2
+        echo "    --dry-run  -d" >&2
         echo "    --mount    -m" >&2
         echo "    --unmount  -u" >&2
         ;;
