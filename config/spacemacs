@@ -496,9 +496,12 @@ except for variables that should be set before packages are loaded."
   (setq org-agenda-files '("/home/sean/org/notes.org"))
   (setq org-agenda-skip-deadline-prewarning-if-scheduled '("t"))
   (setq org-todo-keywords '((sequence "TODO" "HOLD" "|" "DONE")))
+  (setq org-hierarchical-checkbox-statistics nil)
   ;; Mutt support.
   (setq auto-mode-alist (append '(("/tmp/neomutt.*" . mail-mode)) auto-mode-alist))
   (setq markdown-command "pandoc")
+  (setq js2-basic-offset 2)
+  (setq js-indent-level 2)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
