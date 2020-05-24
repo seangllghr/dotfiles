@@ -77,6 +77,7 @@ alias emacs="emacsclient -n -c -a emacs"
 alias emo="emacsclient -n -a emacs"
 alias cpj="cpp-proj" # Yep, I'm aliasing a script I wrote. Deal.
 alias ssa="ssh alfheim"
+alias mongoadm='mongo --authenticationDatabase "admin" -u "administrator" -p'
 
 # Theming section
 autoload -U compinit colors zcalc
