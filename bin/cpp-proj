@@ -1,6 +1,6 @@
 #!/bin/bash
 
-usagestr="cpp-proj simple|complex project_name
+usagestr="cpp-proj simple|complex|opengl project_name
 Creates a C++ project using the specified template:
 
     simple   A simple project consists of a single .cpp file in the src/ directory,
@@ -9,6 +9,8 @@ Creates a C++ project using the specified template:
     complex  A complex project creates a main file, a functions .cpp file, and a
              functions header file, along with the necessary Makefile to enable
              compilation at the command line.
+    opengl   An OpenGL project is like a simple project, but it includes compiler
+             flags necessary to build OpenGL programs
 "
 
 print_usage() {
@@ -62,25 +64,25 @@ create_opengl_project() {
     prepare_makefile --opengl $1
     mkdir src
     printf "#include<stdio.h>
-    #include<GL/glut.h>
+#include<GL/glut.h>
 
-    /* Display Callback Header */
-    void displayGraphics() {
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        glFlush();
-    }
+/* Display Callback Header */
+void displayGraphics() {
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glFlush();
+}
 
-    int main(int argc, char** argv) {
-        glutInit(&argc, argv);
-        // Create a window. The \"Test\" prefix is a cue to my WM
-        glutCreateWindow(\"Test — Sean Gallagher\");
-        glutInitWindowSize(640, 480);
-        glutInitWindowPosition(0,0);
-        glutDisplayFunc(displayGraphics);
-        glutMainLoop();
-        return 0;
-    }" > "src/main.cpp"
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    // Create a window. The \"Test\" prefix is a cue to my WM
+    glutCreateWindow(\"Test — Sean Gallagher\");
+    glutInitWindowSize(640, 480);
+    glutInitWindowPosition(0,0);
+    glutDisplayFunc(displayGraphics);
+    glutMainLoop();
+    return 0;
+}" > "src/main.cpp"
 }
 
 create_simple_project() {
