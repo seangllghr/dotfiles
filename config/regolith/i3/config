@@ -189,6 +189,7 @@ bindsym $mod+$alt+f focus mode_toggle
 
 ## Modify // Window Layout Mode: Tabbed // <> t ##
 bindsym $mod+t layout tabbed
+bindsym $mod+Shift+t layout stacking
 
 ## Modify // Window Layout Mode: Split (Toggle) // <> s ##
 bindsym $mod+s layout toggle splith splitv
