@@ -249,7 +249,7 @@ bindkey -v # enable vim keys
 
 # Make sure the path includes any of my user bins
 
-for userbin in {"dotfiles/bin",".local/bin"}; do
+for userbin in {"dotfiles/bin",".local/bin",".emacs.d/bin"}; do
     case $PATH in
         *${userbin}*) : ;;
         *)
