@@ -79,6 +79,35 @@ alias cpj="cpp-proj" # Yep, I'm aliasing a script I wrote. Deal.
 alias ssa="ssh alfheim"
 alias mongoadm='mongo --authenticationDatabase "admin" -u "administrator" -p'
 
+# Alias-like functions
+
+jsnew () { # Create a new Node.js script
+    if [[ $# -ne 1 ]]; then
+        echo "Usage: jsnew <filename>"
+    else
+        echo '#!/usr/bin/env node' > $1
+        chmod 755 $1
+    fi
+}
+
+pynew () { # Create a new Python script
+    if [[ $# -ne 1 ]]; then
+        echo "Usage: pynew <filename>"
+    else
+        echo '#!/usr/bin/env python3' > $1
+        chmod 755 $1
+    fi
+}
+
+shnew () { # Create a new shell script
+    if [[ $# -ne 1 ]]; then
+        echo "Usage: shnew <filename>"
+    else
+        echo '#!/usr/bin/env bash' > $1
+        chmod 755 $1
+    fi
+}
+
 # Theming section
 autoload -U compinit colors zcalc
 compinit -d
