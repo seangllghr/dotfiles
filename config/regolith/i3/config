@@ -371,9 +371,13 @@ workspace 0 output DP-1  secondary
 
 assign [title="emacs@*"] $ws1
 assign [class="Firefox"] $ws2
+assign [class="Chromium"] $ws2
 assign [class="Inkscape"] $ws4
 assign [class="Gimp-*"] $ws4
 assign [class="Zathura"] $ws9
+assign [class="tm"] $ws7 # TextMaker
+assign [class="pm"] $ws7
+assign [class="pr"] $ws7
 assign [title="Test*"] $ws10
 
 ###############################################################################
