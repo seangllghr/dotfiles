@@ -14,7 +14,7 @@ case $1 in
             --enable-features=WebUIDarkMode
         ;;
     "-t" | "--tab-open")
-        GTK_THEME=$gtktheme chromium --app=$(xclip -o) \
+        GTK_THEME=$gtktheme chromium --app="$(xclip -o)" \
             --force-dark-mode \
             --enable-features=WebUIDarkMode
         ;;
