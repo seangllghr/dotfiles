@@ -3,6 +3,11 @@
 gtktheme=Matcha-dark-azul
 
 case $1 in
+    "-g" | "--gmail")
+        GTK_THEME=$gtktheme chromium --app=https://gmail.com \
+            --force-dark-mode \
+            --enable-features=WebUIDarkMode
+        ;;
     "-h" | "--home")
         GTK_THEME=$gtktheme chromium --app=https://duckduckgo.com \
                  --force-dark-mode \
