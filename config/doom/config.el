@@ -64,3 +64,5 @@
 
 (custom-set-faces!
   '(doom-modeline-buffer-modified :foreground "orange"))
+
+(setq-default js2-basic-offset 2)
