@@ -111,6 +111,7 @@ bindsym $mod+Shift+a exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -t
 bindsym $mod+$alt+a exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -u
 
 ## Launch // Firefox // <Super><Ctrl> a ##
+bindsym $mod+Ctrl+a exec --no-startup-id firefox
 
 ## Launch // GMail // <Super> m
 bindsym $mod+m exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -g
