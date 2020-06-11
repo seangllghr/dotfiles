@@ -102,16 +102,16 @@ bindsym $mod+Ctrl+Shift+space exec $i3-wm.program.file_search
 bindsym $mod+$alt+space exec emacsclient -c -n -a emacs
 
 ## Launch // Chrome (Borderless) // <Super> a ##
-bindsym $mod+a exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -h
+bindsym $mod+o exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -h
 
 ## Launch // Chrome (New Tab from Clipboard) // <Super><Shift> a ##
-bindsym $mod+Shift+a exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -t
+bindsym $mod+Shift+o exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -t
 
 ## Launch // Chrome (With UI) // <Super><Alt> a ##
-bindsym $mod+$alt+a exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -u
+bindsym $mod+$alt+o exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -u
 
 ## Launch // Firefox // <Super><Ctrl> a ##
-bindsym $mod+Ctrl+a exec --no-startup-id firefox
+bindsym $mod+Ctrl+o exec --no-startup-id firefox
 
 ## Launch // GMail // <Super> m
 bindsym $mod+m exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -g
