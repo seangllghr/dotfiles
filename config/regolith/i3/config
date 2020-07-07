@@ -101,17 +101,17 @@ bindsym $mod+Ctrl+Shift+space exec $i3-wm.program.file_search
 ## Launch // Emacs // <Super><Alt> Space ##
 bindsym $mod+$alt+space exec emacsclient -c -n -a emacs
 
-## Launch // Chrome (Borderless) // <Super> a ##
-bindsym $mod+o exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -h
+## Launch // Chrome (Borderless) // <Super> b ##
+bindsym $mod+b exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -h
 
-## Launch // Chrome (New Tab from Clipboard) // <Super><Shift> a ##
-bindsym $mod+Shift+o exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -t
+## Launch // Chrome (New Tab from Clipboard) // <Super><Shift> b ##
+bindsym $mod+Shift+b exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -t
 
-## Launch // Chrome (With UI) // <Super><Alt> a ##
-bindsym $mod+$alt+o exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -u
+## Launch // Chrome (With UI) // <Super><Alt> b ##
+bindsym $mod+$alt+b exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -u
 
-## Launch // Firefox // <Super><Ctrl> a ##
-bindsym $mod+Ctrl+o exec --no-startup-id firefox
+## Launch // Firefox // <Super><Ctrl> b ##
+bindsym $mod+Ctrl+b exec --no-startup-id firefox
 
 ## Launch // GMail // <Super> m
 bindsym $mod+m exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -g
@@ -258,6 +258,7 @@ for_window [title="Zotero Preferences"] floating enable
 for_window [title="GNOME Tweaks"] floating enable
 for_window [title="Test*"] floating enable, resize set 640px 480px, move position center
 for_window [title="CrossOver Software Installer"] floating enable
+for_window [class="jetbrains-studio"] floating enable
 
 # Scratchpad Terminal Bindings:
 
@@ -279,8 +280,8 @@ bindsym $mod+Shift+period move workspace to output right
 # Session Management
 ###############################################################################
 
-## Session // Exit App // <Super><Shift> q ##
-bindsym $mod+Shift+q [con_id="__focused__"] kill
+## Session // Exit App // <Super> q ##
+bindsym $mod+q [con_id="__focused__"] kill
 
 ## Session // Terminate App // <Super><Alt> q ##
 bindsym $mod+$alt+q [con_id="__focused__"] exec --no-startup-id kill -9 $(xdotool getwindowfocus getwindowpid)
@@ -299,13 +300,13 @@ bindsym $mod+Ctrl+r restart
 set_from_resource $i3-wm.program.logout i3-wm.program.logout /usr/bin/gnome-session-quit --logout
 bindsym $mod+Shift+e exec $i3-wm.program.logout
 
-## Session // Reboot // <Super><Shift> b ##
+## Session // Reboot // <Super><Alt> r ##
 set_from_resource $i3-wm.program.reboot i3-wm.program.reboot /usr/bin/gnome-session-quit --reboot
-bindsym $mod+Shift+b exec $i3-wm.program.reboot
+bindsym $mod+$alt+r exec $i3-wm.program.reboot
 
 ## Session // Power Down // <Super><Shift> p ##
 set_from_resource $i3-wm.program.shutdown i3-wm.program.shutdown /usr/bin/gnome-session-quit --power-off
-bindsym $mod+Shift+p exec $i3-wm.program.shutdown
+bindsym $mod+Shift+o exec $i3-wm.program.shutdown
 
 ## Session // Lock Screen // <Super> Escape ##
 set_from_resource $i3-wm.program.lock i3-wm.program.lock dbus-send --type=method_call --dest=org.gnome.ScreenSaver /org/gnome/ScreenSaver org.gnome.ScreenSaver.Lock
@@ -332,8 +333,8 @@ set_from_resource $i3-wm.program.wifi i3-wm.program.wifi gnome-control-center wi
 bindsym $mod+Shift+w exec $i3-wm.program.wifi
 
 ## Modify // Bluetooth Settings // <Super> b ##
-set_from_resource $i3-wm.program.bluetooth i3-wm.program.bluetooth gnome-control-center bluetooth
-bindsym $mod+b exec $i3-wm.program.bluetooth
+# set_from_resource $i3-wm.program.bluetooth i3-wm.program.bluetooth gnome-control-center bluetooth
+# bindsym $mod+b exec $i3-wm.program.bluetooth
 
 ## Launch // File Browser // <Super><Shift> n ##
 set_from_resource $i3-wm.program.files i3-wm.program.files /usr/bin/nautilus --new-window
