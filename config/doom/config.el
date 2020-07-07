@@ -66,3 +66,6 @@
   '(doom-modeline-buffer-modified :foreground "orange"))
 
 (setq-default js2-basic-offset 2)
+
+(add-hook! 'markdown-mode-hook 'turn-on-auto-fill)
+(add-hook! 'text-mode-hook 'turn-on-auto-fill)
