@@ -69,3 +69,7 @@
 
 (add-hook! 'markdown-mode-hook 'turn-on-auto-fill)
 (add-hook! 'text-mode-hook 'turn-on-auto-fill)
+
+(setq web-mode-markup-indent-offset 2)
+(setq web-mode-css-indent-offset 2)
+(setq web-mode-code-indent-offset 2)
