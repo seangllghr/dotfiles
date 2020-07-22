@@ -102,19 +102,22 @@ bindsym $mod+Ctrl+Shift+space exec $i3-wm.program.file_search
 bindsym $mod+$alt+space exec emacsclient -c -n -a emacs
 
 ## Launch // Chrome (Borderless) // <Super> b ##
-bindsym $mod+b exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -h
+bindsym $mod+b exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --home
 
 ## Launch // Chrome (New Tab from Clipboard) // <Super><Shift> b ##
-bindsym $mod+Shift+b exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -t
+bindsym $mod+Shift+b exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --tab-open
 
 ## Launch // Chrome (With UI) // <Super><Alt> b ##
-bindsym $mod+$alt+b exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -u
+bindsym $mod+$alt+b exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --with-ui
 
 ## Launch // Firefox // <Super><Ctrl> b ##
 bindsym $mod+Ctrl+b exec --no-startup-id firefox
 
+## Launch // Opera // <Super> p ##
+bindsym $mod+p exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --opera
+
 ## Launch // GMail // <Super> m
-bindsym $mod+m exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom -g
+bindsym $mod+m exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --gmail
 
 ###############################################################################
 # Window and Workspace Navigation
@@ -188,6 +191,9 @@ bindsym $mod+f fullscreen toggle
 ## Modify // Window Floating Toggle // <Super><Shift> f ##
 bindsym $mod+Shift+f floating toggle
 
+## Modify // Center Floating window // <Super><Alt> c ##
+bindsym $mod+$alt+c move position center
+
 ## Modify // Move to Scratchpad // <Super><Ctrl> - ##
 bindsym $mod+Ctrl+minus move to scratchpad
 
@@ -259,6 +265,8 @@ for_window [title="GNOME Tweaks"] floating enable
 for_window [title="Test*"] floating enable, resize set 640px 480px, move position center
 for_window [title="CrossOver Software Installer"] floating enable
 for_window [class="jetbrains-studio"] floating enable
+for_window [title="Android Emulator -*"] floating enable
+for_window [title="Emulator"] floating enable
 
 # Scratchpad Terminal Bindings:
 
