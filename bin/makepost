@@ -5,7 +5,11 @@
 
 import argparse
 from bs4 import BeautifulSoup
+import click
 import os.path
+from pygments import highlight
+from pygments.lexers.html import HtmlLexer
+from pygments.formatters.terminal import TerminalFormatter
 import pypandoc
 import pyperclip
 import time
@@ -43,16 +47,30 @@ class Post:
     def __init__(self, args):
         self.debug = args.debug
         self.source_file = args.source_file
+        self.watch = args.watch
+        if self.debug:
+            self.build_num = 0
 
     def add_footnote_styles(self):
         for result in self.soup.find_all('sup'):
             result['style'] = 'font-size: small;'
             if self.debug:
-                print('Added style to result {}'.format(result.contents[0]))
+                self.debug_str += 'Added style to result {}\n'.format(
+                    result.contents[0]
+                )
         for result in self.soup.find_all('section', class_='footnotes'):
             result['style'] = 'font-size: small;'
 
     def build(self):
+        if self.debug:
+            self.build_num += 1
+            self.debug_str = 'Debug Mode:\nFilename: {}\n'.format(
+                self.source_file
+            )
+            if self.watch:
+                self.debug_str += 'Watching\nBuild Number: {}\n'.format(
+                    self.build_num
+                )
         raw_html = pypandoc.convert_file(
             self.source_file,
             to='html', format='md',
@@ -60,20 +78,23 @@ class Post:
             filters='pandoc-citeproc'
         )
         self.soup = BeautifulSoup(raw_html, 'html.parser')
-        if self.debug:
-            print('First line of raw html: {}...'.format(
-                raw_html.splitlines()[0])
-            )
-            print('First line of first <p> tag: {}...'.format(
-                self.soup.p.prettify().splitlines()[1])
-            )
         self.add_footnote_styles()
 
     def copy(self):
-        output = self.soup.prettify()
         if self.debug:
-            print(output)
+            self.format_debug_output()
+        output = self.soup.prettify()
         pyperclip.copy(output)
+        print('Post copied to CLIPBOARD')
+
+    def format_debug_output(self):
+        self.debug_str += highlight(
+            self.soup.prettify(),
+            HtmlLexer(),
+            TerminalFormatter()
+        )
+        click.echo_via_pager(self.debug_str)
+
 
 class SourceChangeEventHandler(FileSystemEventHandler):
     def __init__(self, post):
@@ -92,6 +113,7 @@ class PostWatcher():
 
     def start(self):
         self.observer.schedule(self.event_handler, path=self.filename)
+        print('Watching post for changes. Press Ctrl+c to exit.')
         self.observer.start()
 
         try:
@@ -104,13 +126,6 @@ class PostWatcher():
 def main():
     args = init_args()
     post = Post(args)
-    if post.debug:
-        print(
-            'Debug: {}\nFilename: {}'.format(
-                post.debug,
-                post.source_file
-            )
-        )
     if args.watch:
         watcher = PostWatcher(post)
         watcher.start()
