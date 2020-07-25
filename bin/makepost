@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+# Just a little Python script to churn out HTML posts for my class discussion
+# boards. Requires beautifulsoup4, pypandoc, and watchdog
+
 import argparse
 from bs4 import BeautifulSoup
 import os.path
@@ -10,8 +13,8 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 def init_file(filename):
+    post_template = '---\nauthor: Sean Gallagher\ntitle: "Post Title"\n---\n'
     if not os.path.exists(filename):
-        post_template = '---\nauthor: Sean Gallagher\ntitle: "Post Title"\n---\n'
         with open(filename, 'w') as f:
             f.write(post_template)
         print('Created new post file {}'.format(filename))
