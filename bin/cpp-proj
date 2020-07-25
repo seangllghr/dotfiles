@@ -33,7 +33,7 @@ prepare_makefile() {
     elif [[ $# -eq 2 && $1 == "--opengl"  ]]; then
         sed --in-place "s/hello/${2}/" Makefile
         sed --in-place "s/ \.$/ src/" Makefile
-        sed --in-place 's/LINK_FLAGS =/LINK_FLAGS = -lGL -lglut/' Makefile
+        sed --in-place 's/LINK_FLAGS =/LINK_FLAGS = -lGL -lglut -lGLEW/' Makefile
     fi
 }
 
@@ -66,6 +66,11 @@ create_opengl_project() {
     printf "#include<stdio.h>
 #include<GL/glut.h>
 
+// GLM Math header inclusions
+#include<glm/glm.hpp>
+#include<glm/gtc/matrix_transform.hpp>
+#include<glm/gtc/type_ptr.hpp>
+
 /* Display Callback Header */
 void displayGraphics() {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -83,6 +88,9 @@ int main(int argc, char** argv) {
     glutMainLoop();
     return 0;
 }" > "src/main.cpp"
+    if [[ -f ../test.sh ]]; then
+        cp ../test.sh ./
+    fi
 }
 
 create_simple_project() {
