@@ -18,11 +18,15 @@ from watchdog.events import FileSystemEventHandler
 
 def init_file(filename):
     post_template = '---\nauthor: Sean Gallagher\ntitle: "Post Title"\n---\n'
-    if not os.path.exists(filename):
-        with open(filename, 'w') as f:
-            f.write(post_template)
-        print('Created new post file {}'.format(filename))
-    return filename
+    while True:
+        if '.md' in filename and os.path.exists(filename):
+            return filename
+        elif '.' not in filename:
+            filename += '.md'
+        else:
+            with open(filename, 'w') as f:
+                f.write(post_template)
+            print('Created new post file {}'.format(filename))
 
 def init_args():
     desc = 'Process a Markdown source into an HTML post, suitable for posting.'
@@ -32,9 +36,9 @@ def init_args():
 
     # Debug and watch are toggle switches
     parser.add_argument('-d', '--debug', action='store_true',
-                                 help='Output HTML to stdout')
+                        help='Output HTML to stdout')
     parser.add_argument('-w', '--watch', action='store_true',
-                                 help='Start watching the source for changes')
+                        help='Start watching the source for changes')
     # The remaining positional arg is the source file
     parser.add_argument('source_file', default='main.md',
                         help='The path to the input file', metavar="FILE",
