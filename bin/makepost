@@ -1,44 +1,119 @@
-#!/bin/bash
+#!/usr/bin/python
 
-process_post() {
-    pandoc --to=html --wrap=preserve --filter=pandoc-citeproc $1
-}
+import argparse
+from bs4 import BeautifulSoup
+import os.path
+import pypandoc
+import pyperclip
+import time
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
 
-if [ $# -eq 0 ]; then
-    echo 'Error: Supply a markdown source.'
-elif [ $# -eq 1 ]; then
-    if [ $(echo $1 | cut -d'.' -f 2) == 'md' ]; then
-        process_post $1 | xsel --input --primary
-        echo 'Post copied to PRIMARY.'
-    else
-        echo 'Error: expected Markdown source.'
-    fi
-elif [ $# -eq 2 ]; then
-    if [ $(echo ${@: -1} | cut -d'.' -f 2) == 'md' ]; then
-       case $1 in
-           '-w') : ;&
-           '--watch')
-               inotifywait -e close_write,moved_to,create -m $2 |
-                   while read -r directory events filename; do
-                       process_post $2 | xsel -ip
-                       echo 'Post copied to PRIMARY.'
-                   done
-               ;;
-           '-d') : ;&
-           '--debug')
-               exec 5>&1
-               output=$(process_post $2 | tee /dev/fd/5)
-               echo $output | xsel --input --primary
-               echo "Post copied to PRIMARY."
-               ;;
-           '-c')
-               process_post $2 | xsel --input --clipboard
-               echo 'Post copied to CLIPBOARD.'
-               ;;
-       esac
-    else
-        echo 'Error: expected Markdown source.'
-    fi
-else
-    echo 'Error: too many arguments.'
-fi
+def init_file(filename):
+    if not os.path.exists(filename):
+        post_template = '---\nauthor: Sean Gallagher\ntitle: "Post Title"\n---\n'
+        with open(filename, 'w') as f:
+            f.write(post_template)
+        print('Created new post file {}'.format(filename))
+    return filename
+
+def init_args():
+    desc = 'Process a Markdown source into an HTML post, suitable for posting.'
+
+    # These four args toggle the different build modes
+    parser = argparse.ArgumentParser(description=desc)
+
+    # Debug and watch are toggle switches
+    parser.add_argument('-d', '--debug', action='store_true',
+                                 help='Output HTML to stdout')
+    parser.add_argument('-w', '--watch', action='store_true',
+                                 help='Start watching the source for changes')
+    # The remaining positional arg is the source file
+    parser.add_argument('source_file', default='main.md',
+                        help='The path to the input file', metavar="FILE",
+                        type=lambda x: init_file(x))
+
+    args = parser.parse_args()
+    return args
+
+class Post:
+    def __init__(self, args):
+        self.debug = args.debug
+        self.source_file = args.source_file
+
+    def add_footnote_styles(self):
+        for result in self.soup.find_all('sup'):
+            result['style'] = 'font-size: small;'
+            if self.debug:
+                print('Added style to result {}'.format(result.contents[0]))
+        for result in self.soup.find_all('section', class_='footnotes'):
+            result['style'] = 'font-size: small;'
+
+    def build(self):
+        raw_html = pypandoc.convert_file(
+            self.source_file,
+            to='html', format='md',
+            extra_args=['--wrap=preserve'],
+            filters='pandoc-citeproc'
+        )
+        self.soup = BeautifulSoup(raw_html, 'html.parser')
+        if self.debug:
+            print('First line of raw html: {}...'.format(
+                raw_html.splitlines()[0])
+            )
+            print('First line of first <p> tag: {}...'.format(
+                self.soup.p.prettify().splitlines()[1])
+            )
+        self.add_footnote_styles()
+
+    def copy(self):
+        output = self.soup.prettify()
+        if self.debug:
+            print(output)
+        pyperclip.copy(output)
+
+class SourceChangeEventHandler(FileSystemEventHandler):
+    def __init__(self, post):
+        FileSystemEventHandler.__init__(self)
+        self.post = post
+
+    def on_modified(self, event):
+        self.post.build()
+        self.post.copy()
+
+class PostWatcher():
+    def __init__(self, post):
+        self.observer = Observer()
+        self.event_handler = SourceChangeEventHandler(post)
+        self.filename = post.source_file
+
+    def start(self):
+        self.observer.schedule(self.event_handler, path=self.filename)
+        self.observer.start()
+
+        try:
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            self.observer.stop()
+        self.observer.join
+
+def main():
+    args = init_args()
+    post = Post(args)
+    if post.debug:
+        print(
+            'Debug: {}\nFilename: {}'.format(
+                post.debug,
+                post.source_file
+            )
+        )
+    if args.watch:
+        watcher = PostWatcher(post)
+        watcher.start()
+    else:
+        post.build()
+        post.copy()
+
+if __name__ == "__main__":
+    main()
