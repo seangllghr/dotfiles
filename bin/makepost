@@ -87,7 +87,7 @@ class Post:
     def copy(self):
         if self.debug:
             self.format_debug_output()
-        output = self.soup.prettify()
+        output = str(self.soup)
         pyperclip.copy(output)
         print('Post copied to CLIPBOARD')
 
