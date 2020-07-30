@@ -73,13 +73,14 @@ void ${1}() {
 create_opengl_project() {
     create_project_dir $1
     mkdir src
-    printf "#include<stdio.h>
-#include<GL/glut.h>
+    printf "#include <stdio.h>
+#include <GL/glew.h>
+#include <GL/glut.h>
 
 // GLM Math header inclusions
-#include<glm/glm.hpp>
-#include<glm/gtc/matrix_transform.hpp>
-#include<glm/gtc/type_ptr.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 /* Display Callback Header */
 void displayGraphics() {
