@@ -9,9 +9,8 @@ Creates a C++ project using the specified template:
     complex  A complex project creates a main file, a functions .cpp file, and a
              functions header file, along with the necessary Makefile to enable
              compilation at the command line.
-    opengl   An OpenGL project is like a simple project, but it includes compiler
-             flags necessary to build OpenGL programs
-"
+    opengl   An OpenGL project is like a simple project, but it uses CMake to facilitate
+             the complexity of OpenGL.
 
 print_usage() {
     printf "$usagestr"
