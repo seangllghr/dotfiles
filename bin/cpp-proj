@@ -26,14 +26,26 @@ create_project_dir() {
 }
 
 prepare_makefile() {
-    curl -O https://raw.githubusercontent.com/mbcrawfo/GenericMakefile/master/cpp/Makefile
     if [[ $# -eq 1 ]]; then
+        curl -O https://raw.githubusercontent.com/mbcrawfo/GenericMakefile/master/cpp/Makefile
         sed --in-place "s/hello/${1}/" Makefile
         sed --in-place "s/ \.$/ src/" Makefile
     elif [[ $# -eq 2 && $1 == "--opengl"  ]]; then
-        sed --in-place "s/hello/${2}/" Makefile
-        sed --in-place "s/ \.$/ src/" Makefile
-        sed --in-place 's/LINK_FLAGS =/LINK_FLAGS = -lGL -lglut -lGLEW/' Makefile
+        printf "cmake_minimum_required(VERSION 3.16)
+project(CameraMovement)
+
+set(CMAKE_CXX_STANDARD 14)
+
+add_executable(CameraMovement src/main.cpp)
+
+find_package(OpenGL REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(GLUT REQUIRED)
+target_link_libraries(CameraMovement GL GLEW glut)
+
+add_custom_target(run COMMAND ./CameraMovement)
+add_dependencies(run CameraMovement)" > CMakeLists.txt
+        cmake ./
     fi
 }
 
@@ -61,7 +73,6 @@ void ${1}() {
 
 create_opengl_project() {
     create_project_dir $1
-    prepare_makefile --opengl $1
     mkdir src
     printf "#include<stdio.h>
 #include<GL/glut.h>
@@ -88,6 +99,7 @@ int main(int argc, char** argv) {
     glutMainLoop();
     return 0;
 }" > "src/main.cpp"
+    prepare_makefile --opengl $1
     if [[ -f ../test.sh ]]; then
         cp ../test.sh ./
     fi
