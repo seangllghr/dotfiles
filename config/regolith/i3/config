@@ -264,8 +264,7 @@ for_window [title="Zotero Preferences"] floating enable
 for_window [title="GNOME Tweaks"] floating enable
 for_window [title="Test*"] floating enable, resize set 640px 480px, move position center
 for_window [title="CrossOver Software Installer"] floating enable
-for_window [class="jetbrains-studio"] floating enable
-for_window [class="jetbrains-clion"] floating enable
+for_window [title="^win0$" class="jetbrains-*"] floating enable
 for_window [title="Android Emulator -*"] floating enable
 for_window [title="Emulator"] floating enable
 for_window [class="Evolution-alarm-notify"] floating enable
@@ -396,6 +395,7 @@ assign [class="Zathura"] $ws9
 assign [class="tm"] $ws7 # TextMaker
 assign [class="pm"] $ws7
 assign [class="pr"] $ws7
+assign [class="jetbrains-*"] $ws1
 
 ###############################################################################
 # Window Resize and Gaps
