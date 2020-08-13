@@ -98,26 +98,51 @@ bindsym $mod+Shift+question exec --no-startup-id $i3-wm.program.help
 set_from_resource $i3-wm.program.file_search i3-wm.program.file_search rofi -show find -modi find:/usr/share/rofi/modi/finder.sh
 bindsym $mod+Ctrl+Shift+space exec $i3-wm.program.file_search
 
-## Launch // Emacs // <Super><Alt> Space ##
-bindsym $mod+$alt+space exec emacsclient -c -n -a emacs
+################################################################################
+# Application Quick Launcher
+################################################################################
 
-## Launch // Chrome (Borderless) // <Super> b ##
-bindsym $mod+b exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --home
+## Quicklaunch // Leader // <Super> + Space ##
+mode "Quick Launch Mode" {
+     bindsym b mode "Browsers"
+     bindsym i mode "IDEs"
+## Quicklaunch // Emacs // [Leader] e ##
+     bindsym e exec emacsclient -c -n -a emacs, mode "default"
+## Quicklaunch // Ranger // [Leader] r ##
+     bindsym r exec --no-startup-id ranger, mode "default"
+## Quicklaunch // Tab Open (Chrome no UI) // [Leader] t ##
+     bindsym t exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --tab-open, mode "default"
 
-## Launch // Chrome (New Tab from Clipboard) // <Super><Shift> b ##
-bindsym $mod+Shift+b exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --tab-open
+     bindsym Escape mode "default"
+}
+mode "IDEs" {
+## Quicklaunch // Android Studio // [Leader] i a ##
+     bindsym a exec --no-startup-id /opt/android-studio/bin/studio.sh, mode "default"
+## Quicklaunch // CLion // [Leader] i c ##
+     bindsym c exec --no-startup-id clion, mode "default"
+## Quicklaunch // Eclipse // [Leader] i e ##
+     bindsym e exec --no-startup-id eclipse, mode "default"
 
-## Launch // Chrome (With UI) // <Super><Alt> b ##
-bindsym $mod+$alt+b exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --with-ui
+     bindsym Escape mode "default"
+}
+mode "Browsers" {
+## Quicklaunch // Chrome (no UI) // [Leader] b a ##
+     bindsym a exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --home, mode "default"
+## Quicklaunch // Default Browser // [Leader] b Space ##
+     bindsym space exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --home, mode "default"
+## Quicklaunch // Chrome (with UI) // [Leader] b c ##
+     bindsym c exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --with-ui, mode "default"
+## Quicklaunch // Firefox // [Leader] b f ##
+     bindsym f exec --no-startup-id firefox
+## Quicklaunch // Gmail // [Leader] b g ##
+     bindsym g exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --gmail, mode "default"
+## Quicklaunch // Opera // [Leader] b o ##
+     bindsym o exec --no-startup-id /home/sean/dotflies/bin/i3-chrom --opera, mode "default"
 
-## Launch // Firefox // <Super><Ctrl> b ##
-bindsym $mod+Ctrl+b exec --no-startup-id firefox
+     bindsym Escape mode "default"
+}
 
-## Launch // Opera // <Super> p ##
-bindsym $mod+p exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --opera
-
-## Launch // GMail // <Super> m
-bindsym $mod+m exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --gmail
+bindsym $mod+space mode "Quick Launch Mode"
 
 ###############################################################################
 # Window and Workspace Navigation
