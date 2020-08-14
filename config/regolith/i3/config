@@ -133,7 +133,7 @@ mode "Browsers" {
 ## Quicklaunch // Chrome (with UI) // [Leader] b c ##
      bindsym c exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --with-ui, mode "default"
 ## Quicklaunch // Firefox // [Leader] b f ##
-     bindsym f exec --no-startup-id firefox
+     bindsym f exec --no-startup-id firefox, mode "default"
 ## Quicklaunch // Gmail // [Leader] b g ##
      bindsym g exec --no-startup-id /home/sean/dotfiles/bin/i3-chrom --gmail, mode "default"
 ## Quicklaunch // Opera // [Leader] b o ##
