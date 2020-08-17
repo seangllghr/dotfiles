@@ -78,9 +78,7 @@ bindsym $mod+Return exec /usr/bin/x-terminal-emulator
 ## Launch // Dropdown Terminal // <Super><Shift> Enter ##
 bindsym $mod+Shift+Return exec st -t "st - dropdown"
 
-## Launch // Application // <Super><Alt> Space ##
 set_from_resource $i3-wm.program.launcher.app i3-wm.program.launcher.app rofi -show drun -theme $rofiTheme
-bindsym $mod+$alt+space exec $i3-wm.program.launcher.app
 
 ## Launch // Command // <Super><Shift> Space ##
 set_from_resource $i3-wm.program.launcher.cmd i3-wm.program.launcher.cmd rofi -show run -theme $rofiTheme
@@ -106,6 +104,8 @@ bindsym $mod+Ctrl+Shift+space exec $i3-wm.program.file_search
 mode "Quick Launch Mode" {
      bindsym b mode "Browsers"
      bindsym i mode "IDEs"
+## Quicklaunch // Application Runner // [Leader] Space ##
+     bindsym space exec $i3-wm.program.launcher.app, mode "default"
 ## Quicklaunch // Emacs // [Leader] e ##
      bindsym e exec emacsclient -c -n -a emacs, mode "default"
 ## Quicklaunch // Ranger // [Leader] r ##
