@@ -30,7 +30,7 @@ wait_for_network () {
         if nmcli connection | grep "\<wl" | grep "Yggdrasil" > /dev/null 2>&1; then
             echo "Wireless Network Yggdrasil connected."
             return 0
-        elif nmcli connection | grep "\<eno" > /dev/null 2>&1; then
+        elif nmcli connection | grep "\<enp" > /dev/null 2>&1; then
             # It's moderately safe to assume that a wired network is home
             echo "Wired network connected."
             return 0
