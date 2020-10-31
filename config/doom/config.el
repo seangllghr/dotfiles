@@ -22,7 +22,7 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 (setq doom-font (font-spec :family "Fira Code" :size 16 :weight 'light)
-      doom-variable-pitch-font (font-spec :family "LM Sans 17" :size 16 :weight 'regular))
+      doom-variable-pitch-font (font-spec :family "Noto Sans" :size 16 :weight 'regular))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -76,4 +76,4 @@
 
 (setq org-agenda-skip-deadline-prewarning-if-scheduled t)
 (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
-(setq! flycheck-global-modes '(not org-mode))
+;; (setq! flycheck-global-modes '(not org-mode))
