@@ -72,6 +72,7 @@ alias xo="xdg-open"
 alias sf="st &"
 alias zth="zathura" # You try typing 'za'. zth is easier.
 alias mutt="neomutt"
+alias vim="nvim"
 # alias vim="emacsclient -nw -a /usr/bin/vim"
 alias emacs="emacsclient -n -c -a emacs"
 alias emo="emacsclient -n -a emacs"
