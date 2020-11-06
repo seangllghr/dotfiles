@@ -4,15 +4,16 @@
 # boards. Requires beautifulsoup4, pypandoc, and watchdog
 
 import argparse
+import os.path
+import time
+
 from bs4 import BeautifulSoup
 import click
-import os.path
 from pygments import highlight
 from pygments.lexers.html import HtmlLexer
 from pygments.formatters.terminal import TerminalFormatter
 import pypandoc
 import pyperclip
-import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
