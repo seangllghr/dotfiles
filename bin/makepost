@@ -67,6 +67,10 @@ class Post:
         for result in self.soup.find_all('section', class_='footnotes'):
             result['style'] = 'font-size: small;'
 
+    def add_reference_styles(self):
+        for refs_section in self.soup.find_all('div', class_='references'):
+            refs_section['style'] = 'text-indent: -2rem; padding-left: 2rem;'
+
     def build(self):
         if self.debug:
             self.build_num += 1
@@ -85,6 +89,7 @@ class Post:
         )
         self.soup = BeautifulSoup(raw_html, 'html.parser')
         self.add_footnote_styles()
+        self.add_reference_styles()
 
     def copy(self):
         if self.debug:
