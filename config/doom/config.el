@@ -73,8 +73,12 @@
 
 (setq-default js2-basic-offset 2)
 
+(global-display-fill-column-indicator-mode)
 (add-hook! 'markdown-mode-hook 'turn-on-auto-fill)
 (add-hook! 'text-mode-hook 'turn-on-auto-fill)
+(add-hook! 'org-mode-hook 'no-fill-column)
+(defun no-fill-column ()
+  (display-fill-column-indicator-mode 0))
 
 (setq web-mode-markup-indent-offset 2)
 (setq web-mode-css-indent-offset 2)
@@ -83,3 +87,72 @@
 (setq org-agenda-skip-deadline-prewarning-if-scheduled t)
 (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
 ;; (setq! flycheck-global-modes '(not org-mode))
+
+(after! org
+  (setq org-latex-pdf-process '("latexmk --xelatex %f"))
+  (require 'ox-bibtex)
+  (setq org-latex-default-packages-alist
+        '((""             "graphicx"  t)
+          (""             "grffile"   t)
+          (""             "longtable" nil)
+          (""             "wrapfig"   nil)
+          (""             "rotating"  nil)
+          ("normalem"     "ulem"      t)
+          (""             "amsmath"   t)
+          (""             "textcomp"  t)
+          (""             "amssymb"   t)
+          (""             "capt-of"   nil)
+          ("x11names"     "xcolor"    t)
+          ("colorlinks=true,allcolors=darkgray" "hyperref" nil)
+          ("margin=1in"   "geometry"  t)
+          (""             "fontspec"  t)
+          (""             "setspace"  t)
+          ("tiny,compact" "titlesec"  t))
+        )
+  (setq org-latex-classes
+        '(("article"
+           "\\documentclass[11pt]{article}
+[DEFAULT-PACKAGES]
+\\doublespacing
+\\setlength{\\leftmargini}{0em}
+\\titleformat*{\\section}{\\centering\\bfseries}
+\\titleformat*{\\subsubsection}{\\itshape}
+[PACKAGES]"
+           ("\\section{%s}" . "\\section*{%s}")
+           ("\\subsection{%s}" . "\\subsection*{%s}")
+           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+           ("\\paragraph{%s}" . "\\paragraph*{%s}")
+           ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+          ("report"
+           "\\documentclass[11pt]{report}"
+           ("\\part{%s}" . "\\part*{%s}")
+           ("\\chapter{%s}" . "\\chapter*{%s}")
+           ("\\section{%s}" . "\\section*{%s}")
+           ("\\subsection{%s}" . "\\subsection*{%s}")
+           ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+          ("book"
+           "\\documentclass[11pt]{book}"
+           ("\\part{%s}" . "\\part*{%s}")
+           ("\\chapter{%s}" . "\\chapter*{%s}")
+           ("\\section{%s}" . "\\section*{%s}")
+           ("\\subsection{%s}" . "\\subsection*{%s}")
+           ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+          ("apa7"
+           "\\documentclass[
+11pt,man,
+noextraspace,floatsintext,
+babel,american,
+biblatex
+]{apa7}
+[NO-DEFAULT-PACKAGES]
+[PACKAGES]
+\\hypersetup{colorlinks=true,allcolors=black}
+\\DeclareLanguageMapping{american}{american-apa}"
+           ("\\section{%s}" . "\\section*{%s}")
+           ("\\subsection{%s}" . "\\subsection*{%s}")
+           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+           ("\\paragraph{%s}" . "\\paragraph*{%s}")
+           ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+        )
+  (setq org-latex-title-command "\\maketitle")
+  )
