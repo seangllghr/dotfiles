@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 # Just a little Python script to churn out HTML posts for my class discussion
 # boards. Requires beautifulsoup4, pypandoc, and watchdog
