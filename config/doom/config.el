@@ -73,12 +73,12 @@
 
 (setq-default js2-basic-offset 2)
 
-(global-display-fill-column-indicator-mode)
-(add-hook! 'markdown-mode-hook 'turn-on-auto-fill)
-(add-hook! 'text-mode-hook 'turn-on-auto-fill)
-(add-hook! 'org-mode-hook 'no-fill-column)
-(defun no-fill-column ()
-  (display-fill-column-indicator-mode 0))
+; (global-display-fill-column-indicator-mode)
+; (add-hook! 'markdown-mode-hook 'turn-on-auto-fill)
+; (add-hook! 'text-mode-hook 'turn-on-auto-fill)
+; (add-hook! 'org-mode-hook 'no-fill-column)
+; (defun no-fill-column ()
+  ; (display-fill-column-indicator-mode 0))
 
 (setq web-mode-markup-indent-offset 2)
 (setq web-mode-css-indent-offset 2)
