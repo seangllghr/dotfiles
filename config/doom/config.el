@@ -84,6 +84,8 @@
 (setq web-mode-css-indent-offset 2)
 (setq web-mode-code-indent-offset 2)
 
+;;******************** ORG CUSTOMIZATIONS ********************;;
+
 (setq org-agenda-skip-deadline-prewarning-if-scheduled t)
 (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
 ;; (setq! flycheck-global-modes '(not org-mode))
@@ -91,6 +93,8 @@
 (after! org
   (setq org-latex-pdf-process '("latexmk --xelatex %f"))
   (require 'ox-bibtex)
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines))
   (setq org-latex-default-packages-alist
         '((""             "graphicx"  t)
           (""             "grffile"   t)
@@ -101,22 +105,33 @@
           (""             "amsmath"   t)
           (""             "textcomp"  t)
           (""             "amssymb"   t)
-          (""             "capt-of"   nil)
-          ("x11names"     "xcolor"    t)
-          ("colorlinks=true,allcolors=darkgray" "hyperref" nil)
-          ("margin=1in"   "geometry"  t)
-          (""             "fontspec"  t)
-          (""             "setspace"  t)
-          ("tiny,compact" "titlesec"  t))
+          (""             "capt-of"   nil))
         )
   (setq org-latex-classes
         '(("article"
+           "\\documentclass[11pt]{article}"
+           ("\\section{%s}" . "\\section*{%s}")
+           ("\\subsection{%s}" . "\\subsection*{%s}")
+           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+           ("\\paragraph{%s}" . "\\paragraph*{%s}")
+           ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+          ("my-article"
            "\\documentclass[11pt]{article}
 [DEFAULT-PACKAGES]
-\\doublespacing
+\\usepackage[margin=1in]{geometry}
+\\usepackage[x11names]{xcolor}
+\\usepackage[colorlinks=true,allcolors=darkgray]{hyperref}
+\\usepackage{fontspec}
+\\usepackage{setspace}
+\\usepackage[tiny,compact]{titlesec}
 \\setlength{\\leftmargini}{0em}
 \\titleformat*{\\section}{\\centering\\bfseries}
-\\titleformat*{\\subsubsection}{\\itshape}
+\\titleformat*{\\subsubsection}{\\itshape\\bfseries}
+\\titlespacing{\\paragraph}{\\parindent}{0em}{1em}
+\\titleformat*{\\subparagraph}{\\itshape\\bfseries}
+\\usepackage[style=apa,backend=biber]{biblatex}
+\\DeclareLanguageMapping{american}{american-apa}
+\\doublespacing
 [PACKAGES]"
            ("\\section{%s}" . "\\section*{%s}")
            ("\\subsection{%s}" . "\\subsection*{%s}")
@@ -156,3 +171,16 @@ biblatex
         )
   (setq org-latex-title-command "\\maketitle")
   )
+
+(setq org-superstar-headline-bullets-list
+       '("◈"
+         "▣"
+         "◉"
+         "◆"
+         "◾"
+         "•"))
+
+(setq org-superstar-item-bullet-alist
+      '((?* . ?•)
+        (?+ . ?+)
+        (?- . ?-)))
