@@ -22,7 +22,7 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 (setq doom-font (font-spec
-                 :family "Fira Code"
+                 :family "JetBrains Mono"
                  :size 16
                  )
       doom-variable-pitch-font (font-spec
@@ -89,7 +89,7 @@
 (custom-set-faces!
   '(doom-modeline-buffer-modified :foreground "orange"))
 
-(setq-default js2-basic-offset 2)
+(setq-default js-indent-level 2)
 
 (global-display-fill-column-indicator-mode)
 (add-hook! 'markdown-mode-hook 'turn-on-auto-fill)
