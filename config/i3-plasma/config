@@ -182,7 +182,6 @@ for_window [class="plasmashell"] floating enable,
 for_window [class="Plasma"] floating enable, border none
 for_window [title="plasma-desktop"] floating enable, border none
 for_window [title="win7"] floating enable, border none
-for_window [class="krunner"] floating enable, border none
 for_window [class="Kmix"] floating enable, border none
 for_window [class="Klipper"] floating enable, border none
 for_window [class="Plasmoidviewer"] floating enable, border none
@@ -201,6 +200,29 @@ assign [class="Gimp-*"] → $ws4
 assign [class="Inkscape"] → $ws4
 assign [class="Virt-manager"] → $ws5
 
+########## Startup Applications ##############################################
+
+exec --no-startup-id nitrogen --restore
+exec --no-startup-id konsole --qwindowtitle "Konsole Dropdown"
+
+########## Colors ############################################################
+set $primary   #16a085
+set $second    #498c3f
+set $warning   #f27127
+set $bglight   #343a40
+set $bgdark    #1f2326
+set $white     #ffffff
+set $lghtgray  #484e50
+set $black     #000000
+# class                 border    backgr.  text      indicator child_border
+client.focused          $primary  $bgdark  $white    $second   $primary
+client.focused_inactive $bglight  $bgdark  $white    $lghtgray $bglight
+client.unfocused        $bglight  $bgdark  $lghtgray $lghtgray $bglight
+client.urgent           $bglight  $warning $white    $warning  $warning
+client.placeholder      $black    $bgdark  $white    $black    $bgdark
+
+client.background       $white
+
 ########## Application Bindings ##############################################
 
 # start a terminal
@@ -209,22 +231,8 @@ bindsym $mod+Return exec konsole
 bindsym $mod+$alt+Return exec --no-startup-id konsole --qwindowtitle "Konsole Dropdown"
 
 # start krunner (a program launcher)
-bindsym $mod+space exec --no-startup-id krunner
+# bindsym $mod+space exec --no-startup-id krunner
+bindsym $mod+space exec --no-startup-id dmenu_run -fn "Tekton Pro-14" -nb "#1f2326" -nf "#fff" -sb "#16a085" -sf "#fff"
 
 # General Application Bindings
 bindsym $mod+F2 exec --no-startup-id firefox
-
-########## Startup Applications ##############################################
-
-exec --no-startup-id nitrogen --restore
-exec --no-startup-id konsole --qwindowtitle "Konsole Dropdown"
-
-########## Colors ############################################################
-# class                 border  backgr. text    indicator child_border
-client.focused          #16a085 #2a2f34 #ffffff #498c3f   #16a085
-client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
-client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-client.urgent           #2f343a #f27127 #ffffff #f27127   #f27127
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-
-client.background       #ffffff
