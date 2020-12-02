@@ -207,19 +207,21 @@ exec --no-startup-id konsole --qwindowtitle "Konsole Dropdown"
 
 ########## Colors ############################################################
 set $primary   #16a085
+set $primaryL  #46d0b5
+set $primaryD  #006045
 set $second    #498c3f
 set $warning   #f27127
 set $bglight   #343a40
 set $bgdark    #1f2326
 set $white     #ffffff
-set $lghtgray  #484e50
+set $gray      #484e50
 set $black     #000000
 # class                 border    backgr.  text      indicator child_border
-client.focused          $primary  $bgdark  $white    $second   $primary
-client.focused_inactive $bglight  $bgdark  $white    $lghtgray $bglight
-client.unfocused        $bglight  $bgdark  $lghtgray $lghtgray $bglight
-client.urgent           $bglight  $warning $white    $warning  $warning
-client.placeholder      $black    $bgdark  $white    $black    $bgdark
+client.focused          $primary  $bgdark  $primaryL $second   $primary
+client.focused_inactive $bglight  $bgdark  $primaryL $gray     $bglight
+client.unfocused        $bglight  $bgdark  $primaryD $gray     $bglight
+client.urgent           $bglight  $warning $primaryL $warning  $warning
+client.placeholder      $black    $bgdark  $primaryL $black    $bgdark
 
 client.background       $white
 
