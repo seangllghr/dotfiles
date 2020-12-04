@@ -200,11 +200,6 @@ assign [class="Gimp-*"] → $ws4
 assign [class="Inkscape"] → $ws4
 assign [class="Virt-manager"] → $ws5
 
-########## Startup Applications ##############################################
-
-exec --no-startup-id nitrogen --restore
-exec --no-startup-id konsole --qwindowtitle "Konsole Dropdown"
-
 ########## Colors ############################################################
 set $primary   #16a085
 set $primaryL  #46d0b5
@@ -224,6 +219,12 @@ client.urgent           $bglight  $warning $primaryL $warning  $warning
 client.placeholder      $black    $bgdark  $primaryL $black    $bgdark
 
 client.background       $white
+
+########## Startup Applications ##############################################
+
+exec --no-startup-id nitrogen --restore
+exec --no-startup-id konsole --qwindowtitle "Konsole Dropdown"
+exec --no-startup-id dropbox --start
 
 ########## Application Bindings ##############################################
 
