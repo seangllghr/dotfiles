@@ -192,7 +192,8 @@ for_window [class="plasmashell" window_type="notification"]\
 for_window [title="Konsole Dropdown*"]\
            floating enable, move scratchpad resize set 960 px 540 px
 for_window [title="Edit with Emacs FRAME"]\
-           floating enable, resize set 960 px 720 px, move position center,
+           floating enable, resize set 960 px 720 px, move position center
+for_window [title="Simple Calculator"] floating enable, resize set 400 px 480 px
 
 # Workspace Application Assignments
 assign [class="Firefox"] → $ws2
