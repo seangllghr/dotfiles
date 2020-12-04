@@ -235,7 +235,7 @@ bindsym $mod+$alt+Return exec --no-startup-id konsole --qwindowtitle "Konsole Dr
 
 # start krunner (a program launcher)
 # bindsym $mod+space exec --no-startup-id krunner
-bindsym $mod+space exec --no-startup-id dmenu_run -fn "Tekton Pro-14" -nb "#1f2326" -nf "#fff" -sb "#16a085" -sf "#fff"
+bindsym $mod+space exec --no-startup-id dmenu_run -fn "Tekton Pro-16" -nb "#1f2326" -nf "#fff" -sb "#16a085" -sf "#fff"
 
 # General Application Bindings
 bindsym $mod+F2 exec --no-startup-id firefox
