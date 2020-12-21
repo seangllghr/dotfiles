@@ -1,6 +1,6 @@
-set recolor-lightcolor "#0a0e14"
-set recolor-darkcolor "#ae81e6"
-set default-bg "#303030"
+set recolor-lightcolor "#1f2326"
+set recolor-darkcolor "#16a085"
+set default-bg "#343a40"
 set window-title-basename true
 set zoom-step 5
 set recolor true
