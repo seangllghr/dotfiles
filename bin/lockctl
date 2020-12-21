@@ -1,6 +1,34 @@
 #!/bin/bash
 
-if [[ $# -eq 0 ]]; then
+function lockctl_disable_autolock () {
+    killall xidlehook
+    notify-send -u low -t 3000 "Autolock disabled"
+}
+
+function lockctl_enable_autolock () {
+    xidlehook \
+        --not-when-fullscreen \
+        --not-when-audio \
+        --timer 600 'lockctl -l' '' \
+        --timer 1800 'systemctl suspend' '' &
+    notify-send -u low -t 3000 "Autolock enabled"
+}
+
+function lockctl_lock () {
+    # If the screen has not previously been locked, lock it.
+    pidof i3lock &> /dev/null ||
+        i3lock -i /home/sean/Pictures/lock.png -c 000000 -e
+}
+
+function lockctl_logout () {
+    for i in $(loginctl list-sessions --no-legend | awk '{print $1}'); do
+        if [[ $(loginctl show-session -p State $i) == "State=active" ]]; then
+            loginctl terminate-session $i
+        fi
+    done
+}
+
+function lockctl_print_usage () {
     echo "Usage: lockctl <option>"
     echo "    -d | --disable-autolock"
     echo "    -e | --enable-autolock"
@@ -8,41 +36,47 @@ if [[ $# -eq 0 ]]; then
     echo "    -l | --lock"
     echo "    -s | --sleep"
     echo "    -t | --toggle-autolock"
+    echo "    -x | --exit-session"
+}
+
+function lockctl_sleep () {
+    lockctl_lock
+    sleep 3
+    systemctl suspend
+}
+
+if [[ $# -eq 0 ]]; then
+    lockctl_print_usage
 elif [[ $# -eq 1 ]]; then
     case $1 in
         "-d" | "--disable-autolock")
-            pkill xautolock
-            echo 'lockstate=disabled' > ~/.lockstate
-            notify-send -u low -t 3000 "Autolock disabled"
+            lockctl_disable_autolock
             ;;
         "-e" | "--enable-autolock")
-            xautolock -time 10 -locker 'lockctl --lock' &
-            echo 'lockstate=enabled' > ~/.lockstate
-            notify-send -u low -t 3000 "Autolock enabled"
+            lockctl_enable_autolock
             ;;
         "-h" | "--help")
-            lockctl
+            lockctl_print_usage
             ;;
         "-l" | "--lock")
-            # TODO Suspend after lock period?
-            i3lock -i /home/sean/Pictures/lock.png -c 000000 -e
+            lockctl_lock
             ;;
         "-s" | "--sleep")
-            lockctl --lock
-            sleep 3
-            systemctl suspend
+            lockctl_sleep
             ;;
         "-t" | "--toggle-autolock")
-            source ~/.lockstate
-            if [[ $lockstate == "enabled" ]]; then
-                lockctl --disable-autolock
+            if pidof xidlehook &> /dev/null; then
+                lockctl_disable_autolock
             else
-                lockctl --enable-autolock
+                lockctl_enable_autolock
             fi
+            ;;
+        "-x" | "--exit-session")
+            lockctl_logout
             ;;
         *)
             echo "Unrecognized argument"
-            lockctl
+            lockctl_print_usage
     esac
 else
     echo "Wrong number of arguments."
