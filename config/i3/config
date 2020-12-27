@@ -301,6 +301,7 @@ bar {
     workspace_buttons           yes
     strip_workspace_numbers     yes
     binding_mode_indicator      no
+    tray_output                 none
 
     colors {
            background $bgdark
