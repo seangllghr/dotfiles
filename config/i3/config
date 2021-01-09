@@ -231,29 +231,27 @@ exec --no-startup-id konsole --qwindowtitle "Konsole Dropdown"
 
 ########## Application Bindings ##############################################
 
-# start a terminal
-# bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec konsole
-bindsym $mod+$alt+Return exec --no-startup-id konsole --qwindowtitle "Konsole Dropdown"
+# Audio control
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+bindsym XF86AudioStop exec --no-startup-id playerctl stop
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2%
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2%
 
-# start krunner (a program launcher)
+# Browsers
+bindsym $mod+$num+KP_0 exec firefox
+
+# Dmenu (a program launcher)
 # bindsym $mod+space exec --no-startup-id krunner
 bindsym $mod+space exec --no-startup-id dmenu_run -fn "Tekton Pro-16" -nb "#1f2326" -nf "#fff" -sb "#16a085" -sf "#fff"
-
-# General Application Bindings
-bindsym $mod+F2 exec --no-startup-id firefox
-
-# GNU pass password manager
-bindsym $mod+p exec --no-startup-id passmenu
-
-# End Session Screen
-bindsym $mod+End exec --no-startup-id qdbus org.kde.ksmserver /KSMServer org.kde.KSMServerInterface.logout -1 -1 -1
 
 # Emacs
 bindsym $mod+$alt+space exec emacs
 
-# Browsers
-bindsym $mod+$num+KP_0 exec firefox
+# Pass password manager
+bindsym $mod+p exec --no-startup-id passmenu
 
 # Screenshots
 # There... Are default bindings for some uses of the i3-scrot script???
@@ -261,7 +259,16 @@ bindsym --release Print exec --no-startup-id i3-scrot --window
 bindsym --release Shift+Print exec --no-startup-id i3-scrot --select
 bindsym --release Control+Print exec --no-startup-id i3-scrot --desk
 
+# Spotifyd
 bindsym $mod+F4 exec --no-startup-id systemctl --user restart spotifyd
+
+# Terminal Bindings
+# bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec konsole
+bindsym $mod+$alt+Return exec --no-startup-id konsole --qwindowtitle "Konsole Dropdown"
+
+# Virt-Manager
+bindsym $mod+F1 exec --no-startup-id virt-manager
 
 ########## Session Management Mode ###########################################
 bindsym $mod+Escape mode "$mode_session"
