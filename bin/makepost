@@ -85,7 +85,7 @@ class Post:
         raw_html = pypandoc.convert_file(
             self.source_file,
             to='html', format='md',
-            extra_args=['--wrap=preserve'],
+            extra_args=['--wrap=preserve', '--mathml'],
             filters='pandoc-citeproc'
         )
         self.soup = BeautifulSoup(raw_html, 'html.parser')
