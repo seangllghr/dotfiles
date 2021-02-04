@@ -9,8 +9,8 @@ function lockctl_enable_autolock () {
     xidlehook \
         --not-when-fullscreen \
         --not-when-audio \
-        --timer 600 'lockctl -l' '' \
-        --timer 1800 'systemctl suspend' '' &
+        --timer 600 'lockctl --lock' '' \
+        --timer 1800 'lockctl --sleep' '' &
     notify-send -u low -t 3000 "Autolock enabled"
 }
 
