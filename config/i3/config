@@ -84,10 +84,12 @@ bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 
 # Dropdown Terminal to Primary Display
-bindsym $mod+Shift+i resize set 960 px 540 px; move position 0 0
+bindsym $mod+i resize set 960 px 540 px; move position 0 0
+bindsym $mod+Shift+i resize set 960 px 540 px; move position 960 0
 
 # Dropdown Terminal to Secondary Display
 bindsym $mod+$alt+i resize set 960 px 540 px; move position 1920 150
+bindsym $mod+$alt+Shift+i resize set 960 px 540 px; move position 2640 150
 
 ########## Workspaces ########################################################
 
@@ -102,7 +104,7 @@ set $ws3 "3:"
 set $ws4 "4:"
 set $ws5 "5:"
 set $ws6 "6:"
-set $ws7 "7:"
+set $ws7 "7:"
 set $ws8 "8:"
 set $ws9 "9:"
 set $ws0 "0:"
@@ -194,12 +196,17 @@ for_window [title="Edit with Emacs FRAME"]\
            floating enable, resize set 960 px 720 px, move position center
 for_window [title="Simple Calculator"] floating enable, resize set 400 px 480 px
 for_window [title="Event Tester"] floating enable
+for_window [title="win0"] floating enable, move position center
+for_window [title="Welcome to [(IntelliJ IDEA),(PyCharm)]"] floating enable, move position center
 
 # Workspace Application Assignments
 assign [class="Firefox"] → $ws2
 assign [class="Gimp-*"] → $ws4
 assign [class="Inkscape"] → $ws4
 assign [class="Virt-manager"] → $ws5
+assign [class="Steam"] → $ws6
+assign [class="[Ss]ignal"] → $ws6
+assign [class="discord"] → $ws6
 
 ########## Colors ############################################################
 set $primary   #16a085
@@ -222,6 +229,7 @@ client.background       $white
 
 ########## Startup Applications ##############################################
 
+exec --no-startup-id /usr/lib/pam_kwallet_init
 exec --no-startup-id dropbox --start
 exec --no-startup-id xrandr --output DisplayPort-1 --pos 1920x150
 exec --no-startup-id nitrogen --restore
@@ -285,7 +293,8 @@ mode "$mode_session" {
 ########## i3 bar ############################################################
 bar {
     output                      primary
-    status_command              python ~/.config/i3pystatus/i3bar_primary.py
+    font                        pango:JetBrains Mono, Font Awesome 13
+    status_command              i3status-rs ~/.config/i3status-rust/config.toml
     workspace_buttons           yes
     strip_workspace_numbers     yes
     binding_mode_indicator      yes
@@ -304,7 +313,8 @@ bar {
 
 bar {
     output                      nonprimary
-    status_command              python ~/.config/i3pystatus/i3bar.py
+    font                        pango:JetBrains Mono, Font Awesome 12
+    status_command              i3status-rs ~/.config/i3status-rust/config-secondary.toml
     workspace_buttons           yes
     strip_workspace_numbers     yes
     binding_mode_indicator      no
