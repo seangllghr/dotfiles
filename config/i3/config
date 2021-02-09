@@ -108,6 +108,12 @@ set $ws7 "7:"
 set $ws8 "8:"
 set $ws9 "9:"
 set $ws0 "0:"
+set $wsA "11:"
+set $wsB "12:"
+set $wsC "13:"
+set $wsD "14:"
+set $wsE "15:"
+set $wsF "16:"
 
 # Workspace Display Assignments
 workspace $ws1 output DisplayPort-0  primary
@@ -132,6 +138,12 @@ bindsym $mod+7 workspace $ws7
 bindsym $mod+8 workspace $ws8
 bindsym $mod+9 workspace $ws9
 bindsym $mod+0 workspace $ws0
+bindsym $mod+$alt+0 workspace $wsA
+bindsym $mod+$alt+9 workspace $wsB
+bindsym $mod+$alt+8 workspace $wsC
+bindsym $mod+$alt+7 workspace $wsD
+bindsym $mod+$alt+6 workspace $wsE
+bindsym $mod+$alt+5 workspace $wsA
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $ws1; workspace number $ws1
@@ -144,10 +156,20 @@ bindsym $mod+Shift+7 move container to workspace $ws7; workspace number $ws7
 bindsym $mod+Shift+8 move container to workspace $ws8; workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9; workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace $ws0; workspace number $ws0
+bindsym $mod+$alt+Shift+0 move container to workspace $wsA; workspace number $wsA
+bindsym $mod+$alt+Shift+9 move container to workspace $wsB; workspace number $wsB
+bindsym $mod+$alt+Shift+8 move container to workspace $wsC; workspace number $wsC
+bindsym $mod+$alt+Shift+7 move container to workspace $wsD; workspace number $wsD
+bindsym $mod+$alt+Shift+6 move container to workspace $wsE; workspace number $wsE
+bindsym $mod+$alt+Shift+5 move container to workspace $wsF; workspace number $wsF
 
 # move workspaces from screen to screen
 bindsym $mod+Shift+comma move workspace to output left
 bindsym $mod+Shift+period move workspace to output right
+
+# move to next/previous workspace
+bindsym $mod+$alt+l workspace next_on_output
+bindsym $mod+$alt+h workspace prev_on_output
 
 ########## Resize Mode #######################################################
 
