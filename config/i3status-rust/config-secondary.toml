@@ -1,0 +1,26 @@
+icons = "awesome5"
+
+[theme]
+name = "native"
+[theme.overrides]
+# idle_fg = "#16a085"
+
+[[block]]
+block = "net"
+device = "enp40s0"
+format = "{ip} {speed_down} {speed_up}"
+use_bits = true
+
+[[block]]
+block = "temperature"
+chip = "k10temp-pci-*"
+collapsed = false
+format = "CPU: {max}°C"
+interval = 1
+
+[[block]]
+block = "temperature"
+chip = "amdgpu-pci-*"
+collapsed = false
+format = "GPU: {max}°C"
+interval = 1

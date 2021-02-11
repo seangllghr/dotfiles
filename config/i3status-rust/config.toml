@@ -1,0 +1,31 @@
+icons = "awesome5"
+
+[theme]
+name = "native"
+[theme.overrides]
+# idle_fg = "#16a085"
+
+[[block]]
+block = "custom"
+command = ''' /home/sean/tmp/rust_hello/mediastat/target/release/mediastat '''
+interval = 0.5
+on_click = "spt playback --toggle"
+
+[[block]]
+block = "cpu"
+interval = 1
+
+[[block]]
+block = "memory"
+clickable = false
+display_type = "memory"
+format_mem = "{Mug} GiB ({MUp}%)"
+interval = 1
+
+[[block]]
+block = "sound"
+
+[[block]]
+block = "time"
+interval = 60
+format = "%F %R"
