@@ -5,3 +5,5 @@
 	editor = emacsclient -a emacs
 [credential]
 	helper = cache
+[init]
+	defaultBranch = main
