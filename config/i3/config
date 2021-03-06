@@ -308,7 +308,7 @@ mode "$mode_session" {
      bindsym l exec --no-startup-id /home/sean/dotfiles/bin/lockctl --lock, mode "default"
      bindsym r exec --no-startup-id systemctl reboot, mode "default"
      bindsym s exec --no-startup-id /home/sean/dotfiles/bin/lockctl --sleep, mode "default"
-     bindsym x exec --no-startup-id /home/sean/dotfiles/bin/lockctl --logout, mode "default"
+     bindsym x exec --no-startup-id /home/sean/dotfiles/bin/lockctl --exit-session, mode "default"
      bindsym Escape mode "default"
 }
 
