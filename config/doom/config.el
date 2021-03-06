@@ -123,7 +123,8 @@
           (""             "amsmath"   t)
           (""             "textcomp"  t)
           (""             "amssymb"   t)
-          (""             "capt-of"   nil))
+          (""             "capt-of"   nil)
+          (""             "titling"   t))
         )
   (setq org-latex-classes
         '(("article"
@@ -189,6 +190,10 @@ biblatex
         )
   (setq org-latex-title-command "\\maketitle")
   )
+
+(setq-default org-display-custom-times t)
+(setq org-time-stamp-custom-formats
+      '("​%A, %d %B %Y​" . "​%A, %d %B %Y, %H:%M %Z​"))
 
 (setq org-superstar-headline-bullets-list
        '("◈"
