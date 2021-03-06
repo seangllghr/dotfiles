@@ -202,3 +202,29 @@ biblatex
       '((?* . ?•)
         (?+ . ?+)
         (?- . ?-)))
+
+;; Email stuff
+(set-email-account!
+ "seangllghr@gmail.com"
+ '((mu4e-sent-folder    . "/seangllghr@gmail.com/[Gmail]/Sent Mail")
+   (mu4e-drafts-folder  . "/seangllghr@gmail.com/[Gmail]/Drafts")
+   (mu4e-trash-folder   . "/seangllghr@gmail.com/[Gmail]/Trash")
+   (mu4e-refile-folder  . "/seangllghr@gmail.com/[Gmail]/All Mail")
+   (smtpmail-smtp-user  . "seangllghr@gmail.com"))
+ t)
+
+(setq message-send-mail-function 'smtpmail-send-it
+      mu4e-index-cleanup t
+      mu4e-index-lazy-check nil
+      starttls-use-gnutls t
+      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+      smtpmail-auth-credentials '(("smtp.gmail.com" 587 "seangllghr@gmail.com" nil))
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587)
+
+(mu4e-alert-set-default-style 'libnotify)
+(add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
+(add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+(setq! mu4e-update-interval 300)
+(setq! org-msg-default-alternatives '(text html))
