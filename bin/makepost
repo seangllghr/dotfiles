@@ -58,6 +58,20 @@ class Post:
         if self.debug:
             self.build_num = 0
 
+    def add_blockquote_styles(self):
+        quote_styles = [
+            "font-family: serif;",
+            "color: #505050;",
+            "border-left: 0.25rem solid #59baff;",
+            "padding-left: 0.5rem;"
+        ]
+        for result in self.soup.find_all('blockquote'):
+            result['style'] = ' '.join(quote_styles)
+            if self.debug:
+                self.debug_str += 'Added style to result {}'.format(
+                    result.contents[0]
+                )
+
     def add_footnote_styles(self):
         for result in self.soup.find_all('sup'):
             result['style'] = 'font-size: small;'
@@ -91,6 +105,7 @@ class Post:
         self.soup = BeautifulSoup(raw_html, 'html.parser')
         self.add_footnote_styles()
         self.add_reference_styles()
+        self.add_blockquote_styles()
 
     def copy(self):
         if self.debug:
