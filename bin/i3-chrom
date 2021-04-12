@@ -7,13 +7,13 @@ case $1 in
         # GTK_THEME=$gtktheme chromium --app=https://gmail.com \
         chromium --app=https://gmail.com \
             --force-dark-mode \
-            --enable-features=WebUIDarkMode &> /dev/null
+            --enable-features=WebUIDarkMode &> /dev/null &
         ;;
     "-h" | "--home")
         # GTK_THEME=$gtktheme chromium --app=https://duckduckgo.com \
         chromium --app=https://duckduckgo.com \
             --force-dark-mode \
-            --enable-features=WebUIDarkMode &> /dev/null
+            --enable-features=WebUIDarkMode &> /dev/null &
         ;;
     "-o" | "--opera")
         # GTK_THEME=$gtktheme opera
@@ -21,22 +21,22 @@ case $1 in
         ;;
     "-r" | "--robinhood")
         # GTK_THEME=$gtktheme chromium --app=https://robinhood.com
-        chromium --app=https://robinhood.com &> /dev/null
+        chromium --app=https://robinhood.com &> /dev/null &
         ;;
     "-s" | "--spotify")
         # Apparently Spotify sounds better from Chromium with my new sound setup?
-        chromium --app=https://open.spotify.com &> /dev/null
+        chromium --app=https://open.spotify.com &> /dev/null &
         ;;
     "-t" | "--tab-open")
         # GTK_THEME=$gtktheme chromium --app="$(xclip -o)" \
         chromium --app="$(xclip -o)" \
             --force-dark-mode \
-            --enable-features=WebUIDarkMode &> /dev/null
+            --enable-features=WebUIDarkMode &> /dev/null &
         ;;
     "-u" | "--with-ui")
         # GTK_THEME=$gtktheme chromium \
         chromium \
             --force-dark-mode \
-            --enable-features=WebUIDarkMode &> /dev/null
+            --enable-features=WebUIDarkMode &> /dev/null &
         ;;
 esac

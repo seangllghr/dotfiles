@@ -221,6 +221,7 @@ for_window [title="Simple Calculator"] floating enable, resize set 400 px 480 px
 for_window [title="Event Tester"] floating enable
 for_window [title="win0"] floating enable, move position center
 for_window [title="Welcome to [(IntelliJ IDEA),(PyCharm)]"] floating enable, move position center
+for_window [title="Android Emulator - *"] floating enable
 
 # Workspace Application Assignments
 assign [class="Firefox"] → $ws2
