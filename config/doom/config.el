@@ -27,13 +27,16 @@
                  )
       doom-variable-pitch-font (font-spec
                                 :family "Latin Modern Roman"
-                                :size 18
-                                ))
+                                :size 18)
+      doom-unicode-font (font-spec
+                         :family "Noto Mono"
+                         :size 18))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-tomorrow-night)
+;; (setq doom-theme 'doom-tomorrow-night)
+(setq doom-theme 'doom-gruvbox)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -208,7 +211,12 @@ biblatex
         (?+ . ?+)
         (?- . ?-)))
 
-;; Email stuff
+;; Email stuff =======================================================
+
+;; Add mu4e to loadpath on Ubuntu
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
+
+;; General email settings
 (set-email-account!
  "seangllghr@gmail.com"
  '((mu4e-sent-folder    . "/seangllghr@gmail.com/[Gmail]/Sent Mail")
