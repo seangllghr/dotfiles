@@ -63,6 +63,8 @@
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
 
+(setq-default enable-local-variables t)
+
 ;; golden-ratio
 (use-package! golden-ratio
   :after-call pre-command-hook
@@ -112,7 +114,7 @@
 ;; (setq! flycheck-global-modes '(not org-mode))
 
 (after! org
-  (setq org-latex-pdf-process '("latexmk --xelatex %f"))
+  (setq org-latex-pdf-process '("latexmk --xelatex --shell-escape %f"))
   (require 'ox-bibtex)
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines))
@@ -211,10 +213,15 @@ biblatex
         (?+ . ?+)
         (?- . ?-)))
 
-;; Email stuff =======================================================
+(setq org-hide-emphasis-markers t)
 
-;; Add mu4e to loadpath on Ubuntu
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
+(setq org-export-in-background t)
+(setq org-latex-listings 'minted)
+
+; ;; Email stuff =======================================================
+
+; ;; Add mu4e to loadpath on Ubuntu
+; (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 
 ;; General email settings
 (set-email-account!
@@ -227,6 +234,7 @@ biblatex
  t)
 
 (setq message-send-mail-function 'smtpmail-send-it
+      mu4e-get-mail-command "true"
       mu4e-index-cleanup t
       mu4e-index-lazy-check nil
       starttls-use-gnutls t
@@ -236,8 +244,13 @@ biblatex
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587)
 
-(mu4e-alert-set-default-style 'libnotify)
-(add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
-(add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
-(setq! mu4e-update-interval 300)
-(setq! org-msg-default-alternatives '(text html))
+;; (mu4e-alert-set-default-style 'libnotify)
+;; (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
+;; (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+;; (setq! mu4e-update-interval 300)
+(setq org-msg-options "html-postamble:nil H:5 num:nil ^:{} toc:nil author:nil email:nil"
+      org-msg-startup "hidestars indent inlineimages"
+      org-msg-default-alternatives '((new               . (text html))
+                                     (reply-to-html     . (text html))
+                                     (reply-to-text     . (text)))
+      org-msg-convert-citation t)
