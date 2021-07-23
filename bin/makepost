@@ -99,8 +99,7 @@ class Post:
         raw_html = pypandoc.convert_file(
             self.source_file,
             to='html', format='md',
-            extra_args=['--wrap=preserve', '--mathml'],
-            filters='pandoc-citeproc'
+            extra_args=['--wrap=preserve', '--mathml', '--citeproc']
         )
         self.soup = BeautifulSoup(raw_html, 'html.parser')
         self.add_footnote_styles()
