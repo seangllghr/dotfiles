@@ -218,10 +218,10 @@ biblatex
 (setq org-export-in-background t)
 (setq org-latex-listings 'minted)
 
-; ;; Email stuff =======================================================
+;; Email stuff =======================================================
 
-; ;; Add mu4e to loadpath on Ubuntu
-; (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
+;; Add mu4e to loadpath on Ubuntu
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 
 ;; General email settings
 (set-email-account!
