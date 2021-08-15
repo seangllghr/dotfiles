@@ -23,14 +23,19 @@
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 (setq doom-font (font-spec
                  :family "JetBrains Mono"
-                 :size 16
+                 :size 15
                  )
       doom-variable-pitch-font (font-spec
-                                :family "Latin Modern Roman"
-                                :size 18)
+                                :family "Libertinus Sans"
+                                :size 20)
       doom-unicode-font (font-spec
                          :family "Noto Mono"
-                         :size 18))
+                         :size 14))
+
+(use-package! mixed-pitch
+  :config
+  (setq mixed-pitch-set-height t)
+  (set-face-attribute 'variable-pitch nil :height 1.3))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -99,15 +104,17 @@
 (global-display-fill-column-indicator-mode)
 (add-hook! 'markdown-mode-hook 'turn-on-auto-fill)
 (add-hook! 'text-mode-hook 'turn-on-auto-fill)
-(add-hook! 'org-mode-hook 'no-fill-column)
-(defun no-fill-column ()
-  (display-fill-column-indicator-mode 0))
 
 (setq web-mode-markup-indent-offset 2)
 (setq web-mode-css-indent-offset 2)
 (setq web-mode-code-indent-offset 2)
 
 ;;******************** ORG CUSTOMIZATIONS ********************;;
+
+(add-hook! 'org-mode-hook 'org-mode-tweaks)
+(defun org-mode-tweaks ()
+  (display-fill-column-indicator-mode 0)
+  (mixed-pitch-mode 1))
 
 (setq org-agenda-skip-deadline-prewarning-if-scheduled t)
 (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
@@ -117,7 +124,7 @@
   (setq org-latex-pdf-process '("latexmk --xelatex --shell-escape %f"))
   (require 'ox-bibtex)
   (require 'ox-extra)
-  (ox-extras-activate '(ignore-headlines))
+  (ox-extras-activate '(noignore-headlines))
   (setq org-latex-default-packages-alist
         '((""             "graphicx"  t)
           (""             "grffile"   t)
@@ -215,8 +222,26 @@ biblatex
 
 (setq org-hide-emphasis-markers t)
 
-(setq org-export-in-background t)
 (setq org-latex-listings 'minted)
+
+(setq org-ellipsis " ⌄")
+
+(defmacro def-and-bind-quoted-text-obj (name key start-regex end-regex)
+  (let ((inner-name (make-symbol (concat "evil-inner-" name)))
+        (outer-name (make-symbol (concat "evil-a-" name))))
+    `(progn
+       (evil-define-text-object ,inner-name (count &optional beg end type)
+         (evil-select-paren ,start-regex ,end-regex beg end type count nil))
+       (evil-define-text-object ,outer-name (count &optional beg end type)
+         (evil-select-paren ,start-regex ,end-regex beg end type count t))
+       (define-key evil-inner-text-objects-map ,key #',inner-name)
+       (define-key evil-outer-text-objects-map ,key #',outer-name))))
+
+(def-and-bind-quoted-text-obj "tilde" "~" "~" "~")
+(def-and-bind-quoted-text-obj "equals" "=" "=" "=")
+(def-and-bind-quoted-text-obj "slash" "/" "/" "/")
+(def-and-bind-quoted-text-obj "plus" "+" "+" "+")
+(def-and-bind-quoted-text-obj "underscore" "_" "_" "_")
 
 ;; Email stuff =======================================================
 
@@ -254,3 +279,17 @@ biblatex
                                      (reply-to-html     . (text html))
                                      (reply-to-text     . (text)))
       org-msg-convert-citation t)
+
+;; Extra keybinds
+(map! (:leader (:prefix "t" :desc "Golden ratio" "G" #'golden-ratio-mode))
+      (:leader (:prefix "t" :desc "Follow mode" "L" #'follow-mode))
+      (:leader (:prefix "t" :desc "Variable pitch" "v" #'variable-pitch-mode)))
+
+(map! (:leader
+       (:prefix-map ("d" . "debugger")
+        :desc "Launch GDB" "d" #'gdb
+        :desc "Disassembly buffer" "a" #'gdb-display-disassembly-buffer
+        :desc "GDB buffer" "g" #'gdb-display-gdb-buffer
+        :desc "Registers buffer" "r" #'gdb-display-registers-buffer
+        :desc "Source buffer" "s" #'gdb-display-source-buffer
+        :desc "UI many windows" "m" #'gdb-many-windows)))
