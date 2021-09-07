@@ -312,12 +312,23 @@ local task_scratch = bling.module.scratchpad {
     reapply = true,
     dont_focus_before_close = false,
 }
+local spt_scratch = bling.module.scratchpad {
+    command = "st -n scratch-spt -e spt",
+    rule = { instance = "scratch-spt" },
+    sticky = true,
+    autoclose = true,
+    floating = true,
+    geometry = { x=0, y=30, width=1206, height=726 },
+    reapply = true,
+    dont_focus_before_close = false,
+}
 --- }}}
 
 -- {{{ Key bindings
 -- Binding groups
 awesome_group = "Awesome"
 client_group = "Client"
+functions_group = "Function Keys"
 launcher_group = "Launcher"
 layout_group = "Layout"
 screen_group = "Screen"
@@ -522,12 +533,24 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "`",
         function () awful.spawn("rofimoji") end,
         {description = "Rofi emoji picker", group = scripts_group}),
+    awful.key({ modkey,           }, "Print",
+        function () awful.spawn("maimpick") end,
+        {description = "Screenshot menu", group = scripts_group}),
+    awful.key({ modkey,           }, "'",
+        function () awful.spawn("rofi -show calc") end,
+        {description = "Rofi calculator", group = scripts_group}),
 
     -- Scratch applications
     awful.key({ modkey, }, "-", function () term_scratch:toggle() end,
         {description = "Toggle scratch terminal", group = launcher_group}),
     awful.key({ modkey, "Mod1" }, "Delete", function () task_scratch:toggle() end,
-        {description = "Toggle system monitor", group = launcher_group})
+        {description = "Toggle system monitor", group = launcher_group}),
+
+    -- Function bindings
+    awful.key({}, "Print", function () awful.spawn("") end,
+        {description = "Take screenshot", group = functions_group}),
+    awful.key({}, "XF86Tools", function () spt_scratch:toggle() end,
+        {description = "Toggle spotify-tui", group = launcher_group})
 )
 
 clientkeys = gears.table.join(
