@@ -2,3 +2,4 @@ config/nvim/plugged/
 config/nvim/.netrwhist
 config/i3/*.pid
 config/regolith/flags/
+config/rofi/chrome-apps
