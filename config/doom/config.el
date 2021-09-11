@@ -146,29 +146,13 @@
            ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
            ("\\paragraph{%s}" . "\\paragraph*{%s}")
            ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-          ("my-article"
-           "\\documentclass[11pt]{article}
-[DEFAULT-PACKAGES]
-\\usepackage[margin=1in]{geometry}
-\\usepackage[x11names]{xcolor}
-\\usepackage[colorlinks=true,allcolors=darkgray]{hyperref}
-\\usepackage{fontspec}
-\\usepackage{setspace}
-\\usepackage[tiny,compact]{titlesec}
-\\setlength{\\leftmargini}{0em}
-\\titleformat*{\\section}{\\centering\\bfseries}
-\\titleformat*{\\subsubsection}{\\itshape\\bfseries}
-\\titlespacing{\\paragraph}{\\parindent}{0em}{1em}
-\\titleformat*{\\subparagraph}{\\itshape\\bfseries}
-\\usepackage[style=apa,backend=biber]{biblatex}
-\\DeclareLanguageMapping{american}{american-apa}
-\\doublespacing
-[PACKAGES]"
+          ("particle"
+           "\\documentclass[11pt]{article}"
+           ("\\part{%s}" . "\\part*{%s}")
            ("\\section{%s}" . "\\section*{%s}")
            ("\\subsection{%s}" . "\\subsection*{%s}")
            ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-           ("\\paragraph{%s}" . "\\paragraph*{%s}")
-           ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+           ("\\paragraph{%s}" . "\\paragraph*{%s}"))
           ("report"
            "\\documentclass[11pt]{report}"
            ("\\part{%s}" . "\\part*{%s}")
