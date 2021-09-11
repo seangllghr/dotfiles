@@ -322,6 +322,16 @@ local spt_scratch = bling.module.scratchpad {
     reapply = true,
     dont_focus_before_close = false,
 }
+local file_scratch = bling.module.scratchpad {
+    command = "st -n scratch-file -e lf",
+    rule = { instance = "scratch-file" },
+    sticky = true,
+    autoclose = true,
+    floating = true,
+    geometry = { x=0, y=30, width=1206, height=726 },
+    reapply = true,
+    dont_focus_before_close = false,
+}
 --- }}}
 
 -- {{{ Key bindings
@@ -539,12 +549,17 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "'",
         function () awful.spawn("rofi -show calc") end,
         {description = "Rofi calculator", group = scripts_group}),
+    awful.key({ modkey, "Shift"   }, "/",
+        function () awful.spawn("rofi-help") end,
+        {description = "Rofi documentation picker", group = scripts_group}),
 
     -- Scratch applications
     awful.key({ modkey, }, "-", function () term_scratch:toggle() end,
         {description = "Toggle scratch terminal", group = launcher_group}),
     awful.key({ modkey, "Mod1" }, "Delete", function () task_scratch:toggle() end,
         {description = "Toggle system monitor", group = launcher_group}),
+    awful.key({ modkey, }, "r", function () file_scratch:toggle() end,
+        {description = "Toggle file manager", group = launcher_group}),
     awful.key({ modkey,           }, "F4",
         function () spt_scratch:toggle() end,
         {description = "Toggle spotify-tui", group = launcher_group}),
