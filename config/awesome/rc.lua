@@ -358,8 +358,8 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = client_group}
     ),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-              {description = "show main menu", group = awesome_group}),
+    -- awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
+    --           {description = "show main menu", group = awesome_group}),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
@@ -463,8 +463,8 @@ globalkeys = gears.table.join(
               {description = "restore minimized", group = client_group}),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
-              {description = "run prompt", group = launcher_group}),
+    -- awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
+    --           {description = "run prompt", group = launcher_group}),
     awful.key({ modkey }, "x",
               function ()
                   awful.prompt.run {
@@ -500,7 +500,7 @@ globalkeys = gears.table.join(
         {description = "Launch web browser", group = launcher_group}),
     awful.key({ modkey, "Shift"   }, "b",
         function () awful.spawn("rofi-firefox") end,
-        {description = {"Launch Firefox", group = launcher_group}}),
+        {description = "Launch Firefox", group = launcher_group}),
 
     -- Utility Scripts
     awful.key({ modkey,           }, "F3",
