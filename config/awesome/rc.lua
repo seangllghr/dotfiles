@@ -545,12 +545,37 @@ globalkeys = gears.table.join(
         {description = "Toggle scratch terminal", group = launcher_group}),
     awful.key({ modkey, "Mod1" }, "Delete", function () task_scratch:toggle() end,
         {description = "Toggle system monitor", group = launcher_group}),
+    awful.key({ modkey,           }, "F4",
+        function () spt_scratch:toggle() end,
+        {description = "Toggle spotify-tui", group = launcher_group}),
 
     -- Function bindings
     awful.key({}, "Print", function () awful.spawn("") end,
         {description = "Take screenshot", group = functions_group}),
-    awful.key({}, "XF86Tools", function () spt_scratch:toggle() end,
-        {description = "Toggle spotify-tui", group = launcher_group})
+    awful.key({}, "XF86AudioPlay",
+        function () awful.spawn("spt playback --toggle") end,
+        {description = "Play/Pause Spotify playback", group = functions_group}),
+    awful.key({}, "XF86AudioPrev",
+        function () awful.spawn("spt playback --previous") end,
+        {description = "Previous song", group = functions_group}),
+    awful.key({}, "XF86AudioNext",
+        function () awful.spawn("spt playback --next") end,
+        {description = "Next song", group = functions_group}),
+    awful.key({}, "XF86AudioStop",
+        function () awful.spawn("systemctl --user stop spotifyd.service") end,
+        {description = "Stop media playback", group = functions_group}),
+    awful.key({}, "XF86Tools",
+        function () awful.spawn("systemctl --user start spotifyd.service") end,
+        {description = "Start spotifyd service", group = launcher_group}),
+    awful.key({}, "XF86AudioMute",
+        function () awful.spawn("pulsemixer --toggle-mute") end,
+        {description = "Lower volume", group = functions_group}),
+    awful.key({}, "XF86AudioLowerVolume",
+        function () awful.spawn("pulsemixer --change-volume -5") end,
+        {description = "Lower volume", group = functions_group}),
+    awful.key({}, "XF86AudioRaiseVolume",
+        function () awful.spawn("pulsemixer --change-volume +5") end,
+        {description = "Lower volume", group = functions_group})
 )
 
 clientkeys = gears.table.join(
