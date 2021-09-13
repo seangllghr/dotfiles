@@ -293,7 +293,7 @@ root.buttons(gears.table.join(
 
 --- {{{ Scratchpad
 local term_scratch = bling.module.scratchpad {
-    command = "st -n scratch-term",
+    command = "st -n scratch-term -t 'Scratch Terminal'",
     rule = { instance = "scratch-term" },
     sticky = true,
     autoclose = true,
@@ -303,7 +303,7 @@ local term_scratch = bling.module.scratchpad {
     dont_focus_before_close = false,
 }
 local task_scratch = bling.module.scratchpad {
-    command = "st -n scratch-task -e htop",
+    command = "st -n scratch-task -t 'htop' -e htop",
     rule = { instance = "scratch-task" },
     sticky = true,
     autoclose = true,
@@ -313,7 +313,7 @@ local task_scratch = bling.module.scratchpad {
     dont_focus_before_close = false,
 }
 local spt_scratch = bling.module.scratchpad {
-    command = "st -n scratch-spt -e spt",
+    command = "st -n scratch-spt -t 'Spotify' -e spt",
     rule = { instance = "scratch-spt" },
     sticky = true,
     autoclose = true,
@@ -323,7 +323,7 @@ local spt_scratch = bling.module.scratchpad {
     dont_focus_before_close = false,
 }
 local file_scratch = bling.module.scratchpad {
-    command = "st -n scratch-file -e lf",
+    command = "st -n scratch-file -t 'File Manager' -e lf",
     rule = { instance = "scratch-file" },
     sticky = true,
     autoclose = true,
