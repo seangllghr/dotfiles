@@ -181,6 +181,22 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
+-- Pick an (in)appropriate tiling layout based on screen geometry
+function pick_tile_layout(screen, rational)
+    if (screen.workarea.width >= screen.workarea.height) then
+        if rational then
+            return awful.layout.suit.tile
+        else
+            return awful.layout.suit.tile.bottom
+        end
+    else
+        if rational then
+            return awful.layout.suit.tile.bottom
+        else
+            return awful.layout.suit.tile
+        end
+    end
+end
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
@@ -189,7 +205,7 @@ awful.screen.connect_for_each_screen(function(s)
     -- awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
     -- awful.tag({ "", "", "", "", "", "", "", "", "" }, s, awful.layout.layouts[1])
     awful.tag.add("", {
-                      layout = awful.layout.suit.tile,
+                      layout = pick_tile_layout(s, true),
                       screen = s,
                       selected = s.index == 1
     })
@@ -198,7 +214,7 @@ awful.screen.connect_for_each_screen(function(s)
                       screen = s,
     })
     awful.tag.add("", {
-                      layout = awful.layout.suit.tile,
+                      layout = pick_tile_layout(s, true),
                       screen = s,
     })
     awful.tag.add("", {
@@ -210,23 +226,23 @@ awful.screen.connect_for_each_screen(function(s)
                       screen = s,
     })
     awful.tag.add("", {
-                      layout = awful.layout.suit.tile,
+                      layout = pick_tile_layout(s, true),
                       screen = s,
     })
     awful.tag.add("", {
-                      layout = awful.layout.suit.tile,
+                      layout = pick_tile_layout(s, true),
                       screen = s,
     })
     awful.tag.add("", {
-                      layout = awful.layout.suit.tile,
+                      layout = pick_tile_layout(s, true),
                       screen = s,
     })
     awful.tag.add("", {
-                      layout = awful.layout.suit.tile,
+                      layout = pick_tile_layout(s, true),
                       screen = s,
     })
     awful.tag.add("", {
-                      layout = awful.layout.suit.tile,
+                      layout = pick_tile_layout(s, true),
                       screen = s,
                       selected = s.index == 2
     })
@@ -465,10 +481,18 @@ globalkeys = gears.table.join(
               {description = "select next", group = layout_group}),
     awful.key({ modkey,           }, "[", function () awful.layout.inc(-1)            end,
               {description = "select previous", group = layout_group}),
-    awful.key({ modkey,           }, "y", function () awful.layout.set(awful.layout.layouts[1]) end,
-              {description = "Tiled layout", group = layout_group}),
-    awful.key({ modkey, "Shift"   }, "y", function () awful.layout.set(awful.layout.layouts[3]) end,
-              {description = "Tiled layout (bottom)", group = layout_group}),
+    awful.key({ modkey,           }, "y",
+        function ()
+            local layout = pick_tile_layout(awful.screen.focused(), true)
+            awful.layout.set(layout)
+        end,
+        {description = "Rational tiled layout", group = layout_group}),
+    awful.key({ modkey, "Shift"   }, "y",
+        function ()
+            local layout = pick_tile_layout(awful.screen.focused(), false)
+            awful.layout.set(layout)
+        end,
+        {description = "Irrational tiled layout", group = layout_group}),
     awful.key({ modkey,           }, "u", function () awful.layout.set(awful.layout.layouts[9]) end,
               {description = "Maximized layout", group = layout_group}),
     awful.key({ modkey, "Shift"   }, "u", function () awful.layout.set(awful.layout.layouts[10]) end,
