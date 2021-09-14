@@ -641,13 +641,13 @@ globalkeys = gears.table.join(
         {description = "Start spotifyd service", group = launcher_group}),
     awful.key({}, "XF86AudioMute",
         function () awful.spawn("pulsemixer --toggle-mute") end,
-        {description = "Lower volume", group = functions_group}),
+        {description = "Mute audio", group = functions_group}),
     awful.key({}, "XF86AudioLowerVolume",
         function () awful.spawn("pulsemixer --change-volume -5") end,
         {description = "Lower volume", group = functions_group}),
     awful.key({}, "XF86AudioRaiseVolume",
         function () awful.spawn("pulsemixer --change-volume +5") end,
-        {description = "Lower volume", group = functions_group})
+        {description = "Raise volume", group = functions_group})
 )
 
 clientkeys = gears.table.join(
