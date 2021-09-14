@@ -230,6 +230,10 @@ awful.screen.connect_for_each_screen(function(s)
                       screen = s,
                       selected = s.index == 2
     })
+    awful.tag.add("", {
+                      layout = awful.layout.suit.floating,
+                      screen = s,
+    })
 
 
     -- Create a promptbox for each screen
@@ -553,7 +557,15 @@ globalkeys = gears.table.join(
         function () awful.spawn("rofi -show calc") end,
         {description = "Rofi calculator", group = scripts_group}),
     awful.key({ modkey, "Shift"   }, "/",
-        function () awful.spawn("rofi-help") end,
+        function ()
+            local screen = awful.screen.focused()
+            local tag = awful.tag.find_by_name(screen, "")
+            if tag and not tag.selected then
+                awful.tag.viewtoggle(tag)
+            end
+            awful.spawn("rofi-help")
+
+        end,
         {description = "Rofi documentation picker", group = scripts_group}),
 
     -- Scratch applications
@@ -719,6 +731,24 @@ for i = 1, 10 do
             {description = "toggle focused client on tag #" .. i, group = tag_group})
     )
 end
+-- Docs tag
+globalkeys = gears.table.join(
+    globalkeys,
+    awful.key({ modkey, }, "slash",
+        function ()
+            local screen = awful.screen.focused()
+            local tag = awful.tag.find_by_name(screen, "")
+            if tag then
+                awful.tag.viewtoggle(tag)
+                if tag.selected and tag:clients()[1] then
+                    tag:clients()[1]:emit_signal(
+                        -- Don't know if context is right... Don't care--works
+                        "request::activate", "client.jumpto", {raise = true})
+                end
+            end
+        end,
+        {description = "toggle documentation tag", group = tag_group})
+)
 
 clientbuttons = gears.table.join(
     awful.button({ }, 1, function (c)
@@ -800,6 +830,8 @@ awful.rules.rules = {
           floating = true,
           maximized_vertical = true,
           width = 1005,
+          above = true,
+          tag = ""
       }
     },
 
