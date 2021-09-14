@@ -511,6 +511,9 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, "b",
         function () awful.spawn("rofi-firefox") end,
         {description = "Launch Firefox", group = launcher_group}),
+    awful.key({ modkey,           }, "v",
+        function () awful.spawn("watchvid") end,
+        {description = "Watch video from clipboard", group = launcher_group}),
 
     -- Utility Scripts
     awful.key({ modkey,           }, "F3",
@@ -790,6 +793,15 @@ awful.rules.rules = {
     -- Set Firefox to always map on the tag named "2" on screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { screen = 1, tag = "2" } },
+
+    -- Popup documentation reader
+    { rule = {instance = "man-doc"},
+      properties = {
+          floating = true,
+          maximized_vertical = true,
+          width = 1005,
+      }
+    },
 
     -- Default tags
     {
