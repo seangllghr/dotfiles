@@ -407,8 +407,17 @@ globalkeys = gears.table.join(
             for key, client in pairs(t:clients()) do
                 client:move_to_tag(t2)
             end
+            for key, tag in pairs(curr_scr.tags) do
+                if not (tag.index == 11) then
+                    t = tag
+                else
+                    t = (curr_scr.index == 1) and curr_scr.tags[1] or curr_scr.tags[10]
+                end
+                if #t:clients() > 0 then break end
+            end
+            t:view_only()
             awful.screen.focus_relative( 1)
-            next_scr.tags[t.index]:view_only()
+            t2:view_only()
         end,
         { description = "move tag to next screen", group = screen_group }),
     awful.key({ modkey, "Mod1"    }, ",",
@@ -422,8 +431,17 @@ globalkeys = gears.table.join(
             for key, client in pairs(t:clients()) do
                 client:move_to_tag(t2)
             end
+            for key, tag in pairs(curr_scr.tags) do
+                if not (tag.index == 11) then
+                    t = tag
+                else
+                    t = (curr_scr.index == 1) and curr_scr.tags[1] or curr_scr.tags[10]
+                end
+                if #t:clients() > 0 then break end
+            end
+            t:view_only()
             awful.screen.focus_relative(-1)
-            prev_scr.tags[t.index]:view_only()
+            t2:view_only()
         end,
         { description = "move tag to previous screen", group = screen_group }),
 
