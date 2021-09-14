@@ -736,12 +736,28 @@ globalkeys = gears.table.join(
     globalkeys,
     awful.key({ modkey, }, "slash",
         function ()
-            local screen = awful.screen.focused()
-            local tag = awful.tag.find_by_name(screen, "")
+            local scr = awful.screen.focused()
+            local tag = awful.tag.find_by_name(scr, "")
             if tag then
                 awful.tag.viewtoggle(tag)
-                if tag.selected and tag:clients()[1] then
-                    tag:clients()[1]:emit_signal(
+            end
+            if tag.selected then
+                for s in screen do
+                    if not (s.index == scr.index) then
+                        local t = awful.tag.find_by_name(s, "")
+                        if #t:clients() > 0 then
+                            for key, client in pairs(t:clients()) do
+                                client:move_to_tag(tag)
+                            end
+                            naughty.notify({ preset = naughty.config.presets.critical,
+                                             title = "Found screen with docs:",
+                                             text = "Index: " .. s.index })
+                        end
+                        t.selected = false
+                    end
+                end
+                if #tag:clients() > 0 then
+                    tag:clients()[#tag:clients()]:emit_signal(
                         -- Don't know if context is right... Don't care--works
                         "request::activate", "client.jumpto", {raise = true})
                 end
@@ -831,6 +847,7 @@ awful.rules.rules = {
           maximized_vertical = true,
           width = 1005,
           above = true,
+          placement = awful.placement.left,
           tag = ""
       }
     },
