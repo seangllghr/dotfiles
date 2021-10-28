@@ -36,8 +36,8 @@ c.fonts.hints = fc.font('large', 'mono')
 c.fonts.web.family.serif = fc.families['serif']
 c.fonts.web.family.sans_serif = fc.families['sans']
 c.fonts.web.family.fixed = fc.families['mono']
-c.fonts.web.size.default = round(((int) (fc.sizes['base'][0:2]) * 4) / 3)
-c.fonts.web.size.default_fixed = round(((int) (fc.sizes['base'][0:2]) * 4) / 3)
+c.fonts.web.size.default = round(((int) (fc.sizes['large'][0:2]) * 4) / 3)
+c.fonts.web.size.default_fixed = round(((int) (fc.sizes['large'][0:2]) * 4) / 3)
 
 # Dark Mode
 c.colors.webpage.darkmode.enabled = True
