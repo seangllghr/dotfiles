@@ -1,0 +1,169 @@
+#!/usr/bin/env ruby
+
+require 'asciidoctor'
+require 'asciidoctor-pdf'
+require 'asciidoctor-html5s'
+require 'colorize'
+require 'optparse'
+require 'rb-inotify'
+require 'rouge'
+require 'subprocess'
+
+def build_document(doc, buildtype, message)
+  puts message
+  case buildtype
+  when 'html', ''
+    build_html(doc)
+  when 'native'
+    build_pdf_native(doc)
+  when 'web'
+    build_web_native(doc)
+  when 'prince'
+    build_pdf_prince(doc)
+  when 'both'
+    build_both(doc)
+  else
+    Exception.new 'Invalid build type'
+  end
+end
+
+def build_both(doc)
+  # Since Prince requires the HTML, assume 'both' means pdf-native
+  threads = []
+  threads << Thread.new { build_pdf_native(doc) }
+  threads << Thread.new { build_html(doc) }
+  threads.each(&join)
+end
+
+def build_html(doc)
+  backend = 'html5s'
+  begin
+    Asciidoctor.convert_file(
+      doc,
+      backend: backend,
+      safe: :unsafe
+    )
+    puts 'document HTML built successfully'.light_green
+  rescue Exception => e
+    puts 'encountered error building HTML:'.light_red
+    puts e.message.light_red
+    puts 'build aborted'.light_red
+  end
+end
+
+def build_pdf_native(doc)
+  backend = 'pdf'
+  begin
+    Asciidoctor.convert_file(
+      doc,
+      backend: backend,
+      safe: :unsafe
+    )
+    puts 'document PDF built successfully'.light_green
+  rescue Exception => e
+    puts 'encountered error building PDF:'.light_red
+    puts e.message.light_red
+    puts 'build aborted'.light_red
+  end
+end
+
+def build_pdf_prince(doc)
+  build_document(doc, 'html', 'Building HTML...')
+  puts 'Building PDF...'
+  basename = doc.split('.').first
+  Subprocess.check_call(['prince', "#{basename}.html",
+                         '-o', "#{basename}.pdf"])
+  Subprocess.check_call(['strippdf', "#{basename}.pdf"])
+  puts 'Document PDF built successfully'.light_green
+rescue Subprocess::NonZeroExit => e
+  puts 'PDF build failed:'.light_red
+  puts e.message.light_red
+end
+
+def build_web_native(doc)
+  build_document(doc, 'html', 'Building HTML...')
+  puts 'Building PDF...'
+  basename = doc.split('.').first
+  Subprocess.check_call(['asciidoctor-web-pdf', "#{basename}.adoc"])
+  puts 'Document PDF built successfully'.light_green
+rescue Subprocess::NonZeroExit => e
+  puts 'PDf build failed:'.light_red
+  puts e.message.light_red
+end
+
+def watch_sources(args)
+  notifier = INotify::Notifier.new
+  first_fire = true
+
+  notifier.watch(args[:source].to_s, :modify) do
+    if first_fire
+      build_document(args[:source], args[:buildtype],
+                     "#{args[:source]} has been modified. Rebuilding...")
+      first_fire = false
+    else
+      first_fire = true
+    end
+  end
+
+  if args[:stylesheets]
+    args[:stylesheets].each { |stylesheet|
+      notifier.watch(stylesheet.to_s, :modify) do
+        if first_fire
+          build_document(args[:source], args[:buildtype],
+                        "#{stylesheet} has been modified. Rebuilding...")
+          first_fire = false
+        else
+          first_fire = true
+        end
+      end
+    }
+  end
+
+  puts "Builder is watching #{args[:source]}. Press Ctrl+c to terminate."
+  notifier.run
+end
+
+def read_opts
+  args = {}
+  OptionParser.new do |opts|
+    opts.banner =
+      "An AsciiDoctor-based Document build system. Because Word is awful, and\n" \
+      "    plaintext is better.\n" \
+      "Usage: adoc-build [options] <document.adoc>\n\n"
+
+    opts.on('-b [FORMAT]', '--buildtype [FORMAT]',
+            ['native', 'prince', 'html', 'both'], 'Type of doc to build') do |b|
+      args[:buildtype] = b
+    end
+
+    opts.on('-s STYLESHEET', '--stylesheet STYLESHEET',
+            'A stylesheet to watch (repeatable)') do |s|
+      if !args[:stylesheets].nil?
+        args[:stylesheets] << s
+      else
+        args[:stylesheets] = [s]
+      end
+    end
+
+    opts.on('-d', '--debug', 'Output debug text')
+
+    opts.on('-o', '--build-once', 'Build the document once, then exit')
+  end.parse!(into: args)
+  args[:source] = ARGV[0].nil? ? 'main' : ARGV[0]
+  args
+end
+
+args = read_opts
+puts "Welcome to the #{'Green Pace'.light_green} documentation builder."
+if args[:debug]
+  puts 'Debug output on'
+  pp args
+end
+build_document(args[:source], args[:buildtype], 'Building document....')
+unless args[:'build-once']
+  begin
+    watch_sources(args)
+  rescue Interrupt
+    puts "\nGoodbye"
+  end
+end
