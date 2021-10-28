@@ -115,14 +115,6 @@ shutdownmenu = awful.menu({
     { " Restart awesome", awesome.restart },
 })
 
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = shutdownmenu })
--- }}}
-
--- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
-
--- {{{ Wibar
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock('%a %F %H:%M ')
 
@@ -174,7 +166,7 @@ local function set_wallpaper(s)
         if type(wallpaper) == "function" then
             wallpaper = wallpaper(s)
         end
-        gears.wallpaper.maximized(wallpaper, s, true)
+        gears.wallpaper.maximized(wallpaper, s, false)
     end
 end
 
@@ -205,7 +197,7 @@ awful.screen.connect_for_each_screen(function(s)
     -- awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
     -- awful.tag({ "", "", "", "", "", "", "", "", "" }, s, awful.layout.layouts[1])
     awful.tag.add("", {
-                      layout = pick_tile_layout(s, true),
+                      layout = awful.layout.suit.max,
                       screen = s,
                       selected = s.index == 1
     })
@@ -230,7 +222,7 @@ awful.screen.connect_for_each_screen(function(s)
                       screen = s,
     })
     awful.tag.add("", {
-                      layout = pick_tile_layout(s, true),
+                      layout = awflu.layout.suit.floating,
                       screen = s,
     })
     awful.tag.add("", {
@@ -598,6 +590,12 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "'",
         function () awful.spawn("rofi -show calc") end,
         {description = "Rofi calculator", group = scripts_group}),
+    awful.key({ modkey,           }, "p",
+        function () awful.spawn("rofi-mpc") end,
+        {description = "Rofi mpc", group = scripts_group}),
+    awful.key({ modkey,           }, "e",
+        function () awful.spawn("rofi-bluetooth") end,
+        {description = "Rofi bluetoothctl", group = scripts_group}),
     awful.key({ modkey, "Shift"   }, "/",
         function ()
             local screen = awful.screen.focused()
@@ -791,9 +789,6 @@ globalkeys = gears.table.join(
                             for key, client in pairs(t:clients()) do
                                 client:move_to_tag(tag)
                             end
-                            naughty.notify({ preset = naughty.config.presets.critical,
-                                             title = "Found screen with docs:",
-                                             text = "Index: " .. s.index })
                         end
                         t.selected = false
                     end
