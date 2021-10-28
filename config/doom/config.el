@@ -114,7 +114,9 @@
 (add-hook! 'org-mode-hook 'org-mode-tweaks)
 (defun org-mode-tweaks ()
   (display-fill-column-indicator-mode 0)
-  (mixed-pitch-mode 1))
+  (mixed-pitch-mode 1)
+  (+word-wrap-mode 0)
+  (turn-off-auto-fill))
 
 (setq org-agenda-skip-deadline-prewarning-if-scheduled t)
 (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
@@ -189,8 +191,26 @@ biblatex
            ("\\subsection{%s}" . "\\subsection*{%s}")
            ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
            ("\\paragraph{%s}" . "\\paragraph*{%s}")
-           ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-        )
+           ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+          ("beamer"
+           "\\documentclass{beamer}
+[NO-DEFAULT-PACKAGES]
+[PACKAGES]
+\\usepackage{graphicx}
+\\usepackage{grffile}
+\\usepackage{longtable}
+\\usepackage{wrapfig}
+\\usepackage{rotating}
+\\usepackage[normalem]{ulem}
+\\usepackage{amsmath}
+\\usepackage{textcomp}
+\\usepackage{amssymb}
+\\usepackage{capt-of}"
+           ("\\section{%s}" . "\\section*{%s}")
+           ("\\subsection{%s}" . "\\subsection*{%s}")
+           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+           ("\\paragraph{%s}" . "\\paragraph*{%s}")
+           ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
   (setq org-latex-title-command "\\maketitle")
   )
 
