@@ -222,7 +222,7 @@ awful.screen.connect_for_each_screen(function(s)
                       screen = s,
     })
     awful.tag.add("", {
-                      layout = awflu.layout.suit.floating,
+                      layout = awful.layout.suit.floating,
                       screen = s,
     })
     awful.tag.add("", {
