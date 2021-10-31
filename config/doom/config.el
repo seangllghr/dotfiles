@@ -122,10 +122,42 @@
 (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
 ;; (setq! flycheck-global-modes '(not org-mode))
 
+;; custom ox-extras function to include only headlines tagged 'noignore'
+(defun org-export-noignore-headlines (data backend info)
+  "Remove headlines not tagged \"noignore\" retaining contents and promoting children.
+Each headline tagged \"noignore\" will not be removed retaining its
+contents and promoting any children headlines to the level of the
+parent."
+  (org-element-map data 'headline
+    (lambda (object)
+      (when (not (member "noignore" (org-element-property :tags object)))
+        (let ((level-top (org-element-property :level object))
+              level-diff)
+          (mapc (lambda (el)
+                  ;; recursively promote all nested headlines
+                  (org-element-map el 'headline
+                    (lambda (el)
+                      (when (equal 'headline (org-element-type el))
+                        (unless level-diff
+                          (setq level-diff (- (org-element-property :level el)
+                                              level-top)))
+                        (org-element-put-property el
+                          :level (- (org-element-property :level el)
+                                    level-diff)))))
+                  ;; insert back into parse tree
+                  (org-element-insert-before el object))
+                (org-element-contents object)))
+        (org-element-extract-element object)))
+    info nil)
+  data)
+
 (after! org
   (setq org-latex-pdf-process '("latexmk --xelatex --shell-escape %f"))
   (require 'ox-bibtex)
   (require 'ox-extra)
+  (add-to-list 'ox-extras '(noignore-headlines
+                            org-export-noignore-headlines
+                            org-export-filter-parse-tree-functions))
   (ox-extras-activate '(noignore-headlines))
   (setq org-latex-default-packages-alist
         '((""             "graphicx"  t)
