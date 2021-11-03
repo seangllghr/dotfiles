@@ -170,7 +170,14 @@ theme.titlebar_maximized_button_normal_inactive = themes_path .. "gruvbox/titleb
 -- }}}
 
 -- {{{ Window Swallowing
-theme.dont_swallow_classname_list = {"Emacs", "firefox", "qutebrowser", "Audacity"}
+theme.dont_swallow_classname_list = {
+  "Emacs",
+  "firefox",
+  "qutebrowser",
+  "Audacity",
+  "Inkscape",
+  "noswallow",
+}
 theme.dont_swallow_filter_activated = true
 -- }}}
 
