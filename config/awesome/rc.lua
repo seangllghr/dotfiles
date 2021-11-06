@@ -334,6 +334,16 @@ local spt_scratch = bling.module.scratchpad {
     reapply = true,
     dont_focus_before_close = false,
 }
+local mixer_scratch = bling.module.scratchpad {
+    command = "st -n scratch-pulsemixer -t 'PulseMixer' -e pulsemixer",
+    rule = { instance = "scratch-pulsemixer" },
+    sticky = true,
+    autoclose = true,
+    floating = true,
+    geometry = { x=0, y=30, width=1206, height=726 },
+    reapply = true,
+    dont_focus_before_close = false,
+}
 local file_scratch = bling.module.scratchpad {
     command = "st -n scratch-file -t 'File Manager' -e lf",
     rule = { instance = "scratch-file" },
@@ -621,6 +631,9 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "F4",
         function () spt_scratch:toggle() end,
         {description = "Toggle spotify-tui", group = launcher_group}),
+    awful.key({ modkey, "Mod1"    }, "F4",
+        function () mixer_scratch:toggle() end,
+        {description = "Toggle mixer console", group = launcher_group}),
 
     -- Function bindings
     awful.key({}, "Print", function () awful.spawn("") end,
