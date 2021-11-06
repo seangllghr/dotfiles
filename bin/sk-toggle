@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if pidof -xq screenkey; then
+    pkill screenkey
+else
+    screenkey &
+fi

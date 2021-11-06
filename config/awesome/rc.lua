@@ -621,6 +621,9 @@ globalkeys = gears.table.join(
 
         end,
         {description = "Rofi documentation picker", group = scripts_group}),
+    awful.key({ modkey            }, "=",
+        function () awful.spawn("sk-toggle") end,
+        {description = "Toggle screenkey", group = scripts_group}),
 
     -- Scratch applications
     awful.key({ modkey, }, "-", function () term_scratch:toggle() end,
