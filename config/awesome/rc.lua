@@ -65,6 +65,7 @@ editor_cmd = terminal .. " -e " .. editor
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
+altkey = "Mod1"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
@@ -414,7 +415,7 @@ globalkeys = gears.table.join(
               {description = "focus the next screen", group = screen_group}),
     awful.key({ modkey,           }, ",", function () awful.screen.focus_relative(-1) end,
               {description = "focus the previous screen", group = screen_group}),
-    awful.key({ modkey, "Mod1"    }, ".",
+    awful.key({ modkey, altkey    }, ".",
         function ()
             local curr_scr = awful.screen.focused()
             local next_scr = curr_scr.index < screen:count()
@@ -438,7 +439,7 @@ globalkeys = gears.table.join(
             t2:view_only()
         end,
         { description = "move tag to next screen", group = screen_group }),
-    awful.key({ modkey, "Mod1"    }, ",",
+    awful.key({ modkey, altkey    }, ",",
         function ()
             local curr_scr = awful.screen.focused()
             local prev_scr = curr_scr.index > 1
@@ -553,7 +554,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "Return",
         function () awful.spawn("st -c noswallow") end,
         {description = "Open an un-swallowable terminal", group = launcher_group}),
-    awful.key({ modkey, "Mod1"    }, "space",
+    awful.key({ modkey, altkey    }, "space",
         function () awful.spawn("emacs") end,
         {description = "Launch Emacs", group = launcher_group}),
     awful.key({ modkey,           }, "b",
@@ -582,10 +583,10 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "End",
         function () awful.spawn("sysact") end,
         {description = "System menu", group = scripts_group}),
-    awful.key({ modkey, "Mod1"    }, "Return",
+    awful.key({ modkey, altkey    }, "Return",
         function () awful.spawn("rofi -show ssh") end,
         {description = "Launch a remote (ssh) terminal", group = launcher_group}),
-    awful.key({ modkey, "Mod1"    }, "b",
+    awful.key({ modkey, altkey    }, "b",
         function () awful.spawn("rofi-chrome") end,
         {description = "Open URL in Chromium app window", group = launcher_group}),
     awful.key({ modkey,           }, "d",
@@ -624,14 +625,14 @@ globalkeys = gears.table.join(
     -- Scratch applications
     awful.key({ modkey, }, "-", function () term_scratch:toggle() end,
         {description = "Toggle scratch terminal", group = launcher_group}),
-    awful.key({ modkey, "Mod1" }, "Delete", function () task_scratch:toggle() end,
+    awful.key({ modkey, altkey }, "Delete", function () task_scratch:toggle() end,
         {description = "Toggle system monitor", group = launcher_group}),
     awful.key({ modkey, }, "r", function () file_scratch:toggle() end,
         {description = "Toggle file manager", group = launcher_group}),
     awful.key({ modkey,           }, "F4",
         function () spt_scratch:toggle() end,
         {description = "Toggle spotify-tui", group = launcher_group}),
-    awful.key({ modkey, "Mod1"    }, "F4",
+    awful.key({ modkey, altkey    }, "F4",
         function () mixer_scratch:toggle() end,
         {description = "Toggle mixer console", group = launcher_group}),
 
@@ -743,7 +744,7 @@ for i = 1, 10 do
             end,
             {description = "View tag #"..i, group = tag_group}),
         -- View tag on currently focused screen.
-        awful.key({ modkey, "Mod1" }, "#" .. i + 9,
+        awful.key({ modkey, altkey }, "#" .. i + 9,
             function ()
                 local screen = awful.screen.focused()
                 local tag = screen.tags[i]
