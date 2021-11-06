@@ -177,6 +177,7 @@ theme.dont_swallow_classname_list = {
   "Audacity",
   "Inkscape",
   "noswallow",
+  "obs",
 }
 theme.dont_swallow_filter_activated = true
 -- }}}
