@@ -9,6 +9,7 @@
 
 local themes_path = require("gears.filesystem").get_configuration_dir()
 local dpi = require("beautiful.xresources").apply_dpi
+local gears = require("gears")
 
 -- {{{ Main
 local theme = {}
@@ -55,19 +56,32 @@ gb_fg = fg_1
 -- {{{ Colors
 theme.fg_normal  = gb_fg_2
 theme.fg_focus   = gb_fg
-theme.fg_urgent  = gb_fg_0
-theme.bg_normal  = gb_bg_2
-theme.bg_focus   = gb_bg_h
-theme.bg_urgent  = gb_red
+theme.fg_urgent  = gb_b_red
+theme.bg_normal  = gb_bg_h
+theme.bg_focus   = theme.bg_normal
+theme.bg_urgent  = theme.bg_normal
 theme.bg_systray = theme.bg_normal
+
+theme.taglist_fg_focus = gb_b_blue
+theme.taglist_fg_occupied = gb_fg_4
 -- }}}
 
 -- {{{ Borders
 theme.useless_gap   = dpi(0)
 theme.border_width  = dpi(2)
-theme.border_normal = gb_bg_0
+theme.border_normal = gb_bg_h
 theme.border_focus  = gb_bg_3
 theme.border_marked = gb_fg
+
+-- theme.taglist_shape = gears.shape.rectangle
+-- theme.taglist_shape_border_width = 2
+-- theme.taglist_shape_border_color = theme.bg_normal
+-- theme.taglist_shape_border_color_focus = theme.border_focus
+
+theme.tasklist_shape = gears.shape.rectangle
+theme.tasklist_shape_border_width = 2
+theme.tasklist_shape_border_color = theme.bg_normal
+theme.tasklist_shape_border_color_focus = gb_fg_2
 -- }}}
 
 -- {{{ Titlebars
@@ -176,8 +190,10 @@ theme.dont_swallow_classname_list = {
   "qutebrowser",
   "Audacity",
   "Inkscape",
+  "kdenlive",
   "noswallow",
   "obs",
+  "Code",
 }
 theme.dont_swallow_filter_activated = true
 -- }}}

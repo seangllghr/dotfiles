@@ -219,7 +219,7 @@ awful.screen.connect_for_each_screen(function(s)
                       screen = s,
     })
     awful.tag.add("", {
-                      layout = pick_tile_layout(s, true),
+                      layout = awful.layout.suit.floating,
                       screen = s,
     })
     awful.tag.add("", {
@@ -269,7 +269,35 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytasklist = awful.widget.tasklist {
         screen  = s,
         filter  = awful.widget.tasklist.filter.currenttags,
-        buttons = tasklist_buttons
+        buttons = tasklist_buttons,
+        layout  = {
+            spacing = 8,
+            max_widget_size = 400,
+            layout = wibox.layout.flex.horizontal,
+        },
+        widget_template = {
+            {
+                {
+                    {
+                        {
+                            id     = 'icon_role',
+                            widget = wibox.widget.imagebox,
+                        },
+                        margins = 8,
+                        widget  = wibox.container.margin,
+                    },
+                    {
+                        id     = 'text_role',
+                        widget = wibox.widget.textbox,
+                    },
+                    layout = wibox.layout.fixed.horizontal,
+                },
+                right  = 8,
+                widget = wibox.container.margin,
+            },
+            id     = 'background_role',
+            widget = wibox.container.background,
+        },
     }
 
     -- Create the wibox
@@ -288,7 +316,7 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             -- mykeyboardlayout,
-            -- wibox.widget.systray(),
+            wibox.widget.systray(),
             mytextclock,
             s.mylayoutbox,
         },
@@ -311,7 +339,7 @@ local term_scratch = bling.module.scratchpad {
     sticky = true,
     autoclose = true,
     floating = true,
-    geometry = { x=0, y=30, width=1206, height=726 },
+    geometry = { x=0, y=29, width=1206, height=726 },
     reapply = true,
     dont_focus_before_close = false,
 }
@@ -321,7 +349,7 @@ local task_scratch = bling.module.scratchpad {
     sticky = true,
     autoclose = true,
     floating = true,
-    geometry = { x=0, y=30, width=1206, height=726 },
+    geometry = { x=0, y=29, width=1206, height=726 },
     reapply = true,
     dont_focus_before_close = false,
 }
@@ -331,7 +359,7 @@ local spt_scratch = bling.module.scratchpad {
     sticky = true,
     autoclose = true,
     floating = true,
-    geometry = { x=0, y=30, width=1206, height=726 },
+    geometry = { x=0, y=29, width=1206, height=726 },
     reapply = true,
     dont_focus_before_close = false,
 }
@@ -341,7 +369,7 @@ local mixer_scratch = bling.module.scratchpad {
     sticky = true,
     autoclose = true,
     floating = true,
-    geometry = { x=0, y=30, width=1206, height=726 },
+    geometry = { x=0, y=29, width=1206, height=726 },
     reapply = true,
     dont_focus_before_close = false,
 }
@@ -351,7 +379,7 @@ local file_scratch = bling.module.scratchpad {
     sticky = true,
     autoclose = true,
     floating = true,
-    geometry = { x=0, y=30, width=1206, height=726 },
+    geometry = { x=0, y=29, width=1206, height=726 },
     reapply = true,
     dont_focus_before_close = false,
 }
@@ -361,6 +389,7 @@ local file_scratch = bling.module.scratchpad {
 -- Binding groups
 awesome_group = "Awesome"
 client_group = "Client"
+floating_group = "Floating Clients"
 functions_group = "Function Keys"
 launcher_group = "Launcher"
 layout_group = "Layout"
@@ -378,7 +407,10 @@ globalkeys = gears.table.join(
               {description = "view next", group = tag_group}),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
               {description = "go back", group = tag_group}),
+    -- awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
+    --           {description = "show main menu", group = awesome_group}),
 
+    -- Client manipulation
     awful.key({ modkey,           }, "j",
         function ()
             awful.client.focus.byidx( 1)
@@ -391,14 +423,12 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = client_group}
     ),
-    -- awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-    --           {description = "show main menu", group = awesome_group}),
-
-    -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
               {description = "swap with next client by index", group = client_group}),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end,
               {description = "swap with previous client by index", group = client_group}),
+
+    -- Tiling manipulation
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
               {description = "increase master width factor", group = layout_group}),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)          end,
@@ -411,6 +441,59 @@ globalkeys = gears.table.join(
               {description = "increase the number of columns", group = layout_group}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = layout_group}),
+
+    -- Floating window positioning
+    awful.key({ modkey, altkey    }, "h",
+        function ()
+            awful.placement.top_left(client.focus)
+            client.focus.y = client.focus.y + 29
+        end,
+        {description = "Move floating client to top left", group = floating_group}),
+    awful.key({ modkey, altkey    }, "l",
+        function ()
+            awful.placement.top_right(client.focus)
+            client.focus.y = client.focus.y + 29
+        end,
+        {description = "Move floating client to top right", group = floating_group}),
+    awful.key({ modkey, altkey    }, "k",
+        function ()
+            awful.placement.top(client.focus)
+            client.focus.y = client.focus.y + 29
+        end,
+        {description = "Move floating client to top center", group = floating_group}),
+    awful.key({ modkey, altkey    }, "j",
+        function ()
+            awful.placement.centered(client.focus)
+        end,
+        {description = "Move floating client to center", group = floating_group}),
+    awful.key({ modkey, altkey, "Control" }, "h",
+        function ()
+            awful.placement.bottom_left(client.focus)
+        end,
+        {description = "Move floating client to bottom left", group = floating_group}),
+    awful.key({ modkey, altkey, "Control" }, "l",
+        function ()
+            awful.placement.bottom_right(client.focus)
+        end,
+        {description = "Move floating client to bottom right", group = floating_group}),
+    awful.key({ modkey, altkey, "Control" }, "j",
+        function ()
+            awful.placement.bottom(client.focus)
+        end,
+        {description = "Move floating client to bottom center", group = floating_group}),
+    awful.key({ modkey, "Control" }, "n",
+        function ()
+            local c = awful.client.restore()
+            -- Focus restored client
+            if c then
+                c:emit_signal(
+                    "request::activate", "key.unminimize", {raise = true}
+                )
+            end
+        end,
+        {description = "restore minimized", group = client_group}),
+
+    -- Screen manipulation
     awful.key({ modkey,           }, ".", function () awful.screen.focus_relative( 1) end,
               {description = "focus the next screen", group = screen_group}),
     awful.key({ modkey,           }, ",", function () awful.screen.focus_relative(-1) end,
@@ -479,7 +562,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Control" }, "q", awesome.quit,
               {description = "quit awesome", group = awesome_group}),
 
-    -- Layouts
+    -- Layout switching
     awful.key({ modkey,           }, "]", function () awful.layout.inc( 1)           end,
               {description = "select next", group = layout_group}),
     awful.key({ modkey,           }, "[", function () awful.layout.inc(-1)            end,
@@ -508,18 +591,6 @@ globalkeys = gears.table.join(
               {description = "Monocle layout", group = layout_group}),
     awful.key({ modkey, "Shift"   }, "o", function () awful.layout.set(awful.layout.layouts[12]) end,
               {description = "Floating layout", group = layout_group}),
-
-    awful.key({ modkey, "Control" }, "n",
-              function ()
-                  local c = awful.client.restore()
-                  -- Focus restored client
-                  if c then
-                    c:emit_signal(
-                        "request::activate", "key.unminimize", {raise = true}
-                    )
-                  end
-              end,
-              {description = "restore minimized", group = client_group}),
 
     -- Prompt
     -- awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
@@ -594,7 +665,7 @@ globalkeys = gears.table.join(
         {description = "Search pass database", group = scripts_group}),
     awful.key({ modkey, "Shift"   }, "d",
         function () awful.spawn("rofi-pass --insert") end,
-        {description = "Add new password to pass database"}),
+        {description = "Add new password to pass database", group = scripts_group}),
     awful.key({ modkey,           }, "`",
         function () awful.spawn("rofimoji") end,
         {description = "Rofi emoji picker", group = scripts_group}),
@@ -661,10 +732,10 @@ globalkeys = gears.table.join(
         function () awful.spawn("pulsemixer --toggle-mute") end,
         {description = "Mute audio", group = functions_group}),
     awful.key({}, "XF86AudioLowerVolume",
-        function () awful.spawn("pulsemixer --change-volume -5") end,
+        function () awful.spawn("pulsemixer --change-volume -2") end,
         {description = "Lower volume", group = functions_group}),
     awful.key({}, "XF86AudioRaiseVolume",
-        function () awful.spawn("pulsemixer --change-volume +5") end,
+        function () awful.spawn("pulsemixer --change-volume +2") end,
         {description = "Raise volume", group = functions_group})
 )
 
@@ -853,7 +924,7 @@ awful.rules.rules = {
                      keys = clientkeys,
                      buttons = clientbuttons,
                      screen = awful.screen.preferred,
-                     placement = awful.placement.no_overlap+awful.placement.no_offscreen
+                     placement = awful.placement.no_overlap+awful.placement.no_offscreen+awful.placement.center
      }
     },
 
@@ -909,6 +980,63 @@ awful.rules.rules = {
       }
     },
 
+    -- Edit with Emacs frame
+    { rule = { name = "Edit with Emacs FRAME" },
+      properties = {
+          floating = true,
+          width = 800,
+          height = 500,
+          placement = awful.placement.centered,
+      }
+    },
+
+    -- Messaging Apps
+
+    { -- Half width
+        rule_any = {
+            name = {
+                "Signal",
+            }
+        },
+        properties = {
+            maximized_vertical = true,
+            width = 840,
+            tag = "",
+        }
+    },
+
+    { -- Three-quarter width
+        rule_any = {
+            name = {
+                "Gmail", "mail.google.com",
+                "Outlook", "outlook.office.com",
+                "Pulse SMS", "pulsesms.app",
+                "Discord",
+            },
+            class = {
+                "zoom"
+            }
+        },
+        except = {
+            name = "Settings"
+        },
+        properties = {
+            maximized_vertical = true,
+            width = 1200,
+            tag = "",
+        }
+    },
+
+    { -- Zoom settings popover
+        match = {
+            name = "Settings",
+            class = "zoom"
+        },
+        properties = {
+            placement = awful.placement.centered
+        }
+    },
+
     -- Default tags
     {
         rule_any = {
@@ -916,7 +1044,9 @@ awful.rules.rules = {
                 "Emacs",
                 "Code",
             }
-        }, properties = { tag = "" }
+        },
+        except = { name = "Edit with Emacs FRAME" },
+        properties = { tag = "" }
     },
     {
         rule_any = {
