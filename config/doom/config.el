@@ -23,14 +23,15 @@
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 (setq doom-font (font-spec
                  :family "JetBrains Mono"
-                 :size 15
+                 :size 16
                  )
       doom-variable-pitch-font (font-spec
                                 :family "Libertinus Sans"
                                 :size 20)
       doom-unicode-font (font-spec
-                         :family "Noto Mono"
-                         :size 14))
+                         :family "Noto Sans Mono"
+                         :size 16))
+
 (setq! +ligatures-extra-symbols
        ;; Not sure why, but several of the default symbols don't seem to exist
        '(:name          "»"
@@ -80,6 +81,7 @@
 ;; `load-theme' function. This is the default:
 ;; (setq doom-theme 'doom-tomorrow-night)
 (setq doom-theme 'doom-gruvbox)
+(setq doom-gruvbox-dark-variant "hard")
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -299,7 +301,7 @@ biblatex
 (setq org-superstar-item-bullet-alist
       '((?* . ?•)
         (?+ . ?+)
-        (?- . ?-)))
+        (?- . ?—)))
 
 (setq org-hide-emphasis-markers t)
 
