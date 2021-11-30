@@ -31,6 +31,44 @@
       doom-unicode-font (font-spec
                          :family "Noto Mono"
                          :size 14))
+(setq! +ligatures-extra-symbols
+       ;; Not sure why, but several of the default symbols don't seem to exist
+       '(:name          "»"
+         :src_block     "»"
+         :src_block_end "«"
+         :quote         "“"
+         :quote_end     "”"
+         ;; Functional
+         :lambda        "λ"
+         :def           "ƒ"
+         :composition   "∘"
+         :map           "↦"
+         ;; Types
+         :null          "∅"
+         :true          "⊤"
+         :false         "⊥"
+         :int           "ℤ"
+         :float         "ℝ"
+         :str           "𝕊"
+         :bool          "⊤⊥"
+         :list          "[]"
+         ;; Flow
+         :not           "¬"
+         :in            "∈"
+         :not-in        "∉"
+         :and           "∧"
+         :or            "∨"
+         :for           "∀"
+         :some          "∃"
+         :return        "⟼"
+         :yield         "⟻"
+         ;; Other
+         :union         "⋃"
+         :intersect     "∩"
+         :diff          "∖"
+         :tuple         "⨂"
+         :pipe          ""
+         :dot           "•"))
 
 (use-package! mixed-pitch
   :config
