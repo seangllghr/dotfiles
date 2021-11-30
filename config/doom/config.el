@@ -160,6 +160,8 @@
 
 (setq org-agenda-skip-deadline-prewarning-if-scheduled t)
 (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+(setq org-agenda-skip-scheduled-if-done t)
+(setq org-agenda-skip-deadline-if-done t)
 ;; (setq! flycheck-global-modes '(not org-mode))
 
 ;; custom ox-extras function to include only headlines tagged 'noignore'
