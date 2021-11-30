@@ -149,7 +149,7 @@
 (setq web-mode-css-indent-offset 2)
 (setq web-mode-code-indent-offset 2)
 
-;;******************** ORG CUSTOMIZATIONS ********************;;
+;;********************* ORG CUSTOMIZATIONS *********************;;
 
 (add-hook! 'org-mode-hook 'org-mode-tweaks)
 (defun org-mode-tweaks ()
@@ -328,7 +328,7 @@ biblatex
 (def-and-bind-quoted-text-obj "plus" "+" "+" "+")
 (def-and-bind-quoted-text-obj "underscore" "_" "_" "_")
 
-;; Email stuff =======================================================
+;; Email stuff ======================================================
 
 ;; Add mu4e to loadpath on Ubuntu
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
