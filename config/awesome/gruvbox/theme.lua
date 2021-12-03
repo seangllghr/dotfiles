@@ -68,8 +68,8 @@ theme.taglist_fg_occupied = gb_fg_4
 
 -- {{{ Borders
 theme.useless_gap   = dpi(0)
-theme.border_width  = dpi(2)
-theme.border_normal = gb_bg_h
+theme.border_width  = dpi(1)
+theme.border_normal = gb_bg_0
 theme.border_focus  = gb_bg_3
 theme.border_marked = gb_fg
 
