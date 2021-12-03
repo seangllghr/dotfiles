@@ -196,7 +196,7 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Each screen has its own tag table.
     -- awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
-    -- awful.tag({ "", "", "", "", "", "", "", "", "" }, s, awful.layout.layouts[1])
+    -- awful.tag({ "", "", "", "", "", "", "", "", "", "" }, s, awful.layout.layouts[1])
     awful.tag.add("", {
                       layout = awful.layout.suit.max,
                       screen = s,
@@ -230,9 +230,11 @@ awful.screen.connect_for_each_screen(function(s)
                       layout = pick_tile_layout(s, true),
                       screen = s,
     })
-    awful.tag.add("", {
-                      layout = pick_tile_layout(s, true),
+    awful.tag.add("", {
+                      layout = pick_tile_layout(s, false),
                       screen = s,
+                      master_width_factor = .9,
+                      master_count = 2
     })
     awful.tag.add("", {
                       layout = pick_tile_layout(s, true),
@@ -441,6 +443,10 @@ globalkeys = gears.table.join(
               {description = "increase the number of columns", group = layout_group}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = layout_group}),
+    awful.key({ modkey, altkey    }, "]", function () awful.client.incwfact( 0.25, client.focus) end,
+              {description = "increase window width", group = layout_group}),
+    awful.key({ modkey, altkey    }, "[", function () awful.client.incwfact(-0.125, client.focus) end,
+              {description = "decrease window width", group = layout_group}),
 
     -- Floating window positioning
     awful.key({ modkey, altkey    }, "h",
