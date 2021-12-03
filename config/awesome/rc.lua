@@ -996,6 +996,7 @@ awful.rules.rules = {
         rule_any = {
             name = {
                 "Signal",
+                "Discord",
             }
         },
         properties = {
@@ -1011,7 +1012,6 @@ awful.rules.rules = {
                 "Gmail", "mail.google.com",
                 "Outlook", "outlook.office.com",
                 "Pulse SMS", "pulsesms.app",
-                "Discord",
             },
             class = {
                 "zoom"
