@@ -55,7 +55,7 @@ local bling = require("bling")
 bling.module.window_swallowing.start()
 
 -- This is used later as the default terminal and editor to run.
-terminal = "st"
+terminal = "alacritty"
 editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -334,7 +334,7 @@ root.buttons(gears.table.join(
 
 --- {{{ Scratchpad
 local term_scratch = bling.module.scratchpad {
-    command = "st -n scratch-term -t 'Scratch Terminal'",
+    command = "alacritty --class scratch-term -t 'Scratch Terminal'",
     rule = { instance = "scratch-term" },
     sticky = true,
     autoclose = true,
@@ -344,7 +344,7 @@ local term_scratch = bling.module.scratchpad {
     dont_focus_before_close = false,
 }
 local task_scratch = bling.module.scratchpad {
-    command = "st -n scratch-task -t 'htop' -e htop",
+    command = "alacritty --class scratch-task -t 'htop' -e htop",
     rule = { instance = "scratch-task" },
     sticky = true,
     autoclose = true,
@@ -354,7 +354,7 @@ local task_scratch = bling.module.scratchpad {
     dont_focus_before_close = false,
 }
 local spt_scratch = bling.module.scratchpad {
-    command = "st -n scratch-spt -t 'Spotify' -e spt",
+    command = "alacritty --class scratch-spt -t 'Spotify' -e spt",
     rule = { instance = "scratch-spt" },
     sticky = true,
     autoclose = true,
@@ -364,7 +364,7 @@ local spt_scratch = bling.module.scratchpad {
     dont_focus_before_close = false,
 }
 local mixer_scratch = bling.module.scratchpad {
-    command = "st -n scratch-pulsemixer -t 'PulseMixer' -e pulsemixer",
+    command = "alacritty --class scratch-pulsemixer -t 'PulseMixer' -e pulsemixer",
     rule = { instance = "scratch-pulsemixer" },
     sticky = true,
     autoclose = true,
@@ -374,7 +374,7 @@ local mixer_scratch = bling.module.scratchpad {
     dont_focus_before_close = false,
 }
 local file_scratch = bling.module.scratchpad {
-    command = "st -n scratch-file -t 'File Manager' -e lf",
+    command = "alacritty --class scratch-file -t 'File Manager' -e lf",
     rule = { instance = "scratch-file" },
     sticky = true,
     autoclose = true,
@@ -623,7 +623,7 @@ globalkeys = gears.table.join(
         function () awful.spawn(terminal) end,
         {description = "open a terminal", group = launcher_group}),
     awful.key({ modkey, "Shift" }, "Return",
-        function () awful.spawn("st -c noswallow") end,
+        function () awful.spawn("alacritty --class noswallow") end,
         {description = "Open an un-swallowable terminal", group = launcher_group}),
     awful.key({ modkey, altkey    }, "space",
         function () awful.spawn("emacs") end,
