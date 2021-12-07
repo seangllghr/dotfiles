@@ -27,7 +27,7 @@
                  )
       doom-variable-pitch-font (font-spec
                                 :family "Libertinus Sans"
-                                :size 20)
+                                :size 19)
       doom-unicode-font (font-spec
                          :family "Noto Sans Mono"
                          :size 16))
@@ -148,6 +148,9 @@
 (setq web-mode-markup-indent-offset 2)
 (setq web-mode-css-indent-offset 2)
 (setq web-mode-code-indent-offset 2)
+
+(setq treemacs-indentation 1)
+(setq treemacs-indentation-string "│")
 
 ;;********************* ORG CUSTOMIZATIONS *********************;;
 
