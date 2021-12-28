@@ -23,11 +23,11 @@
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 (setq doom-font (font-spec
                  :family "JetBrains Mono"
-                 :size 16
+                 :size 15
                  )
       doom-variable-pitch-font (font-spec
                                 :family "Libertinus Sans"
-                                :size 19)
+                                :size 20)
       doom-unicode-font (font-spec
                          :family "Noto Sans Mono"
                          :size 16))
@@ -75,6 +75,15 @@
   :config
   (setq mixed-pitch-set-height t)
   (set-face-attribute 'variable-pitch nil :height 1.3))
+
+;; Modeline customizations
+(custom-set-faces!
+  '(mode-line :family "JetBrains Mono Medium" :height 0.9)
+  '(mode-line-inactive :family "JetBrains Mono Medium" :height 0.9))
+(setq! doom-modeline-buffer-file-name-style 'truncate-with-project)
+
+;; Treemacs
+(setq! +treemacs-git-mode 'deferred)
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
