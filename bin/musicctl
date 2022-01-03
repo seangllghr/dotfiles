@@ -1,0 +1,85 @@
+#!/bin/bash
+
+playpause () {
+    case "$1" in
+        mpd)
+            mpc toggle
+            ;;
+        spotifyd)
+            spt playback --toggle --format "%s %t — %a"
+            ;;
+        *)
+            echo "No player running"
+            ;;
+    esac
+}
+
+next () {
+    case "$1" in
+        mpd)
+            mpc next
+            ;;
+        spotifyd)
+            spt playback --next --format "%s %t — %a"
+            ;;
+        *)
+            echo "No player running"
+            ;;
+    esac
+}
+
+previous () {
+    case "$1" in
+        mpd)
+            mpc previous
+            ;;
+        spotifyd)
+            spt playback --previous --format "%s %t — %a"
+            ;;
+        *)
+            echo "No player running"
+            ;;
+    esac
+}
+
+stop () {
+    case "$1" in
+        mpd)
+            pkill mpd
+            echo "Stopping mpd process"
+            ;;
+        spotifyd)
+            systemctl --user stop spotifyd.service
+            echo "Stopping spotify daemon"
+            ;;
+        *)
+            echo "No player running"
+            ;;
+    esac
+}
+
+player=""
+if pidof mpd &>/dev/null; then
+    player="mpd"
+elif systemctl --user -q is-active spotifyd.service; then
+    player="spotifyd"
+fi
+
+if [[ "$#" -eq 0 ]]; then
+    notify-send -t 1250 -u critical "No operation supplied!"
+else
+    case "$1" in
+        "play"|"pause"|"toggle")
+            notify-send -t 1250 "$(playpause "$player")"
+            ;;
+        "next")
+            notify-send -t 1250 "$(next "$player")"
+            ;;
+        "previous")
+            notify-send -t 1250 "$(previous "$player")"
+            ;;
+        "stop")
+            notify-send -t 1250 "$(stop "$player")"
+            ;;
+    esac
+fi
