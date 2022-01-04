@@ -31,7 +31,7 @@ next () {
 previous () {
     case "$1" in
         mpd)
-            mpc previous
+            mpc prev
             ;;
         spotifyd)
             spt playback --previous --format "%s %t — %a"
