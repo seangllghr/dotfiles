@@ -205,6 +205,16 @@ parent."
     info nil)
   data)
 
+(defun org-export-activate-ignore-headlines ()
+  "Activates ignore-headlines and deactivates noignore-headlines"
+  (ox-extras-deactivate '(noignore-headlines))
+  (ox-extras-activate '(ignore-headlines)))
+
+(defun org-export-activate-noignore-headlines ()
+  "Deactivates ignore-headlines and activates noignore-headlines"
+  (ox-extras-deactivate '(ignore-headlines))
+  (ox-extras-activate '(noignore-headlines)))
+
 (after! org
   (setq org-latex-pdf-process '("latexmk --xelatex --shell-escape %f"))
   (require 'ox-bibtex)
