@@ -723,7 +723,7 @@ globalkeys = gears.table.join(
         {description = "Toggle screenkey", group = scripts_group}),
 
     -- Scratch applications
-    awful.key({ modkey, }, "-", function () term_scratch:toggle() end,
+    awful.key({ modkey, }, "-", function () qalc_scratch:toggle() end,
         {description = "Toggle scratch terminal", group = launcher_group}),
     awful.key({ modkey, altkey }, "Delete", function () task_scratch:toggle() end,
         {description = "Toggle system monitor", group = launcher_group}),
@@ -733,7 +733,7 @@ globalkeys = gears.table.join(
         {description = "Toggle spotify-tui", group = launcher_group}),
     awful.key({ modkey, altkey    }, "F4", function () mixer_scratch:toggle() end,
         {description = "Toggle mixer console", group = launcher_group}),
-    awful.key({ modkey,           }, "'", function () qalc_scratch:toggle() end,
+    awful.key({ modkey,           }, "'", function () term_scratch:toggle() end,
         {description = "Toggle qalc session", group = launcher_group}),
     awful.key({ modkey, altkey   }, "p", function () py3_scratch:toggle() end,
         {description =  "Toggle Python REPL", launcher_group}),
