@@ -23,13 +23,13 @@
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 (setq doom-font (font-spec
                  :family "JetBrains Mono"
-                 :size 15
+                 :size 16
                  )
       doom-variable-pitch-font (font-spec
                                 :family "Libertinus Sans"
-                                :size 20)
+                                :size 21)
       doom-unicode-font (font-spec
-                         :family "Noto Sans Mono"
+                         :family "JuliaMono"
                          :size 16))
 
 (setq! +ligatures-extra-symbols
