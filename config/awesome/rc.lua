@@ -385,6 +385,26 @@ local file_scratch = bling.module.scratchpad {
     reapply = true,
     dont_focus_before_close = false,
 }
+local qalc_scratch = bling.module.scratchpad {
+    command = "alacritty --class scratch-qalc -t 'Calculator' -e qalc",
+    rule = { instance = "scratch-qalc" },
+    sticky = true,
+    autoclose = false,
+    floating = true,
+    geometry = { x=0, y=29, width=1206, height=768 },
+    reapply = true,
+    dont_focus_before_close = false,
+}
+local py3_scratch = bling.module.scratchpad {
+    command = "alacritty --class scratch-py3 -t 'Python' -e bpython",
+    rule = { instance = "scratch-py3" },
+    sticky = true,
+    autoclose = false,
+    floating = true,
+    geometry = { x=0, y=29, width=1206, height=768 },
+    reapply = true,
+    dont_focus_before_close = false,
+}
 --- }}}
 
 -- {{{ Key bindings
@@ -678,9 +698,9 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "Print",
         function () awful.spawn("maimpick") end,
         {description = "Screenshot menu", group = scripts_group}),
-    awful.key({ modkey,           }, "'",
-        function () awful.spawn("rofi -show calc") end,
-        {description = "Rofi calculator", group = scripts_group}),
+    -- awful.key({ modkey,           }, "'",
+    --     function () awful.spawn("rofi -show calc") end,
+    --     {description = "Rofi calculator", group = scripts_group}),
     awful.key({ modkey,           }, "p",
         function () awful.spawn("rofi-mpc") end,
         {description = "Rofi mpc", group = scripts_group}),
@@ -709,12 +729,14 @@ globalkeys = gears.table.join(
         {description = "Toggle system monitor", group = launcher_group}),
     awful.key({ modkey, }, "r", function () file_scratch:toggle() end,
         {description = "Toggle file manager", group = launcher_group}),
-    awful.key({ modkey,           }, "F4",
-        function () spt_scratch:toggle() end,
+    awful.key({ modkey,           }, "F4", function () spt_scratch:toggle() end,
         {description = "Toggle spotify-tui", group = launcher_group}),
-    awful.key({ modkey, altkey    }, "F4",
-        function () mixer_scratch:toggle() end,
+    awful.key({ modkey, altkey    }, "F4", function () mixer_scratch:toggle() end,
         {description = "Toggle mixer console", group = launcher_group}),
+    awful.key({ modkey,           }, "'", function () qalc_scratch:toggle() end,
+        {description = "Toggle qalc session", group = launcher_group}),
+    awful.key({ modkey, altkey   }, "p", function () py3_scratch:toggle() end,
+        {description =  "Toggle Python REPL", launcher_group}),
 
     -- Function bindings
     awful.key({}, "Print", function () awful.spawn("") end,
