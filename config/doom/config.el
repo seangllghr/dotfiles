@@ -222,7 +222,7 @@ parent."
   (add-to-list 'ox-extras '(noignore-headlines
                             org-export-noignore-headlines
                             org-export-filter-parse-tree-functions))
-  (ox-extras-activate '(noignore-headlines))
+  (ox-extras-activate '(ignore-headlines))
   (setq org-latex-default-packages-alist
         '((""             "graphicx"  t)
           (""             "grffile"   t)
