@@ -15,6 +15,7 @@
 (package! mu4e-alert)
 (package! adoc-mode)
 (package! lorem-ipsum)
+(package! org-re-reveal-ref)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:

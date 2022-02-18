@@ -312,7 +312,7 @@ biblatex
 
 (setq-default org-display-custom-times t)
 (setq org-time-stamp-custom-formats
-      '("​%A, %d %B %Y​" . "​%A, %d %B %Y, %H:%M %Z​"))
+      '("​%A, %d %B, %Y​" . "​%A, %d %B, %Y, %H:%M %Z​"))
 
 (setq org-superstar-headline-bullets-list
        '("◈"
@@ -349,6 +349,7 @@ biblatex
 (def-and-bind-quoted-text-obj "slash" "/" "/" "/")
 (def-and-bind-quoted-text-obj "plus" "+" "+" "+")
 (def-and-bind-quoted-text-obj "underscore" "_" "_" "_")
+
 
 ;; Email stuff ======================================================
 
