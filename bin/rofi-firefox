@@ -1,0 +1,21 @@
+#!/bin/sh
+
+historydb="$HOME/.mozilla/firefox/ymj4rf6a.default-release/places.sqlite"
+
+# Firefox locks its history database while it's running. To use it, we need to
+# make a copy before we launch our first Firefox window. Unfortunately, this
+# means that history doesn't contain anything from the current session, but
+# that's a minor price to pay for a dirty hack that gets things working without
+# too much time investment.
+# TODO: It would be nice to solve this correctly at some point.
+if ! pidof firefox; then
+  cp "$historydb" "$(basename "$historydb" .sqlite)_working.sqlite"
+fi
+
+historydb="$(basename "$historydb" .sqlite)_working.sqlite"
+url=$(sqlite3 "$historydb" "SELECT url FROM moz_places ORDER BY last_visit_date ASC;" |
+          tail -n 100 | rofi -dmenu -matching regex -i -p "Enter URL")
+
+if ! [ "$url" = "" ]; then
+    firefox "$url"
+fi

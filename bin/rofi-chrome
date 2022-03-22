@@ -1,0 +1,12 @@
+#!/bin/sh
+
+[ ! -f "$HOME/.config/rofi/chrome-apps" ] && touch "$HOME/.config/rofi/chrome-apps"
+appfile="$HOME/.config/rofi/chrome-apps"
+chromeapp=$(cat "$appfile" | dmenu -i -p "Enter URL")
+
+if ! [ "$chromeapp" = "" ]; then
+    if ! grep "$chromeapp" "$appfile"; then
+        echo "$chromeapp" >> "$appfile"
+    fi
+    chromium --app="$chromeapp"
+fi

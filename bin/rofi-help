@@ -1,0 +1,18 @@
+#!/bin/bash
+
+list_available_docs () {
+    for dir in /home/sean/Documents/reading/Documentation/*;
+        do ls -1d "$dir"/*.pdf;
+    done
+    apropos -r '.*'
+}
+
+query=$(list_available_docs | rofi -dmenu -matching regex -i -p "Select a doc")
+
+if ! [ "$query" = "" ]; then
+    if [[ "$query" == *.pdf ]]; then
+        zathura -e "$(tabbed -n 'man-doc' -c -d)" "$query"
+    else
+        alacritty --class 'man-doc' -e man "$(echo "$query" | cut -d ' ' -f 1)"
+    fi
+fi
