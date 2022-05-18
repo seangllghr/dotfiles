@@ -352,41 +352,44 @@ biblatex
 
 
 ;; Email stuff ======================================================
+;;   Note: It's no longer safe (or, rather, it's never really been safe) to
+;;   assume that mail is configured when I reinstall. Thus, we're going to start
+;;   with this section commented.
 
-;; Add mu4e to loadpath on Ubuntu
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
+;; ;; Add mu4e to loadpath on Ubuntu
+;; (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 
-;; General email settings
-(set-email-account!
- "seangllghr@gmail.com"
- '((mu4e-sent-folder    . "/seangllghr@gmail.com/[Gmail]/Sent Mail")
-   (mu4e-drafts-folder  . "/seangllghr@gmail.com/[Gmail]/Drafts")
-   (mu4e-trash-folder   . "/seangllghr@gmail.com/[Gmail]/Trash")
-   (mu4e-refile-folder  . "/seangllghr@gmail.com/[Gmail]/All Mail")
-   (smtpmail-smtp-user  . "seangllghr@gmail.com"))
- t)
+;; ;; General email settings
+;; (set-email-account!
+;;  "seangllghr@gmail.com"
+;;  '((mu4e-sent-folder    . "/seangllghr@gmail.com/[Gmail]/Sent Mail")
+;;    (mu4e-drafts-folder  . "/seangllghr@gmail.com/[Gmail]/Drafts")
+;;    (mu4e-trash-folder   . "/seangllghr@gmail.com/[Gmail]/Trash")
+;;    (mu4e-refile-folder  . "/seangllghr@gmail.com/[Gmail]/All Mail")
+;;    (smtpmail-smtp-user  . "seangllghr@gmail.com"))
+;;  t)
 
-(setq message-send-mail-function 'smtpmail-send-it
-      mu4e-get-mail-command "true"
-      mu4e-index-cleanup t
-      mu4e-index-lazy-check nil
-      starttls-use-gnutls t
-      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-      smtpmail-auth-credentials '(("smtp.gmail.com" 587 "seangllghr@gmail.com" nil))
-      smtpmail-default-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-service 587)
+;; (setq message-send-mail-function 'smtpmail-send-it
+;;       mu4e-get-mail-command "true"
+;;       mu4e-index-cleanup t
+;;       mu4e-index-lazy-check nil
+;;       starttls-use-gnutls t
+;;       smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+;;       smtpmail-auth-credentials '(("smtp.gmail.com" 587 "seangllghr@gmail.com" nil))
+;;       smtpmail-default-smtp-server "smtp.gmail.com"
+;;       smtpmail-smtp-server "smtp.gmail.com"
+;;       smtpmail-smtp-service 587)
 
-;; (mu4e-alert-set-default-style 'libnotify)
-;; (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
-;; (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
-;; (setq! mu4e-update-interval 300)
-(setq org-msg-options "html-postamble:nil H:5 num:nil ^:{} toc:nil author:nil email:nil"
-      org-msg-startup "hidestars indent inlineimages"
-      org-msg-default-alternatives '((new               . (text html))
-                                     (reply-to-html     . (text html))
-                                     (reply-to-text     . (text)))
-      org-msg-convert-citation t)
+;; ;; (mu4e-alert-set-default-style 'libnotify)
+;; ;; (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
+;; ;; (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+;; ;; (setq! mu4e-update-interval 300)
+;; (setq org-msg-options "html-postamble:nil H:5 num:nil ^:{} toc:nil author:nil email:nil"
+;;       org-msg-startup "hidestars indent inlineimages"
+;;       org-msg-default-alternatives '((new               . (text html))
+;;                                      (reply-to-html     . (text html))
+;;                                      (reply-to-text     . (text)))
+;;       org-msg-convert-citation t)
 
 ;; Extra keybinds
 (map! (:leader (:prefix "t" :desc "Golden ratio" "G" #'golden-ratio-mode))
