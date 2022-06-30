@@ -2,7 +2,7 @@
 
 list_available_docs () {
     for dir in /home/sean/Documents/reading/Documentation/*;
-        do ls -1d "$dir"/*.pdf;
+        do ls -1d "$dir"/*.{pdf,epub};
     done
     apropos -r '.*'
 }
@@ -10,7 +10,7 @@ list_available_docs () {
 query=$(list_available_docs | rofi -dmenu -matching regex -i -p "Select a doc")
 
 if ! [ "$query" = "" ]; then
-    if [[ "$query" == *.pdf ]]; then
+    if [[ "$query" == *.pdf ]] || [[ "$query" == *.epub ]]; then
         zathura -e "$(tabbed -n 'man-doc' -c -d)" "$query"
     else
         alacritty --class 'man-doc' -e man "$(echo "$query" | cut -d ' ' -f 1)"
