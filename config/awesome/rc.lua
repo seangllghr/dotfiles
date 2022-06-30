@@ -15,6 +15,10 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 
+function rtrim(s)
+  return s:match'^(.*%S)%s*$'
+end
+
 -- Third-party extensions
 -- Bling (github.com/Nooo37/bling) must be required after beautiful.init
 
@@ -419,6 +423,8 @@ screen_group = "Screen"
 scripts_group = "Scripts"
 tag_group = "Tag"
 
+Volume_ID = naughty.notify({text = "Volume Notifications Active"}).id
+
 -- Bindings
 globalkeys = gears.table.join(
     awful.key({ modkey,           }, "F1",      hotkeys_popup.show_help,
@@ -757,10 +763,34 @@ globalkeys = gears.table.join(
         function () awful.spawn("pulsemixer --toggle-mute") end,
         {description = "Mute audio", group = functions_group}),
     awful.key({}, "XF86AudioLowerVolume",
-        function () awful.spawn("pulsemixer --change-volume -2") end,
+        function ()
+            awful.spawn("pamixer -d 2")
+            awful.spawn.easy_async(
+                "pamixer --get-volume",
+                function (stdout, stderr, reason, exit_code)
+                    naughty.notify {
+                        text = "Volume: " .. rtrim(stdout),
+                        timeout = 1.5,
+                        replaces_id = Volume_ID
+                    }
+                end
+            )
+        end,
         {description = "Lower volume", group = functions_group}),
     awful.key({}, "XF86AudioRaiseVolume",
-        function () awful.spawn("pulsemixer --change-volume +2") end,
+        function ()
+            awful.spawn("pamixer -i 2")
+            awful.spawn.easy_async(
+                "pamixer --get-volume",
+                function (stdout, stderr, reason, exit_code)
+                    naughty.notify {
+                        text = "Volume: " .. rtrim(stdout),
+                        timeout = 1.5,
+                        replaces_id = Volume_ID
+                    }
+                end
+            )
+        end,
         {description = "Raise volume", group = functions_group})
 )
 
