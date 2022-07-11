@@ -59,10 +59,13 @@ alias free='free -m'               # Show sizes in MB
 alias gitu='git add . && git commit && git push'
 
 # Convenient and pretty ls aliases
-alias ls='ls --color=always'
-alias la='ls -a'
-alias ll='ls -lah'
-alias lal='ls -la --color=always | less -r'
+alias ls='exa --icons --color=always'\
+      la='ls -a'\
+      ll='ls -la'\
+      lal='ls -la | less -r'
+
+# Colorize commands that deserve it
+alias grep='grep --color=auto'
 
 # And tell less to keep color
 alias less='less -r' # This may be redundant with L164
