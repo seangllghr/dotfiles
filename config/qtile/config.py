@@ -33,53 +33,61 @@ from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
 mod = "mod4"
+alt = "mod1"
+shft = "shift"
+ctrl = "control"
 terminal = guess_terminal()
 
 keys = [
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
-    # Switch between windows
-    Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
-    Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
+    # Move focus through the window list
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
-    Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
-    Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
-    Key([mod, "shift"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
-    Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
-    Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
-    # Grow windows. If current window is on the edge of screen and direction
-    # will be to screen edge - window would shrink.
-    Key([mod, "control"], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
-    Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
-    Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
-    Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
+    Key([mod, shft], "j", lazy.layout.shuffle_down(), desc="Move window down"),
+    Key([mod, shft], "k", lazy.layout.shuffle_up(), desc="Move window up"),
+    # Change window sizes
+    Key([mod], "h", lazy.layout.shrink(), desc="Shrink window"),
+    Key([mod], "l", lazy.layout.grow(), desc="Expand window"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+    Key([mod], "m", lazy.layout.maximize(), desc="Maximize focused window"),
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
     # multiple stack panes
-    Key(
-        [mod, "shift"],
-        "Return",
-        lazy.layout.toggle_split(),
-        desc="Toggle between split and unsplit sides of stack",
-    ),
+    Key([mod, "shift"], "Return", lazy.layout.toggle_split(),
+        desc="Toggle between split and unsplit sides of stack"),
+
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Step forward through layouts"),
-    Key([mod, "shift"], "Tab", lazy.prev_layout(), desc="Step back through layouts"),
+    Key([mod, shft], "Tab", lazy.prev_layout(), desc="Step back through layouts"),
+
+    # Move between screens
+    Key([mod], "comma", lazy.prev_screen(), desc="Move focus to previous screen"),
+    Key([mod], "period", lazy.next_screen(), desc="Move focus to next screen"),
+
+    # Quitting and Restarting
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
-    Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
-    Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+    Key([mod, ctrl], "r", lazy.reload_config(), desc="Reload the config"),
+    Key([mod, ctrl], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+    Key([mod], "End",
+        lazy.spawn(os.path.expanduser("~/dotfiles/bin/sysact")),
+        desc="Power options menu"),
 
     # Application/launcher shortcuts
-    Key([mod], "space", lazy.spawn("rofi -show drun"), desc="Show run menu"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     Key([mod], "b", lazy.spawn("firefox"), desc="Launch Firefox"),
-    Key([mod, "mod1"], "space", lazy.spawn("emacs"))
+    Key([mod, alt], "space", lazy.spawn("emacs")),
+
+    # Rofi runners and scripts
+    Key([mod], "space", lazy.spawn("rofi -show drun"), desc="Show run menu"),
+    Key([mod], "p", lazy.spawn("rofi-mpc"), desc="Show rofi music player"),
+    Key([mod], "d", lazy.spawn("rofi-pass --last-used"), desc="Show pass menu"),
+    Key([mod, alt], "b", lazy.spawn("rofi-chrome"), desc="Open Chrome PWA"),
+    Key([mod], "grave", lazy.spawn("rofimoji"), desc="Open emoji picker"),
 ]
 
 # groups = [Group(i) for i in "123456789"]
@@ -90,7 +98,7 @@ groups = [
     Group("3", label=""),
     Group("4", label=""),
     Group("5", label=""),
-    Group("6", label=""),
+    Group("6", label="", layout="floating"),
     Group("7", label="", layout="floating"),
     Group("8", label=""),
     Group("9", label=""),
@@ -109,10 +117,16 @@ for i in groups:
             ),
             # mod1 + shift + letter of group = switch to & move focused window to group
             Key(
-                [mod, "shift"],
+                [mod, shft],
                 i.name,
                 lazy.window.togroup(i.name, switch_group=True),
                 desc="Switch to & move focused window to group {}".format(i.name),
+            ),
+            Key(
+                [mod, alt],
+                i.name,
+                lazy.window.togroup(i.name, switch_group=False),
+                desc="Move focused window to group{}".format(i.name),
             ),
             # Or, use below if you prefer not to switch to that group.
             # # mod1 + shift + letter of group = move focused window to group
@@ -127,20 +141,20 @@ layouts = [
     layout.MonadWide(),
     layout.Max(),
     # Try more layouts by unleashing below layouts.
-    layout.Stack(num_stacks=2),
+    # layout.Stack(num_stacks=2),
     # layout.Bsp(),
     # layout.Matrix(),
     # layout.RatioTile(),
     # layout.Tile(),
     layout.TreeTab(),
-    # layout.VerticalTile(),
+
     # layout.Zoomy(),
     layout.Floating(),
 ]
 
 widget_defaults = dict(
     font="JetBrains Mono",
-    fontsize=18,
+    fontsize=16,
     padding=5,
 )
 extension_defaults = widget_defaults.copy()
@@ -159,17 +173,33 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                # widget.TextBox("default config", name="default"),
-                # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
                 widget.Systray(),
-                widget.Battery(charge_char="", discharge_char="", update_interval=5),
+                # widget.Battery(charge_char="", discharge_char="", update_interval=5),
                 widget.Clock(format="%a %Y-%m-%d | %H:%M"),
-                # widget.QuickExit(),
             ],
-            24,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
+            28,
         ),
+        wallpaper = os.path.expanduser("~/.config/qtile/wallpaper.png"),
+        wallpaper_mode="fill"
+    ),
+    Screen(
+        top = bar.Bar(
+            [
+                widget.GroupBox(),
+                widget.CurrentLayoutIcon(),
+                widget.WindowName(),
+                widget.Chord(
+                    chords_colors={
+                        "launch": ("#ff0000", "#ffffff"),
+                    },
+                    name_transform=lambda name: name.upper(),
+                ),
+                widget.Clock(format="%a %Y-%m-%d | %H:%M"),
+            ],
+            28,
+        ),
+        wallpaper = os.path.expanduser("~/.config/qtile/wallpaper.png"),
+        wallpaper_mode="fill"
     ),
 ]
 
@@ -184,7 +214,7 @@ dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
 follow_mouse_focus = True
 bring_front_click = False
-cursor_warp = False
+cursor_warp = True
 floating_layout = layout.Floating(
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
