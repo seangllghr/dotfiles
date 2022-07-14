@@ -27,82 +27,85 @@
 import os
 import subprocess
 
-from libqtile import bar, hook, layout, widget
+from libqtile import bar, hook, layout, widget, qtile
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
-mod = "mod4"
-alt = "mod1"
-shft = "shift"
-ctrl = "control"
+mod = 'mod4'
+alt = 'mod1'
+shft = 'shift'
+ctrl = 'control'
 terminal = guess_terminal()
 
 keys = [
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
     # Move focus through the window list
-    Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
-    Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
+    Key([mod], 'j', lazy.layout.down(), desc='Move focus down'),
+    Key([mod], 'k', lazy.layout.up(), desc='Move focus up'),
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
-    Key([mod, shft], "j", lazy.layout.shuffle_down(), desc="Move window down"),
-    Key([mod, shft], "k", lazy.layout.shuffle_up(), desc="Move window up"),
+    Key([mod, shft], 'j', lazy.layout.shuffle_down(), desc='Move window down'),
+    Key([mod, shft], 'k', lazy.layout.shuffle_up(), desc='Move window up'),
     # Change window sizes
-    Key([mod], "h", lazy.layout.shrink(), desc="Shrink window"),
-    Key([mod], "l", lazy.layout.grow(), desc="Expand window"),
-    Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
-    Key([mod], "m", lazy.layout.maximize(), desc="Maximize focused window"),
+    Key([mod], 'h', lazy.layout.shrink(), desc='Shrink window'),
+    Key([mod], 'l', lazy.layout.grow(), desc='Expand window'),
+    Key([mod], 'n', lazy.layout.normalize(), desc='Reset all window sizes'),
+    Key([mod], 'm', lazy.layout.maximize(), desc='Maximize focused window'),
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
     # multiple stack panes
-    Key([mod, "shift"], "Return", lazy.layout.toggle_split(),
-        desc="Toggle between split and unsplit sides of stack"),
+    Key([mod, 'shift'], 'Return', lazy.layout.toggle_split(),
+        desc='Toggle between split and unsplit sides of stack'),
 
     # Toggle between different layouts as defined below
-    Key([mod], "Tab", lazy.next_layout(), desc="Step forward through layouts"),
-    Key([mod, shft], "Tab", lazy.prev_layout(), desc="Step back through layouts"),
+    Key([mod], 'Tab', lazy.next_layout(), desc='Step forward through layouts'),
+    Key([mod, shft], 'Tab', lazy.prev_layout(), desc='Step back through layouts'),
 
     # Move between screens
-    Key([mod], "comma", lazy.prev_screen(), desc="Move focus to previous screen"),
-    Key([mod], "period", lazy.next_screen(), desc="Move focus to next screen"),
+    Key([mod], 'comma', lazy.prev_screen(), desc='Move focus to previous screen'),
+    Key([mod], 'period', lazy.next_screen(), desc='Move focus to next screen'),
 
     # Quitting and Restarting
-    Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
-    Key([mod, ctrl], "r", lazy.reload_config(), desc="Reload the config"),
-    Key([mod, ctrl], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "End",
-        lazy.spawn(os.path.expanduser("~/dotfiles/bin/sysact")),
-        desc="Power options menu"),
+    Key([mod], 'q', lazy.window.kill(), desc='Kill focused window'),
+    Key([mod, ctrl], 'r', lazy.reload_config(), desc='Reload the config'),
+    Key([mod, ctrl], 'q', lazy.shutdown(), desc='Shutdown Qtile'),
+    Key([mod], 'End',
+        lazy.spawn(os.path.expanduser('~/dotfiles/bin/sysact')),
+        desc='Power options menu'),
 
     # Application/launcher shortcuts
-    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
-    Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
-    Key([mod], "b", lazy.spawn("firefox"), desc="Launch Firefox"),
-    Key([mod, alt], "space", lazy.spawn("emacs")),
+    Key([mod], 'r', lazy.spawncmd(), desc='Spawn a command using a prompt widget'),
+    Key([mod], 'Return', lazy.spawn(terminal), desc='Launch terminal'),
+    Key([mod], 'b', lazy.spawn('firefox'), desc='Launch Firefox'),
+    Key([mod, alt], 'space', lazy.spawn('emacs')),
 
     # Rofi runners and scripts
-    Key([mod], "space", lazy.spawn("rofi -show drun"), desc="Show run menu"),
-    Key([mod], "p", lazy.spawn("rofi-mpc"), desc="Show rofi music player"),
-    Key([mod], "d", lazy.spawn("rofi-pass --last-used"), desc="Show pass menu"),
-    Key([mod, alt], "b", lazy.spawn("rofi-chrome"), desc="Open Chrome PWA"),
-    Key([mod], "grave", lazy.spawn("rofimoji"), desc="Open emoji picker"),
+    Key([mod], 'space', lazy.spawn('rofi -show drun'),
+        desc='Show applications menu'),
+    Key([mod, shft], 'space', lazy.spawn('rofi -show run'),
+        desc='Show command runner'),
+    Key([mod], 'p', lazy.spawn('rofi-mpc'), desc='Show rofi music player'),
+    Key([mod], 'd', lazy.spawn('rofi-pass --last-used'), desc='Show pass menu'),
+    Key([mod, alt], 'b', lazy.spawn('rofi-chrome'), desc='Open Chrome PWA'),
+    Key([mod], 'grave', lazy.spawn('rofimoji'), desc='Open emoji picker'),
 ]
 
-# groups = [Group(i) for i in "123456789"]
+# groups = [Group(i) for i in '123456789']
 groups = [
-    Group("1", label="", layout="max"),
-    Group("2", matches=[Match(wm_class=["Firefox"])], layout="treetab",
-          label=""),
-    Group("3", label=""),
-    Group("4", label=""),
-    Group("5", label=""),
-    Group("6", label="", layout="floating"),
-    Group("7", label="", layout="floating"),
-    Group("8", label=""),
-    Group("9", label=""),
-    Group("0", label=""),
+    Group('1', label='', layout='max'),
+    Group('2', matches=[Match(wm_class=['Firefox'])], layout='treetab',
+          label=''),
+    Group('3', label=''),
+    Group('4', label=''),
+    Group('5', label=''),
+    Group('6', label='', layout='floating'),
+    Group('7', label='', layout='floating'),
+    Group('8', label=''),
+    Group('9', label=''),
+    Group('0', label=''),
 ]
 
 for i in groups:
@@ -113,30 +116,30 @@ for i in groups:
                 [mod],
                 i.name,
                 lazy.group[i.name].toscreen(),
-                desc="Switch to group {}".format(i.name),
+                desc='Switch to group {}'.format(i.name),
             ),
             # mod1 + shift + letter of group = switch to & move focused window to group
             Key(
                 [mod, shft],
                 i.name,
                 lazy.window.togroup(i.name, switch_group=True),
-                desc="Switch to & move focused window to group {}".format(i.name),
+                desc='Switch to & move focused window to group {}'.format(i.name),
             ),
             Key(
                 [mod, alt],
                 i.name,
                 lazy.window.togroup(i.name, switch_group=False),
-                desc="Move focused window to group{}".format(i.name),
+                desc='Move focused window to group{}'.format(i.name),
             ),
             # Or, use below if you prefer not to switch to that group.
             # # mod1 + shift + letter of group = move focused window to group
-            # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
-            #     desc="move focused window to group {}".format(i.name)),
+            # Key([mod, 'shift'], i.name, lazy.window.togroup(i.name),
+            #     desc='move focused window to group {}'.format(i.name)),
         ]
     )
 
 layouts = [
-    # layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4),
+    # layout.Columns(border_focus_stack=['#d75f5f', '#8f3d3d'], border_width=4),
     layout.MonadTall(),
     layout.MonadWide(),
     layout.Max(),
@@ -153,7 +156,7 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font="JetBrains Mono",
+    font='JetBrains Mono',
     fontsize=16,
     padding=5,
 )
@@ -169,18 +172,18 @@ screens = [
                 widget.WindowName(),
                 widget.Chord(
                     chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
+                        'launch': ('#ff0000', '#ffffff'),
                     },
                     name_transform=lambda name: name.upper(),
                 ),
                 widget.Systray(),
-                # widget.Battery(charge_char="", discharge_char="", update_interval=5),
-                widget.Clock(format="%a %Y-%m-%d | %H:%M"),
+                # widget.Battery(charge_char='', discharge_char='', update_interval=5),
+                widget.Clock(format='%a %Y-%m-%d | %H:%M'),
             ],
             28,
         ),
-        wallpaper = os.path.expanduser("~/.config/qtile/wallpaper.png"),
-        wallpaper_mode="fill"
+        wallpaper = os.path.expanduser('~/.config/qtile/wallpaper.png'),
+        wallpaper_mode='fill'
     ),
     Screen(
         top = bar.Bar(
@@ -190,24 +193,24 @@ screens = [
                 widget.WindowName(),
                 widget.Chord(
                     chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
+                        'launch': ('#ff0000', '#ffffff'),
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.Clock(format="%a %Y-%m-%d | %H:%M"),
+                widget.Clock(format='%a %Y-%m-%d | %H:%M'),
             ],
             28,
         ),
-        wallpaper = os.path.expanduser("~/.config/qtile/wallpaper.png"),
-        wallpaper_mode="fill"
+        wallpaper = os.path.expanduser('~/.config/qtile/wallpaper.png'),
+        wallpaper_mode='fill'
     ),
 ]
 
 # Drag floating layouts.
 mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.window.bring_to_front()),
+    Drag([mod], 'Button1', lazy.window.set_position_floating(), start=lazy.window.get_position()),
+    Drag([mod], 'Button3', lazy.window.set_size_floating(), start=lazy.window.get_size()),
+    Click([mod], 'Button2', lazy.window.bring_to_front()),
 ]
 
 dgroups_key_binder = None
@@ -219,16 +222,16 @@ floating_layout = layout.Floating(
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
-        Match(wm_class="confirmreset"),  # gitk
-        Match(wm_class="makebranch"),  # gitk
-        Match(wm_class="maketag"),  # gitk
-        Match(wm_class="ssh-askpass"),  # ssh-askpass
-        Match(title="branchdialog"),  # gitk
-        Match(title="pinentry"),  # GPG key password entry
+        Match(wm_class='confirmreset'),  # gitk
+        Match(wm_class='makebranch'),  # gitk
+        Match(wm_class='maketag'),  # gitk
+        Match(wm_class='ssh-askpass'),  # ssh-askpass
+        Match(title='branchdialog'),  # gitk
+        Match(title='pinentry'),  # GPG key password entry
     ]
 )
 auto_fullscreen = True
-focus_on_window_activation = "smart"
+focus_on_window_activation = 'smart'
 reconfigure_screens = True
 
 # If things like steam games want to auto-minimize themselves when losing
@@ -246,9 +249,9 @@ wl_input_rules = None
 #
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
-wmname = "LG3D"
+wmname = 'LG3D'
 
 @hook.subscribe.startup_once
 def autostart():
-    home = os.path.expanduser("~/")
+    home = os.path.expanduser('~/')
     subprocess.Popen([home + '.config/qtile/autostart.sh'])
