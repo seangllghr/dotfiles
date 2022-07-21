@@ -87,6 +87,8 @@ keys = [
         desc='Show applications menu'),
     Key([mod, shft], 'space', lazy.spawn('rofi -show run'),
         desc='Show command runner'),
+    Key([mod, alt], 'Return', lazy.spawn('rofi -show ssh'),
+        desc='Show SSH session launcher'),
     Key([mod], 'p', lazy.spawn('rofi-mpc'), desc='Show rofi music player'),
     Key([mod], 'd', lazy.spawn('rofi-pass --last-used'), desc='Show pass menu'),
     Key([mod, alt], 'b', lazy.spawn('rofi-chrome'), desc='Open Chrome PWA'),
