@@ -44,10 +44,10 @@ keys = [
     # Move focus through the window list
     Key([mod], 'j', lazy.layout.down(), desc='Move focus down'),
     Key([mod], 'k', lazy.layout.up(), desc='Move focus up'),
-    # Move windows between left/right columns or move up/down in current stack.
-    # Moving out of range in Columns layout will create new column.
+    # Move windows within group
     Key([mod, shft], 'j', lazy.layout.shuffle_down(), desc='Move window down'),
     Key([mod, shft], 'k', lazy.layout.shuffle_up(), desc='Move window up'),
+    Key([mod], 'f', lazy.window.toggle_floating(), desc='Un/float window'),
     # Change window sizes
     Key([mod], 'h', lazy.layout.shrink(), desc='Shrink window'),
     Key([mod], 'l', lazy.layout.grow(), desc='Expand window'),
