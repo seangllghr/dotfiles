@@ -6,3 +6,4 @@ config/rofi/chrome-apps
 config/spotify-tui/.spotify_token_cache.json
 config/spotify-tui/client.yml
 config/doom/.custom.bak
+__pycache__/

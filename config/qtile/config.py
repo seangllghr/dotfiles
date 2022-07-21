@@ -32,6 +32,19 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
+import palette
+colors = palette.Palette('Gruvbox Dark', [
+    '#1d2021', '#3c3836',
+    '#cc241d', '#fb4934',
+    '#98971a', '#b8bb26',
+    '#d79921', '#fabd2f',
+    '#458588', '#83a598',
+    '#b16286', '#d3869b',
+    '#689d6a', '#8ec07c',
+    '#d5c4a1', '#fbf1c7',
+    '#1d2021', '#ebdbb2'
+])
+
 mod = 'mod4'
 alt = 'mod1'
 shft = 'shift'
@@ -140,21 +153,28 @@ for i in groups:
         ]
     )
 
+layout_theme = {
+    'margin': 0,
+    'border_width': 1,
+    'border_focus': colors.white.norm,
+    'border_normal': colors.black.bright
+}
+
 layouts = [
     # layout.Columns(border_focus_stack=['#d75f5f', '#8f3d3d'], border_width=4),
-    layout.MonadTall(),
-    layout.MonadWide(),
-    layout.Max(),
+    layout.MonadTall(**layout_theme),
+    layout.MonadWide(**layout_theme),
+    layout.Max(**layout_theme),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
     # layout.Matrix(),
     # layout.RatioTile(),
     # layout.Tile(),
-    layout.TreeTab(),
+    layout.TreeTab(**layout_theme),
 
     # layout.Zoomy(),
-    layout.Floating(),
+    layout.Floating(**layout_theme),
 ]
 
 widget_defaults = dict(
