@@ -156,6 +156,7 @@ keys = [
         desc='Show applications menu'),
     Key([mod, shft], 'space', lazy.spawn('rofi -show run'),
         desc='Show command runner'),
+    Key([mod], 't', lazy.spawn('rofi -show windowcd'), desc='Show window list'),
     Key([mod, alt], 'Return', lazy.spawn('rofi -show ssh'),
         desc='Show SSH session launcher'),
     Key([mod], 'p', lazy.spawn('rofi-mpc'), desc='Show rofi music player'),
