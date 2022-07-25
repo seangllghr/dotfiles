@@ -32,6 +32,8 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
+import customact
+
 import palette
 colors = palette.Palette('Gruvbox Dark', [
     '#1d2021', '#3c3836',
@@ -83,12 +85,20 @@ keys = [
     Key([mod], 'j', lazy.layout.down(), desc='Move focus down'),
     Key([mod], 'k', lazy.layout.up(), desc='Move focus up'),
     # Move windows within group
-    Key([mod, shft], 'j', lazy.layout.shuffle_down(), desc='Move window down'),
-    Key([mod, shft], 'k', lazy.layout.shuffle_up(), desc='Move window up'),
+    Key([mod, shft], 'j',
+        lazy.layout.shuffle_down(), lazy.layout.move_down(),
+        desc='Move window down'),
+    Key([mod, shft], 'k',
+        lazy.layout.shuffle_up(), lazy.layout.move_up(),
+        desc='Move window up'),
     Key([mod], 'f', lazy.window.toggle_floating(), desc='Un/float window'),
     # Change window sizes
-    Key([mod], 'h', lazy.layout.shrink(), desc='Shrink window'),
-    Key([mod], 'l', lazy.layout.grow(), desc='Expand window'),
+    Key([mod], 'h',
+        lazy.layout.shrink(), lazy.layout.collapse_branch(),
+        desc='Shrink window (TreeTab: collapse branch)'),
+    Key([mod], 'l',
+        lazy.layout.grow(), lazy.layout.expand_branch(),
+        desc='Expand window (TreeTab: expand branch)'),
     Key([mod], 'n', lazy.layout.normalize(), desc='Reset all window sizes'),
     Key([mod], 'm', lazy.layout.maximize(), desc='Maximize focused window'),
     # Toggle between split and unsplit sides of stack.
@@ -111,6 +121,20 @@ keys = [
     Key([mod, shft], 'period',
         move_window_to_next_screen(),
         desc='Move window one screen right'),
+
+    # TreeTab Bindings
+    Key([mod, shft], 'h', lazy.layout.move_left(), desc='Shift tab left'),
+    Key([mod, shft], 'l', lazy.layout.move_right(), desc='Shift tab right'),
+    Key([mod, ctrl], 'k',
+        lazy.layout.section_up(),
+        desc='Move tab up a section'),
+    Key([mod, ctrl], 'j',
+        lazy.layout.section_down(),
+        desc='Move tab down a section'),
+    Key([mod, shft], 't',
+        customact.add_named_section(), desc='Add a named section'),
+    Key([mod, shft], 'x',
+        customact.del_named_section(), desc='Delete a section'),
 
     # Quitting and Restarting
     Key([mod], 'q', lazy.window.kill(), desc='Kill focused window'),
