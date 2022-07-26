@@ -1,6 +1,6 @@
 /*-*- mode: css; -*-*/
 configuration {
-	modi: "window,run,ssh";
+	modi: "window,windowcd,run,ssh";
 	width: 50;
 	lines: 15;
 	columns: 1;
