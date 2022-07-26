@@ -24,8 +24,10 @@ gruv_dark_colors = [
     '#b16286', '#d3869b',
     '#689d6a', '#8ec07c',
     '#d5c4a1', '#fbf1c7',
-    '#1d2021', '#ebdbb2'
+    ['#1d2021', '#3c3836', '#504945', '#665c54', '#7c6f64'],
+    ['#fbf1c7', '#ebdbb2', '#d5c4a1', '#bdae93', '#a89984']
 ]
+
 
 class PaletteColor:
     '''Data class to hold normal and bright variants of a single color'''
@@ -36,10 +38,10 @@ class PaletteColor:
 
 class Palette:
     '''Class implementing some palette stuff'''
-    def __init__(self, name, colors=default_colors):
+    def __init__(self, name, colors=default_colors, bg=None, fg=None):
         self.__dict__ = palette_dict_from_color_list(colors)
-        self.bg = colors.pop(0) if len(colors) > 0 else [ self.black.norm ]
-        self.fg = colors.pop(0) if len(colors) > 0 else [ self.white.bright ]
+        self.bg = [ self.black.norm ] if bg is None else bg
+        self.fg = [ self.white.bright ] if fg is None else fg
         self.name = name
 
     def __str__(self):
@@ -53,7 +55,8 @@ class Palette:
                 )
             else:
                 if isinstance(self.__dict__[key], list):
-                    print(self.__dict__[key])
+                    for idx,val in enumerate(self.__dict__[key]):
+                        string += f'{key}{idx}: {val}\n'
         return string
 
 def palette_dict_from_color_list(colors):
@@ -75,5 +78,5 @@ def palette_dict_from_color_list(colors):
     return color_dict
 
 if __name__ == '__main__':
-    gruvbox = Palette('Default')
+    gruvbox = Palette('Default', gruv_dark_colors, gruv_dark_colors[16], gruv_dark_colors[17])
     print(str(gruvbox))
