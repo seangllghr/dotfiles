@@ -145,6 +145,11 @@ keys = [
     Key([mod], 'grave', lazy.spawn('rofimoji'), desc='Open emoji picker'),
 ]
 
+dropdown_defaults = {
+    'height': 0.6,
+    'width': 0.6,
+    'x': 0, 'y': 0,
+}
 dropdowns = {
     'terminal': {
         'keybind': {
@@ -152,13 +157,11 @@ dropdowns = {
             'key': 'apostrophe',
         },
         'command': [ terminal ],
-        'config': {
-            'height': 0.5,
-            'width': 0.5,
-            'x': 0, 'y': 0,
-            'on_focus_lost_hide': True,
-            'warp_pointer': True
-        }
+        'config': dict(
+            on_focus_lost_hide = True,
+            warp_pointer = True,
+            **dropdown_defaults,
+        )
     }
 }
 
