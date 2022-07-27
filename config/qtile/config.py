@@ -146,8 +146,11 @@ keys = [
 ]
 
 dropdowns = {
-    'term': {
-        'keybind': 'apostrophe',
+    'terminal': {
+        'keybind': {
+            'mods': [ mod ],
+            'key': 'apostrophe',
+        },
         'command': [ terminal ],
         'config': {
             'height': 0.5,
@@ -207,11 +210,11 @@ for group in groups:
             ]
         )
 
-for dropdown in dropdowns:
+for dd in dropdowns:
     keys.extend([
-        Key([mod], dropdowns[dropdown]['keybind'],
-            lazy.group['scratch'].dropdown_toggle(dropdown),
-            desc=f'Toggle {dropdown} dropdown')
+        Key(dropdowns[dd]['keybind']['mods'], dropdowns[dd]['keybind']['key'],
+            lazy.group['scratch'].dropdown_toggle(dd),
+            desc=f'Toggle {dd} dropdown')
     ])
 
 layout_theme = dict(
