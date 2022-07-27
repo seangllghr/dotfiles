@@ -72,7 +72,7 @@ keys = [
     Key([mod, shft], 'k',
         lazy.layout.shuffle_up(), lazy.layout.move_up(),
         desc='Move window up'),
-    Key([mod], 'f', lazy.window.toggle_floating(), desc='Un/float window'),
+    Key([mod, shft], 'f', lazy.window.toggle_floating(), desc='Un/float window'),
     # Change window sizes
     Key([mod], 'h',
         lazy.layout.shrink(), lazy.layout.collapse_branch(),
@@ -150,8 +150,9 @@ dropdown_defaults = {
     'width': 0.6,
     'x': 0, 'y': 0,
 }
-dropdowns = {
-    'terminal': {
+dropdowns = [
+    {
+        'name': 'terminal',
         'keybind': {
             'mods': [ mod ],
             'key': 'apostrophe',
@@ -161,13 +162,77 @@ dropdowns = {
             on_focus_lost_hide = True,
             warp_pointer = True,
             **dropdown_defaults,
-        )
-    }
-}
+        ),
+    },
+    {
+        'name': 'tasks',
+        'keybind': {
+            'mods': [ mod, alt ],
+            'key': 'Delete',
+        },
+        'command': 'alacritty -t htop -e htop'.split(),
+        'config': dict(
+            on_focus_lost_hide = False,
+            height = 0.7, width = 0.7,
+            x = 0, y = 0,
+        ),
+    },
+    {
+        'name': 'mixer',
+        'keybind': {
+            'mods': [ mod, alt ],
+            'key': 'F4',
+        },
+        'command': 'alacritty -t PulseMixer -e pulsemixer'.split(),
+        'config': dict(
+            on_focus_lost_hide = True,
+            warp_pointer = True,
+            **dropdown_defaults,
+        ),
+    },
+    {
+        'name': 'files',
+        'keybind': {
+            'mods': [ mod ],
+            'key': 'f',
+        },
+        'command': 'alacritty -t Files -e lf'.split(),
+        'config': dict(
+            on_focus_lost_hide = True,
+            warp_pointer = True,
+            **dropdown_defaults,
+        ),
+    },
+    {
+        'name': 'calculator',
+        'keybind': {
+            'mods': [ mod ],
+            'key': 'minus',
+        },
+        'command': 'alacritty -t Calculator -e qalc'.split(),
+        'config': dict(
+            on_focus_lost_hide = False,
+            **dropdown_defaults,
+        ),
+    },
+    {
+        'name': 'python shell',
+        'keybind': {
+            'mods': [ mod, alt ],
+            'key': 'p',
+        },
+        'command': 'alacritty -t PyShell -e bpython',
+        'config': dict(
+            on_focus_lost_hide = False,
+            **dropdown_defaults,
+        ),
+    },
+]
 
 # groups = [Group(i) for i in '123456789']
 groups = [
-    ScratchPad('scratch', [DropDown(k, v['command'], **v['config']) for (k, v) in dropdowns.items()]),
+    ScratchPad('scratch', [DropDown(dd['name'], dd['command'], **dd['config'])
+                           for dd in dropdowns]),
     Group('1', label='', layout='max'),
     Group('2', matches=[Match(wm_class=['Firefox'])], layout='treetab',
           label=''),
@@ -180,6 +245,13 @@ groups = [
     Group('9', label=''),
     Group('0', label=''),
 ]
+
+keys.extend([
+    Key(dropdown['keybind']['mods'], dropdown['keybind']['key'],
+        lazy.group['scratch'].dropdown_toggle(dropdown['name']),
+        desc = f"Toggle {dropdown['name']} dropdown")
+    for dropdown in dropdowns
+])
 
 for group in groups:
     if len(group.name) == 1:
@@ -212,13 +284,6 @@ for group in groups:
                 #     desc=f'move focused window to group {group.name)}',
             ]
         )
-
-for dd in dropdowns:
-    keys.extend([
-        Key(dropdowns[dd]['keybind']['mods'], dropdowns[dd]['keybind']['key'],
-            lazy.group['scratch'].dropdown_toggle(dd),
-            desc=f'Toggle {dd} dropdown')
-    ])
 
 layout_theme = dict(
     margin = 4,
