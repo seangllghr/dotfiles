@@ -28,7 +28,7 @@ import os
 import subprocess
 
 from libqtile import bar, hook, layout, widget, qtile
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.config import Click, Drag, DropDown, Group, Key, Match, Screen, ScratchPad
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
@@ -145,8 +145,23 @@ keys = [
     Key([mod], 'grave', lazy.spawn('rofimoji'), desc='Open emoji picker'),
 ]
 
+dropdowns = {
+    'term': {
+        'keybind': 'apostrophe',
+        'command': [ terminal ],
+        'config': {
+            'height': 0.5,
+            'width': 0.5,
+            'x': 0, 'y': 0,
+            'on_focus_lost_hide': True,
+            'warp_pointer': True
+        }
+    }
+}
+
 # groups = [Group(i) for i in '123456789']
 groups = [
+    ScratchPad('scratch', [DropDown(k, v['command'], **v['config']) for (k, v) in dropdowns.items()]),
     Group('1', label='', layout='max'),
     Group('2', matches=[Match(wm_class=['Firefox'])], layout='treetab',
           label=''),
@@ -160,35 +175,44 @@ groups = [
     Group('0', label=''),
 ]
 
-for i in groups:
-    keys.extend(
-        [
-            # mod1 + letter of group = switch to group
-            Key(
-                [mod],
-                i.name,
-                lazy.group[i.name].toscreen(),
-                desc='Switch to group {}'.format(i.name),
-            ),
-            # mod1 + shift + letter of group = switch to & move focused window to group
-            Key(
-                [mod, shft],
-                i.name,
-                lazy.window.togroup(i.name, switch_group=True),
-                desc='Switch to & move focused window to group {}'.format(i.name),
-            ),
-            Key(
-                [mod, alt],
-                i.name,
-                lazy.window.togroup(i.name, switch_group=False),
-                desc='Move focused window to group{}'.format(i.name),
-            ),
-            # Or, use below if you prefer not to switch to that group.
-            # # mod1 + shift + letter of group = move focused window to group
-            # Key([mod, 'shift'], i.name, lazy.window.togroup(i.name),
-            #     desc='move focused window to group {}'.format(i.name)),
-        ]
-    )
+for group in groups:
+    if len(group.name) == 1:
+        # setup keybinds for the ten single-character base groups
+        keys.extend(
+            [
+                # mod1 + letter of group = switch to group
+                Key(
+                    [mod],
+                    group.name,
+                    lazy.group[group.name].toscreen(),
+                    desc=f'Switch to group {group.name}',
+                ),
+                # mod1 + shift + letter of group = switch to & move focused window to group
+                Key(
+                    [mod, shft],
+                    group.name,
+                    lazy.window.togroup(group.name, switch_group=True),
+                    desc=f'Switch to & move focused window to group {group.name}',
+                ),
+                Key(
+                    [mod, alt],
+                    group.name,
+                    lazy.window.togroup(group.name, switch_group=False),
+                    desc=f'Move focused window to group {group.name}',
+                ),
+                # Or, use below if you prefer not to switch to that group.
+                # # mod1 + shift + letter of group = move focused window to group
+                # Key([mod, 'shift'], group.name, lazy.window.togroup(i.name),
+                #     desc=f'move focused window to group {group.name)}',
+            ]
+        )
+
+for dropdown in dropdowns:
+    keys.extend([
+        Key([mod], dropdowns[dropdown]['keybind'],
+            lazy.group['scratch'].dropdown_toggle(dropdown),
+            desc=f'Toggle {dropdown} dropdown')
+    ])
 
 layout_theme = dict(
     margin = 4,
