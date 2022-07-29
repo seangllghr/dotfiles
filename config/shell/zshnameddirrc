@@ -1,0 +1,36 @@
+# typical folders
+hash -d cac=/home/sean/.cache
+hash -d cf=/home/sean/.config
+hash -d D=/home/sean/Downloads
+hash -d d=/home/sean/Documents
+hash -d dls=/home/sean/.local/share
+hash -d dots=/home/sean/dotfiles
+hash -d dbin=/home/sean/dotfiles/bin
+hash -d h=/home/sean
+hash -d m=/home/sean/Music
+hash -d mn=/mnt
+hash -d pp=/home/sean/Pictures
+hash -d sc=/home/sean/.local/bin
+hash -d src=/home/sean/.local/src
+hash -d vv=/home/sean/Videos
+hash -d cfx=/home/sean/.config/x11/xresources
+hash -d cfv=/home/sean/.config/nvim/init.vim
+hash -d cfz=/home/sean/.config/zsh/.zshrc
+hash -d cfa=/home/sean/.config/shell/aliasrc
+hash -d cfp=/home/sean/.config/shell/profile
+hash -d cfl=/home/sean/.config/lf/lfrc
+hash -d cfL=/home/sean/.config/lf/scope
+hash -d cfX=/home/sean/.config/sxiv/exec/key-handler
+
+# Projects and stuff
+hash -d docs=/home/sean/Documents/reading/Documentation
+hash -d kmap=/home/sean/git-software/qmk_firmware
+hash -d org=/home/sean/Dropbox/orgfiles
+hash -d res=/home/sean/Documents/Records/Resumes
+hash -d cl=/home/sean/Documents/Records/Resumes/applications
+hash -d pf=/home/sean/Documents/Records/Resumes/seangllghr.github.io
+hash -d minutes=/home/sean/Documents/Camp/TRC_Aquatics/Committee/meeting_notes
+
+# Local Variables:
+# mode: sh
+# End:

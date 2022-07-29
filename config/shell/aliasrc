@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# Use programs if we've got 'em
+[ -x "$(command -v nvim)" ] && alias vim="nvim" vimdiff="nvim -d"
+[ -x "$(command -v emacsclient)" ] && alias ed="emacsclient -t -a nvim"
+
+# Verbosity settings
+alias \
+  cp="cp -iv" \
+  df="df -h" \
+  free="free -m" \
+  mv="mv -iv" \
+  rm="rm -vI" \
+  mkd="mkdir -pv"
+
+# I have opinions on how calendars work that differ from my locale
+alias cal="cal -m"
+
+# Pretty colors!
+alias \
+  diff="diff --color=auto" \
+  grep="grep --color=auto" \
+  ls="exa --icons --color=always" \
+  less="less -r"
+
+# Shorten commands that I use ALL. THE. TIME.
+alias \
+  ccat="highlight --out-format=ansi" \
+  dcli="dropbox-cli" \
+  la="ls -a" \
+  ll="ls -la" \
+  lal="ll | less" \
+  lamk="latexmk -xelatex -shell-escape" \
+  pac="pacman" \
+  spac="sudo pacman" \
+  sctl="systemctl --user" \
+  ssctl="sudo systemctl" \
+  xo="xdg-open" \
+  z="zathura"
+
+# Some alias-like functions, for fun and profit
+lamkp () {
+
+  if [ $# -ne 1 ]; then
+    printf "lamkp - Autobuild and preview LaTeX files\nUsage: lamkp <filename>\n"
+    return 1
+  else
+    doc="${1%.*}.pdf"
+  fi
+
+  if [ -f "$doc" ]; then
+    echo "Document $doc exists. Previewing..."
+    zathura "${doc}.pdf" &
+    latexmake -xelatex -shell-escape -pvc "$1"
+  else
+    latexmake -xelatex -shell-escape -pvc "$1"
+    lamkp "$1"
+  fi
+}
+
+shnew () {
+  if [ $# -ne 1 ]; then
+    printf "shnew - Create a new shell script\nUsage: shnew <filename>\n"
+    return 1
+  fi
+  echo "#!/usr/bin/env sh" > $1
+  chmod 755 $1
+}

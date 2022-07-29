@@ -20,7 +20,7 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 HISTFILE=~/.zhistory
 HISTSIZE=1000
 SAVEHIST=500
-export EDITOR="/usr/bin/emacsclient -t"
+export EDITOR="/usr/bin/emacsclient -t -a nvim"
 export VISUAL="/usr/bin/emacsclient -c -a emacs"
 WORDCHARS=${WORDCHARS//\/[&.;]} # Don't consider certain characters part of the word
 
@@ -51,66 +51,6 @@ bindkey '^[[1;5D' backward-word                                 #
 bindkey '^[[1;5C' forward-word                                  #
 bindkey '^H' backward-kill-word       # delete previous word with ctrl+backspace
 bindkey '^[[Z' undo                  # Shift+tab undo last action
-
-## Alias section
-alias cp="cp -i"                   # Confirm before overwriting something
-alias df='df -h'                   # Human-readable sizes
-alias free='free -m'               # Show sizes in MB
-alias gitu='git add . && git commit && git push'
-
-# Convenient and pretty ls aliases
-alias ls='exa --icons --color=always'\
-      la='ls -a'\
-      ll='ls -la'\
-      lal='ls -la | less -r'
-
-# Colorize commands that deserve it
-alias grep='grep --color=auto'
-
-# And tell less to keep color
-alias less='less -r' # This may be redundant with L164
-
-# Shorten some commonly-used commands
-alias xo="xdg-open"
-alias sf="st &"
-alias zth="zathura" # You try typing 'za'. zth is easier.
-alias mutt="neomutt"
-alias vim="nvim"
-alias vim="emacsclient -nw -a /usr/bin/vim"
-alias emacs="emacsclient -n -c -a emacs"
-alias emo="emacsclient -n -a emacs"
-alias cpj="cpp-proj" # Yep, I'm aliasing a script I wrote. Deal.
-alias ssa="ssh alfheim"
-alias mongoadm='mongo --authenticationDatabase "admin" -u "administrator" -p'
-
-# Alias-like functions
-
-jsnew () { # Create a new Node.js script
-    if [[ $# -ne 1 ]]; then
-        echo "Usage: jsnew <filename>"
-    else
-        echo '#!/usr/bin/env node' > $1
-        chmod 755 $1
-    fi
-}
-
-pynew () { # Create a new Python script
-    if [[ $# -ne 1 ]]; then
-        echo "Usage: pynew <filename>"
-    else
-        echo '#!/usr/bin/env python3' > $1
-        chmod 755 $1
-    fi
-}
-
-shnew () { # Create a new shell script
-    if [[ $# -ne 1 ]]; then
-        echo "Usage: shnew <filename>"
-    else
-        echo '#!/usr/bin/env bash' > $1
-        chmod 755 $1
-    fi
-}
 
 # Theming section
 autoload -U compinit colors zcalc
@@ -277,6 +217,13 @@ zle-line-init() {
 zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup
 preexec() { echo -ne '\e[5 q' ; } # Use beam for each new prompt
+
+# Source useful subconfigs
+for subconfig in {aliasrc,zshnameddirrc}; do
+  if [ -e ~/.config/shell/$subconfig ]; then
+    source ~/.config/shell/$subconfig
+  fi
+done
 
 # Local Variables:
 # mode: sh
