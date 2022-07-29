@@ -227,6 +227,19 @@ dropdowns = [
             **dropdown_defaults,
         ),
     },
+    {
+        'name': 'man',
+        'keybind': {
+            'mods': [ mod ],
+            'key': 'slash',
+        },
+        'command': 'alacritty -t Manpages',
+        'config': dict(
+            on_focus_lost_hide = False,
+            height = 0.995, width = 0.5,
+            x = 0, y = 0,
+        )
+    },
 ]
 
 # groups = [Group(i) for i in '123456789']
