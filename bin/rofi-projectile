@@ -1,0 +1,18 @@
+#!/bin/sh
+
+projectfile="$HOME/.emacs.d/.local/cache/projectile.projects"
+
+if [ -f "$projectfile" ]; then
+  project=$(cat "$projectfile" |
+              sed 's/("\(.*\)")/\1/' |
+              sed 's/" "/\n/g' |
+              dmenu -i -p "Select project: ")
+  emacsclient -c -a emacs "$project"
+  for ext in {md,adoc,rst,txt}; do
+    if [ -f "$project/README.$ext" ]; then
+      emacsclient -cn -a emacs "$project/README.$ext"
+    fi
+  done
+else
+  emacsclient -c -a emacs
+fi

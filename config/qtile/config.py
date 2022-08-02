@@ -129,7 +129,8 @@ keys = [
     Key([mod], 'r', lazy.spawncmd(), desc='Spawn a command using a prompt widget'),
     Key([mod], 'Return', lazy.spawn(terminal), desc='Launch terminal'),
     Key([mod], 'b', lazy.spawn('firefox'), desc='Launch Firefox'),
-    Key([mod, alt], 'space', lazy.spawn('emacs')),
+    Key([mod, ctrl], 'space', lazy.spawn('emacsclient -c -a emacs')),
+    Key([mod, alt], 'space', lazy.spawn('rofi-projectile'), 'Open project in Emacs'),
 
     # Rofi runners and scripts
     Key([mod], 'space', lazy.spawn('rofi -show drun'),
