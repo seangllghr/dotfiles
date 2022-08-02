@@ -38,6 +38,13 @@ alias \
   xo="xdg-open" \
   z="zathura"
 
+# Alias shortcuts to commonly-tweaked config files
+alias \
+  cfa="$VISUAL ~/dotfiles/config/shell/aliasrc" \
+  cfq="$VISUAL ~/dotfiles/config/qtile/config.py" \
+  cfz="$VISUAL ~/dotfiles/zshrc" \
+  cfzd="$VISUAL ~/dotfiles/config/shell/zshnameddirrc"
+
 # Some alias-like functions, for fun and profit
 lamkp () {
 

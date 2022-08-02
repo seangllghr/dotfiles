@@ -16,6 +16,7 @@ hash -d vv=/home/sean/Videos
 hash -d cfx=/home/sean/.config/x11/xresources
 hash -d cfv=/home/sean/.config/nvim/init.vim
 hash -d cfz=/home/sean/.config/zsh/.zshrc
+hash -d cfzd=/home/sean/.config/shell/zshnameddirrc
 hash -d cfa=/home/sean/.config/shell/aliasrc
 hash -d cfp=/home/sean/.config/shell/profile
 hash -d cfl=/home/sean/.config/lf/lfrc
