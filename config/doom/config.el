@@ -27,7 +27,7 @@
                  )
       doom-variable-pitch-font (font-spec
                                 :family "Libertinus Sans"
-                                :size 21)
+                                :size 22)
       doom-unicode-font (font-spec
                          :family "JuliaMono"
                          :size 16))
@@ -148,18 +148,21 @@
 (custom-set-faces!
   '(doom-modeline-buffer-modified :foreground "orange"))
 
-(setq-default js-indent-level 2)
-
 (global-display-fill-column-indicator-mode)
 (add-hook! 'markdown-mode-hook 'turn-on-auto-fill)
 (add-hook! 'text-mode-hook 'turn-on-auto-fill)
 
+(setq indent-tabs-mode nil)
+(setq-default js-indent-level 2)
 (setq web-mode-markup-indent-offset 2)
 (setq web-mode-css-indent-offset 2)
 (setq web-mode-code-indent-offset 2)
+(setq sh-basic-offset 2)
+(setq sh-indentation 2)
 
-(setq treemacs-indentation 1)
-(setq treemacs-indentation-string "│")
+
+;; (setq treemacs-indentation 1)
+;; (setq treemacs-indentation-string "│")
 
 ;;********************* ORG CUSTOMIZATIONS *********************;;
 
