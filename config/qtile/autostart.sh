@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
 
-if [ "$(hostname)" != 'Asgard' ]; then
-    setxkbmap -option caps:super,shift:both_capslock_cancel
+case "$(hostname)" in
+  "Asgard")
+    setxkbmap -option shift:both_capslock_cancel,compose:ralt
+    ;;
+  *)
+    setxkbmap -option caps:super,shift:both_capslock_cancel,compose:ralt
     xcape -e Super_L=Escape
-fi
+    ;;
+esac
 picom &
 dunst &
-SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+xset r rate 300 50 &
+light-locker &
