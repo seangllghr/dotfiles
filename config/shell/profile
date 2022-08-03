@@ -1,0 +1,10 @@
+#!/bin/sh
+# Currently, this file sets environment variables and little else
+
+# These envvars are likely to remain consistent across machines
+export EDITOR="/usr/bin/emacsclient -t -a nvim"
+export VISUAL="/usr/bin/emacsclient -c -a emacs"
+export SSH_AUTH_SOCK="/run/user/$(id -u)/keyring/ssh"
+
+# Source machine-local envvars
+[ -f '~/.profile.loc' ] && source ~/.profile.loc

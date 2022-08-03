@@ -20,9 +20,8 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 HISTFILE=~/.zhistory
 HISTSIZE=1000
 SAVEHIST=500
-export EDITOR="/usr/bin/emacsclient -t -a nvim"
-export VISUAL="/usr/bin/emacsclient -c -a emacs"
 WORDCHARS=${WORDCHARS//\/[&.;]} # Don't consider certain characters part of the word
+source ~/.config/shell/profile
 
 
 ## Keybindings section
