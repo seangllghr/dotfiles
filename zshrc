@@ -190,17 +190,6 @@ esac
 
 bindkey -v # enable vim keys
 
-# Make sure the path includes any of my user bins
-
-for userbin in {"dotfiles/bin",".local/bin",".emacs.d/bin",".cargo/bin"}; do
-    case $PATH in
-        *${userbin}*) : ;;
-        *)
-            PATH="$HOME/$userbin:$PATH"
-            ;;
-    esac
-done
-
 # Change cursor shape for vi input mode
 function zle-keymap-select() {
     case $KEYMAP in

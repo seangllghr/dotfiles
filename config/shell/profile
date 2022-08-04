@@ -5,6 +5,19 @@
 export EDITOR="/usr/bin/emacsclient -t -a nvim"
 export VISUAL="/usr/bin/emacsclient -c -a emacs"
 export SSH_AUTH_SOCK="/run/user/$(id -u)/keyring/ssh"
+export PASSWORD_STORE_DIR=~/.local/share/password-store
+export QT_QPA_PLATFORMTHEME=qt5ct
+
+# Make sure the path includes any of my user bins
+
+for userbin in {"dotfiles/bin",".local/bin",".emacs.d/bin",".cargo/bin"}; do
+    case $PATH in
+        *${userbin}*) : ;;
+        *)
+            PATH="$HOME/$userbin:$PATH"
+            ;;
+    esac
+done
 
 # Source machine-local envvars
 [ -f '~/.profile.loc' ] && source ~/.profile.loc
