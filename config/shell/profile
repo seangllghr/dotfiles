@@ -2,15 +2,17 @@
 # Currently, this file sets environment variables and little else
 
 # These envvars are likely to remain consistent across machines
+command -v most 2>&1 /dev/null && export PAGER="most"
 export EDITOR="/usr/bin/emacsclient -t -a nvim"
 export VISUAL="/usr/bin/emacsclient -c -a emacs"
-export SSH_AUTH_SOCK="/run/user/$(id -u)/keyring/ssh"
+SSH_AUTH_SOCK="/run/user/$(id -u)/keyring/ssh"
+export SSH_AUTH_SOCK
 export PASSWORD_STORE_DIR=~/.local/share/password-store
 export QT_QPA_PLATFORMTHEME=qt5ct
 
 # Make sure the path includes any of my user bins
 
-for userbin in {"dotfiles/bin",".local/bin",".emacs.d/bin",".cargo/bin"}; do
+for userbin in "dotfiles/bin" ".local/bin" ".emacs.d/bin" ".cargo/bin"; do
     case $PATH in
         *${userbin}*) : ;;
         *)
@@ -20,4 +22,5 @@ for userbin in {"dotfiles/bin",".local/bin",".emacs.d/bin",".cargo/bin"}; do
 done
 
 # Source machine-local envvars
-[ -f '~/.profile.loc' ] && source ~/.profile.loc
+# shellcheck disable=SC1091
+[ -f "$HOME/.profile.loc" ] && . "$HOME/.profile.loc"
