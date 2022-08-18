@@ -273,9 +273,9 @@ groups = [
           layout='treetab', label=''),
     Group('4', label=''),
     Group('5', label=''),
-    Group('6', label='', layout='floating'),
+    Group('6', label='', layout='treetab'),
     Group('7', label='', layout='floating'),
-    Group('8', label=''),
+    Group('8', label='', layout='treetab'),
     Group('9', label=''),
     Group('0', label=''),
 ]
@@ -329,7 +329,7 @@ layout_theme = dict(
 layouts = [
     # layout.Columns(border_focus_stack=['#d75f5f', '#8f3d3d'], border_width=4),
     layout.MonadTall(**layout_theme),
-    layout.MonadWide(ratio=0.8, min_ratio=0.2, **layout_theme),
+    layout.MonadWide(ratio=0.85, min_ratio=0.15, **layout_theme),
     layout.Max(**layout_theme),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
