@@ -10,9 +10,11 @@ esac
 
 cmds="\
  lock		loginctl lock-session
- suspend		sudo systemctl suspend
- reboot		${reb:-sudo -A reboot}
- shutdown		${shut:-sudo -A poweroff}"
+ suspend		systemctl suspend
+ reboot		systemctl reboot
+ shutdown		systemctl poweroff"
+#  reboot		${reb:-sudo -A reboot}
+#  shutdown		${shut:-sudo -A poweroff}
 #  display off 	xset dpms force off
 #  logout		kill -TERM $(pgrep -u $USER "\bdwm$")
 #  renew dwm	kill -HUP $(pgrep -u $USER "\bdwm$")
