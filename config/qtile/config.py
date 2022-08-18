@@ -144,6 +144,26 @@ keys = [
     Key([mod], 'd', lazy.spawn('rofi-pass --last-used'), desc='Show pass menu'),
     Key([mod, alt], 'b', lazy.spawn('rofi-chrome'), desc='Open Chrome PWA'),
     Key([mod], 'grave', lazy.spawn('rofimoji'), desc='Open emoji picker'),
+
+    # Hardware control/media keys
+    Key([], 'XF86AudioPlay',
+        lazy.spawn('playerctl play-pause'),
+        desc='Toggle media player play/pause'),
+    Key([], 'XF86AudioNext',
+        lazy.spawn('playerctl next'),
+        desc='Skip to next song'),
+    Key([], 'XF86AudioPrev',
+        lazy.spawn('playerctl previous'),
+        desc='Skip to previous song'),
+    Key([], 'XF86AudioMute',
+        lazy.spawn('pulsemixer --toggle-mute'),
+        desc='Toggle mute'),
+    Key([], 'XF86AudioLowerVolume',
+        lazy.spawn('pulsemixer --change-volume -2'),
+        desc='Decrease volume'),
+    Key([], 'XF86AudioRaiseVolume',
+        lazy.spawn('pulsemixer --change-volume +2'),
+        desc='Increase volume'),
 ]
 
 dropdown_defaults = {
