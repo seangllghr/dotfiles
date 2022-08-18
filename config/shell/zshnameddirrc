@@ -22,6 +22,7 @@ hash -d cfp=/home/sean/.config/shell/profile
 hash -d cfl=/home/sean/.config/lf/lfrc
 hash -d cfL=/home/sean/.config/lf/scope
 hash -d cfX=/home/sean/.config/sxiv/exec/key-handler
+hash -d gs=/home/sean/git-software
 
 # Projects and stuff
 hash -d docs=/home/sean/Documents/reading/Documentation
