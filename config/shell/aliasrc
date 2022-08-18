@@ -21,15 +21,14 @@ alias \
   diff="diff --color=auto" \
   grep="grep --color=auto" \
   ls="exa --icons --color=always" \
-  less="less -r"
+  less="less -R"
 
 # Shorten commands that I use ALL. THE. TIME.
 alias \
-  ccat="highlight --out-format=ansi" \
   dcli="dropbox-cli" \
+  l="less" \
   la="ls -a" \
-  ll="ls -la" \
-  lal="ll | less" \
+  ll="ls -lag" \
   lamk="latexmk -xelatex -shell-escape" \
   pac="pacman" \
   spac="sudo pacman" \
@@ -46,6 +45,15 @@ alias \
   cfzd="$VISUAL ~/dotfiles/config/shell/zshnameddirrc"
 
 # Some alias-like functions, for fun and profit
+lr () {
+  [ $# -lt 1 ] && lr ./ && return 0
+  exa --icons --color=always -lagT --git --git-ignore "$@" | less -F
+}
+
+ccat () {
+  pygmentize "$1" | less -RF
+}
+
 lamkp () {
 
   if [ $# -ne 1 ]; then
