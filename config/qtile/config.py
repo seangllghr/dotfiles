@@ -262,6 +262,21 @@ dropdowns = [
             x = 0, y = 0,
         )
     },
+    {
+        'name': 'signal',
+        'keybind': {
+            'mods': [ mod, alt ],
+            'key': 's',
+        },
+        'command': 'signal-desktop',
+        'config': dict(
+            on_focus_lost_hide = False,
+            opacity = 1.0,
+            height = 0.8,
+            width = 0.4,
+            x = 0, y = 0
+        )
+    }
 ]
 
 # groups = [Group(i) for i in '123456789']
