@@ -12,6 +12,7 @@
 (package! golden-ratio)
 (package! org-ref)
 (package! edit-server)
+(package! atomic-chrome)
 (package! mu4e-alert)
 (package! adoc-mode)
 (package! lorem-ipsum)

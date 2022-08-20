@@ -144,6 +144,7 @@
                   (minibuffer . t)
                   (menu-bar-lines . t)
                   (window-system . x))))
+(atomic-chrome-start-server)
 
 (custom-set-faces!
   '(doom-modeline-buffer-modified :foreground "orange"))
