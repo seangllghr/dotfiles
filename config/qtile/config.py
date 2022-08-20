@@ -35,6 +35,7 @@ from libqtile.utils import guess_terminal
 
 from floating_window_snapping import move_snap_window
 import customact
+import dropdowns
 
 import palette
 colors = palette.Palette(
@@ -167,122 +168,9 @@ keys = [
         desc='Increase volume'),
 ]
 
-dropdown_defaults = {
-    'height': 0.6,
-    'width': 0.6,
-    'x': 0, 'y': 0,
-}
-dropdowns = [
-    {
-        'name': 'terminal',
-        'keybind': {
-            'mods': [ mod ],
-            'key': 'apostrophe',
-        },
-        'command': [ terminal ],
-        'config': dict(
-            on_focus_lost_hide = True,
-            warp_pointer = True,
-            **dropdown_defaults,
-        ),
-    },
-    {
-        'name': 'tasks',
-        'keybind': {
-            'mods': [ mod, alt ],
-            'key': 'Delete',
-        },
-        'command': 'alacritty -t htop -e htop'.split(),
-        'config': dict(
-            on_focus_lost_hide = False,
-            height = 0.7, width = 0.7,
-            x = 0, y = 0,
-        ),
-    },
-    {
-        'name': 'mixer',
-        'keybind': {
-            'mods': [ mod, alt ],
-            'key': 'F4',
-        },
-        'command': 'alacritty -t PulseMixer -e pulsemixer'.split(),
-        'config': dict(
-            on_focus_lost_hide = True,
-            warp_pointer = True,
-            **dropdown_defaults,
-        ),
-    },
-    {
-        'name': 'files',
-        'keybind': {
-            'mods': [ mod ],
-            'key': 'f',
-        },
-        'command': 'alacritty -t Files -e lf'.split(),
-        'config': dict(
-            on_focus_lost_hide = True,
-            warp_pointer = True,
-            **dropdown_defaults,
-        ),
-    },
-    {
-        'name': 'calculator',
-        'keybind': {
-            'mods': [ mod ],
-            'key': 'minus',
-        },
-        'command': 'alacritty -t Calculator -e qalc'.split(),
-        'config': dict(
-            on_focus_lost_hide = False,
-            **dropdown_defaults,
-        ),
-    },
-    {
-        'name': 'python shell',
-        'keybind': {
-            'mods': [ mod, alt ],
-            'key': 'p',
-        },
-        'command': 'alacritty -t PyShell -e bpython',
-        'config': dict(
-            on_focus_lost_hide = False,
-            **dropdown_defaults,
-        ),
-    },
-    {
-        'name': 'man',
-        'keybind': {
-            'mods': [ mod ],
-            'key': 'slash',
-        },
-        'command': 'alacritty -t Manpages',
-        'config': dict(
-            on_focus_lost_hide = False,
-            height = 0.995, width = 0.5,
-            x = 0, y = 0,
-        )
-    },
-    {
-        'name': 'signal',
-        'keybind': {
-            'mods': [ mod, alt ],
-            'key': 's',
-        },
-        'command': 'signal-desktop',
-        'config': dict(
-            on_focus_lost_hide = False,
-            opacity = 1.0,
-            height = 0.8,
-            width = 0.4,
-            x = 0, y = 0
-        )
-    }
-]
-
 # groups = [Group(i) for i in '123456789']
 groups = [
-    ScratchPad('scratch', [DropDown(dd['name'], dd['command'], **dd['config'])
-                           for dd in dropdowns]),
+    ScratchPad('scratch', dropdowns.config_dropdown_list()),
     Group('1', label='', layout='max'),
     Group('2', label='', layout='monadwide'),
     Group('3', matches=[Match(wm_class=['firefox', 'brave-browser'])],
@@ -296,12 +184,7 @@ groups = [
     Group('0', label=''),
 ]
 
-keys.extend([
-    Key(dropdown['keybind']['mods'], dropdown['keybind']['key'],
-        lazy.group['scratch'].dropdown_toggle(dropdown['name']),
-        desc = f"Toggle {dropdown['name']} dropdown")
-    for dropdown in dropdowns
-])
+keys.extend(dropdowns.config_dropdown_keys())
 
 for group in groups:
     if len(group.name) == 1:
