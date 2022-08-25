@@ -1,6 +1,6 @@
 [user]
 	name = Sean Gallagher
-	email = seangllghr@gmail.com
+	email = sean@gallaghersw.dev
 [core]
 	editor = emacsclient -a emacs
 	autocrlf = input
