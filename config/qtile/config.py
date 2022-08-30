@@ -65,8 +65,8 @@ keys = [
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
     # Move focus through the window list
-    Key([mod], 'j', lazy.layout.down(), desc='Move focus down'),
-    Key([mod], 'k', lazy.layout.up(), desc='Move focus up'),
+    Key([mod], 'j', lazy.layout.next(), desc='Move focus to next client'),
+    Key([mod], 'k', lazy.layout.previous(), desc='Move focus to previous client'),
     # Move windows within group
     Key([mod, shft], 'j',
         lazy.layout.shuffle_down(), lazy.layout.move_down(),
