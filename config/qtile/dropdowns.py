@@ -1,6 +1,6 @@
 """Define a function to configure dropdowns."""
 
-from libqtile.config import DropDown, Key
+from libqtile.config import DropDown, Key, Match
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
@@ -114,6 +114,19 @@ dropdowns = [
             height = 0.8,
             width = 0.4,
             **default_position
+        )
+    },
+    {
+        'name': 'emacs',
+        'keybind': {
+            'mods': [ mod, alt ],
+            'key': 'e',
+        },
+        'command': "emacsclient -cn -F '((name . \"emacscratch\"))' -a emacs",
+        'config': dict(
+            match = Match(title=['emacscratch']),
+            opacity = 1.0,
+            **dropdown_defaults
         )
     }
 ]
