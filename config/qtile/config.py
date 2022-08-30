@@ -74,6 +74,8 @@ keys = [
     Key([mod, shft], 'k',
         lazy.layout.shuffle_up(), lazy.layout.move_up(),
         desc='Move window up'),
+    Key([mod], 'f', customact.toggle_focus_floating(),
+        desc='Toggle focus between floating and tiled windows'),
     Key([mod, shft], 'f', lazy.window.toggle_floating(), desc='Un/float window'),
     # Change window sizes
     Key([mod], 'h',
