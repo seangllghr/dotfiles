@@ -150,6 +150,8 @@ keys = [
     Key([mod], 'd', lazy.spawn('rofi-pass --last-used'), desc='Show pass menu'),
     Key([mod, alt], 'b', lazy.spawn('rofi-chrome'), desc='Open Chrome PWA'),
     Key([mod], 'grave', lazy.spawn('rofimoji'), desc='Open emoji picker'),
+    Key([mod, shft], 'd', lazy.spawn('displayselect'),
+        desc='Change display configuration'),
 
     # Hardware control/media keys
     Key([], 'XF86AudioPlay',
