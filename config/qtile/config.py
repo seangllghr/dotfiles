@@ -77,6 +77,8 @@ keys = [
     Key([mod], 'f', customact.toggle_focus_floating(),
         desc='Toggle focus between floating and tiled windows'),
     Key([mod, shft], 'f', lazy.window.toggle_floating(), desc='Un/float window'),
+    Key([mod], 's', lazy.layout.swap_main(), desc='Swap window to main'),
+    Key([mod], 'equal', lazy.layout.reset(), desc='Normalize window sizes'),
     # Change window sizes
     Key([mod], 'h',
         lazy.layout.shrink(), lazy.layout.collapse_branch(),
