@@ -138,7 +138,7 @@ def configure_groups(mods, apps):
         Group('6', label='', layout='treetab'),
         Group('7', label='', layout='floating'),
         Group('8', label='', layout='treetab'),
-        Group('9', label=''),
+        Group('9', label='', layout='columns'),
         Group('0', label=''),
     ]
     keys = keymap.bind_keys(mods, apps, groups, specs)

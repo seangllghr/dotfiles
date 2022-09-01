@@ -102,6 +102,12 @@ layouts = [
         panel_width = 250,
         **layout_theme
     ),
+    layout.Columns(
+        insert_position = 1, # insert after
+        border_normal_stack = colors.bg[2],
+        border_focus_stack = colors.blue.norm,
+        **layout_theme
+    ),
 
     # layout.Zoomy(),
     layout.Floating(**layout_theme),

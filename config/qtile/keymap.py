@@ -88,6 +88,52 @@ def bind_layout_keys(mods):
             customact.move_window_to_next_screen(),
             desc='Move current client to next screen'),
 
+        # Directional keybinds, mostly for Columns, but generally applicable
+        # These are on vim home row positions for my Moonlander layout
+        Key(mods.base, 'e',
+            lazy.layout.up(),
+            desc='Move focus up'),
+        Key(mods.base, 'o',
+            lazy.layout.right(),
+            desc='Move focus right'),
+        Key(mods.base, 'i',
+            lazy.layout.down(),
+            desc='Move focus down'),
+        Key(mods.base, 'y',
+            lazy.layout.left(),
+            desc='Move focus left'),
+        Key(mods.alternate, 'y',
+            lazy.layout.shuffle_left(),
+            desc='Shuffle client left'),
+        Key(mods.alternate, 'o',
+            lazy.layout.shuffle_right(),
+            desc='Shuffle client right'),
+
+        # Directional grow/shrink bindings (Yes, I'm using system. Sue me.)
+        Key(mods.system, 'e',
+            lazy.layout.grow_up(),
+            desc='Grow window up'),
+        Key(mods.system, 'o',
+            lazy.layout.grow_right(),
+            desc='Grow window right'),
+        Key(mods.system, 'i',
+            lazy.layout.grow_down(),
+            desc='Grow window down'),
+        Key(mods.system, 'y',
+            lazy.layout.grow_left(),
+            desc='Grow window left'),
+
+        # Columns-specific keybinds
+        Key(mods.alternate, 'i',
+            lazy.layout.swap_column_right(),
+            desc='Swap column with next'),
+        Key(mods.alternate, 'e',
+            lazy.layout.swap_column_left(),
+            desc='Swap column with previous'),
+        Key(mods.alternate, 's',
+            lazy.layout.toggle_split(),
+            desc='Toggle split/stacked column'),
+
         # Change layouts
         Key(mods.base, 'Tab',
             lazy.next_layout(),
