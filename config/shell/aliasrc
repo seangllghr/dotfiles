@@ -60,16 +60,28 @@ lamkp () {
     printf "lamkp - Autobuild and preview LaTeX files\nUsage: lamkp <filename>\n"
     return 1
   else
-    doc="${1%.*}.pdf"
+    if echo "$1" | grep -E '.*\.tex'; then
+      doc_source="$1"
+      doc_output="${1%.*}.pdf"
+    elif echo "$1" | grep -E '.*\.pdf'; then
+      doc_source="${1%.*}.tex"
+      doc_output="$1"
+    elif ! echo "$1" | grep -E '.*\..*'; then
+      doc_source="$1.tex"
+      doc_output="$1.pdf"
+    else
+      echo "$1 is an unsupported source format. Exiting..."
+      return 1
+    fi
   fi
 
-  if [ -f "$doc" ]; then
-    echo "Document $doc exists. Previewing..."
-    zathura "${doc}.pdf" &
-    latexmake -xelatex -shell-escape -pvc "$1"
+  if [ -f "$doc_output" ]; then
+    echo "Document $doc_output exists. Previewing..."
+    zathura "$doc_output" &
+    latexmk -xelatex -shell-escape -pvc "$doc_source"
   else
-    latexmake -xelatex -shell-escape -pvc "$1"
-    lamkp "$1"
+    latexmk -xelatex -shell-escape "$doc_source"
+    lamkp "$doc_source"
   fi
 }
 
