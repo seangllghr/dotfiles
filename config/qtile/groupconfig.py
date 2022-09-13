@@ -134,7 +134,7 @@ def configure_groups(mods, apps):
         Group('3', matches=[Match(wm_class=['firefox', 'brave-browser'])],
             layout='treetab', label=''),
         Group('4', label=''),
-        Group('5', label=''),
+        Group('5', label='', layout='max'),
         Group('6', label='', layout='treetab'),
         Group('7', label='', layout='floating'),
         Group('8', label='', layout='treetab'),
