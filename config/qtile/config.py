@@ -163,7 +163,7 @@ screens = [
             28,
         ),
         wallpaper = expanduser('~/.config/qtile/wallpaper.png'),
-        wallpaper_mode='fill'
+        # wallpaper_mode='fill'
     ),
     Screen(
         top = bar.Bar(
@@ -182,7 +182,7 @@ screens = [
             28,
         ),
         wallpaper = expanduser('~/.config/qtile/wallpaper.png'),
-        wallpaper_mode='fill'
+        # wallpaper_mode='fill'
     ),
 ]
 
