@@ -1,5 +1,27 @@
 #!/bin/sh
 
+# Color output aliases
+CO_RESET='\e[0m'    # Text Reset
+# Regular           Bold                Underline           High Intensity
+CO_K='\e[0;30m';     BCO_K='\e[1;30m';    UCO_K='\e[4;30m';    ICO_K='\e[0;90m';
+CO_R='\e[0;31m';     BCO_R='\e[1;31m';    UCO_R='\e[4;31m';    ICO_R='\e[0;91m';
+CO_G='\e[0;32m';     BCO_G='\e[1;32m';    UCO_G='\e[4;32m';    ICO_G='\e[0;92m';
+CO_Y='\e[0;33m';     BCO_Y='\e[1;33m';    UCO_Y='\e[4;33m';    ICO_Y='\e[0;93m';
+CO_B='\e[0;34m';     BCO_B='\e[1;34m';    UCO_B='\e[4;34m';    ICO_B='\e[0;94m';
+CO_M='\e[0;35m';     BCO_M='\e[1;35m';    UCO_M='\e[4;35m';    ICO_M='\e[0;95m';
+CO_C='\e[0;36m';     BCO_C='\e[1;36m';    UCO_C='\e[4;36m';    ICO_C='\e[0;96m';
+CO_W='\e[0;37m';     BCO_W='\e[1;37m';    UCO_W='\e[4;37m';    ICO_W='\e[0;97m';
+
+# BoldHigh Intens   Background          High Intensity Backgrounds
+BICO_K='\e[1;90m';   On_CO_K='\e[40m';    On_ICO_K='\e[0;100m';
+BICO_R='\e[1;91m';   On_CO_R='\e[41m';    On_ICO_R='\e[0;101m';
+BICO_G='\e[1;92m';   On_CO_G='\e[42m';    On_ICO_G='\e[0;102m';
+BICO_Y='\e[1;93m';   On_CO_Y='\e[43m';    On_ICO_Y='\e[0;103m';
+BICO_B='\e[1;94m';   On_CO_B='\e[44m';    On_ICO_B='\e[0;104m';
+BICO_M='\e[1;95m';   On_CO_M='\e[45m';    On_ICO_M='\e[0;105m';
+BICO_C='\e[1;96m';   On_CO_C='\e[46m';    On_ICO_C='\e[0;106m';
+BICO_W='\e[1;97m';   On_CO_W='\e[47m';    On_ICO_W='\e[0;107m';
+
 # Use programs if we've got 'em
 [ -x "$(command -v nvim)" ] && alias vim="nvim" vimdiff="nvim -d"
 [ -x "$(command -v emacsclient)" ] && alias ed="emacsclient -t -a nvim"
@@ -35,7 +57,10 @@ alias \
   sctl="systemctl --user" \
   ssctl="sudo systemctl" \
   xo="xdg-open" \
-  z="zathura"
+  z="zathura" \
+  q="qmk" \
+  qc="qmk compile" \
+  wcli="wally-cli"
 
 # Alias shortcuts to commonly-tweaked config files
 alias \
@@ -92,4 +117,29 @@ shnew () {
   fi
   echo "#!/usr/bin/env sh" > $1
   chmod 755 $1
+}
+
+mkfk () {
+  kmap="$HOME/git-software/qmk_firmware"
+  latest="$kmap/latest.bin"
+  backup="$kmap/moonlander_seangllghr_$(date +%Y%m%d_%H%M%S).bin"
+  if [ -e "$kmap/latest.bin" ]; then
+    cp "$latest" "$backup"
+    echo "${ICO_G}[INFO]${CO_RESET} Backed up firmware to $backup"
+  fi
+  if ! qmk compile; then
+    echo "${ICO_R}FLASH ABORTED${CO_RESET} Something went wrong while building."
+    return 1
+  fi
+  echo "${ICO_G}BUILD SUCCESSFUL${CO_RESET} Flashing"
+
+  if ! wally-cli "$latest"; then
+    echo "${ICO_R}FLASH FAILED${CO_RESET} Attempting to re-flash with LKG firmware"
+    wally-cli "$backup" && echo "${ICO_G}RESTORE SUCCEEDED${CO_RESET}" ||
+        echo "${ICO_R}RESTORE FAILED${CO_RESET}"
+    return 1
+  fi
+
+  sleep 3
+  setxkbmap -option shift:both_capslock_cancel,compose:ralt
 }
