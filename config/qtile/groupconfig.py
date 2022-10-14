@@ -116,7 +116,19 @@ def configure_dd_spec_list(mods, apps):
         DDSpec('emacs scratch',
                Keybind(mods.app, 'e'),
                [ *apps.editor, '-n', '-F', '((name . \"emacs-scratch\"))' ],
-               config.modify(match=Match(title=['emacs-scratch']), opacity=1.0))
+               config.modify(
+                   match=Match(title=['emacs-scratch']),
+                   opacity=1.0,
+                   height = 0.7,
+               )),
+        DDSpec('psensor', Keybind(mods.alternate_app, 'Delete'),
+               [ 'psensor' ],
+               config.modify(
+                   match = Match(wm_class=['psensor', 'Psensor']),
+                   opacity = 1.0,
+                   height = 0.275, width = 0.6,
+                   x = 0.396, y = 0.7205
+               )),
     ]
     return dropdowns
 
