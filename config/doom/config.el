@@ -180,6 +180,10 @@
 (setq org-agenda-skip-deadline-if-done t)
 ;; (setq! flycheck-global-modes '(not org-mode))
 
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "~/org/notes" "INBOX")
+         "* TODO %?\nDEADLINE: %t")))
+
 ;; custom ox-extras function to include only headlines tagged 'noignore'
 (defun org-export-noignore-headlines (data backend info)
   "Remove headlines not tagged \"noignore\" retaining contents and promoting children.
