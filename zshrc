@@ -213,7 +213,7 @@ for subconfig in {aliasrc,zshnameddirrc}; do
   fi
 done
 
-if bw --version >/dev/null 2>&1; then
+if (( $+commands[bw] )); then
   eval "$(bw completion --shell zsh); compdef _bw bw;"
 fi
 
