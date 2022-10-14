@@ -200,6 +200,9 @@ def bind_application_launchers(mods, apps):
         Key(mods.app, 'space',
             lazy.spawn(apps.editor),
             desc='Launch an editor'),
+        Key(mods.app, 'v',
+            lazy.spawn('virt-manager'),
+            desc='Launch virtual machine manager'),
 
         # Rofi runners and scripts
         Key(mods.alternate_app, 'space',
