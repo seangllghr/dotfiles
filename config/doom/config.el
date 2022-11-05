@@ -186,10 +186,11 @@
 
 ;; custom ox-extras function to include only headlines tagged 'noignore'
 (defun org-export-noignore-headlines (data backend info)
-  "Remove headlines not tagged \"noignore\" retaining contents and promoting children.
-Each headline tagged \"noignore\" will not be removed retaining its
-contents and promoting any children headlines to the level of the
-parent."
+  "Remove headlines not tagged \"noignore\".
+The \"noignore\" tag marks headlines that will be retained.
+For all other headlines,
+  contents are retained and any children headlines are promoted
+  to the level of the parent."
   (org-element-map data 'headline
     (lambda (object)
       (when (not (member "noignore" (org-element-property :tags object)))
