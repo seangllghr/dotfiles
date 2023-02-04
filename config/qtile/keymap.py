@@ -224,7 +224,7 @@ def bind_application_launchers(mods, apps):
             lazy.spawn('rofi-pass --last-used'),
             desc='Show password manager'),
         Key(mods.base, 'd',
-            lazy.spawn('bwmenu'),
+            lazy.spawn('bwmenu --auto-lock -1'),
             desc='Show password manager'),
         Key(mods.app, 'b',
             lazy.spawn('rofi-chrome'),

@@ -75,7 +75,7 @@ def toggle_focus_floating():
 def no_bar_on_virtualization(qtile):
     """Messy, hacky approach to removing the bar on my Virtualization group."""
     bar = qtile.current_screen.top
-    if (qtile.current_group.name == '5'):
+    if (qtile.current_group.name == '9'):
         bar.show(False)
     else:
         bar.show(True)

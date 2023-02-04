@@ -141,18 +141,18 @@ def configure_groups(mods, apps):
     specs = configure_dd_spec_list(mods, apps)
     groups = [
         ScratchPad('scratch', config_dropdowns(specs)),
-        Group('1', label='', layout='max',
+        Group('1', label='', layout='treetab'),
+        Group('2', label=''),
+        Group('3', label='', layout='treetab'),
+        Group('4', label='', layout='max',
               matches=[Match(wm_class=['emacs'])]),
-        Group('2', label=''),
-        Group('3', matches=[Match(wm_class=['firefox', 'brave-browser'])],
+        Group('5', label='', layout='treetab'),
+        Group('6', matches=[Match(wm_class=['firefox', 'brave-browser'])],
             layout='treetab', label=''),
-        Group('4', label='', layout='treetab'),
-        Group('5', label='', layout='max'),
-        Group('6', label='', layout='treetab'),
-        Group('7', label='', layout='floating'),
-        Group('8', label='', layout='treetab'),
-        Group('9', label='', layout='columns'),
-        Group('0', label=''),
+        Group('7', label=''),
+        Group('8', label='', layout='treetab'),
+        Group('9', label='', layout='max'),
+        Group('0', label='', layout='floating'),
     ]
     keys = keymap.bind_keys(mods, apps, groups, specs)
     return ( groups, keys )
