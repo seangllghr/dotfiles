@@ -23,14 +23,14 @@
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 (setq doom-font (font-spec
                  :family "JetBrains Mono"
-                 :size 16
+                 :size 15
                  )
       doom-variable-pitch-font (font-spec
                                 :family "Libertinus Sans"
-                                :size 22)
+                                :size 20)
       doom-unicode-font (font-spec
                          :family "JuliaMono"
-                         :size 16))
+                         :size 15))
 
 (setq! +ligatures-extra-symbols
        ;; Not sure why, but several of the default symbols don't seem to exist
@@ -94,7 +94,8 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+;; (setq org-directory "/home/sean/org/")
+(setq org-agenda-files "~/org/")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -123,7 +124,7 @@
 (use-package! golden-ratio
   :after-call pre-command-hook
   :config
-  (golden-ratio-mode +1)
+  ;; (golden-ratio-mode +1)
   (remove-hook 'window-configuration-change-hook #'golden-ratio)
   (add-hook 'doom-switch-window-hook #'golden-ratio))
 
@@ -174,16 +175,6 @@
   (+word-wrap-mode 0)
   (turn-off-auto-fill))
 
-(setq org-agenda-skip-deadline-prewarning-if-scheduled t)
-(setq org-agenda-skip-scheduled-if-deadline-is-shown t)
-(setq org-agenda-skip-scheduled-if-done t)
-(setq org-agenda-skip-deadline-if-done t)
-;; (setq! flycheck-global-modes '(not org-mode))
-
-(setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/org/notes" "INBOX")
-         "* TODO %?\nDEADLINE: %t")))
-
 ;; custom ox-extras function to include only headlines tagged 'noignore'
 (defun org-export-noignore-headlines (data backend info)
   "Remove headlines not tagged \"noignore\".
@@ -225,6 +216,44 @@ For all other headlines,
   (ox-extras-activate '(noignore-headlines)))
 
 (after! org
+
+  (setq org-agenda-skip-deadline-prewarning-if-scheduled t)
+  (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+  (setq org-agenda-skip-scheduled-if-done t)
+  (setq org-agenda-skip-deadline-if-done t)
+  ;; (setq! flycheck-global-modes '(not org-mode))
+
+  (setq org-capture-templates
+        '(("t" "Todo" entry (file+headline "~/org/notes" "INBOX")
+           "* TODO %?\nDEADLINE: %t")))
+
+    (setq org-todo-keywords
+          '((sequence "TODO(t!)" "STRT(s)" "TEST(u!)" "REVIEW(r!)" "|" "DONE(d!)")
+            ;; Exceptional/alternate states
+            (sequence "BLOCK(b@)" "KNOWNCAUSE(c@)" "ACCEPTANCE(R!)" "PUSH(p)"
+                      "|" "PUNT(P@)" "CANCEL(k@)")
+            ;; Lightweight/subtask states
+            (sequence "[ ](T)" "[-](S)" "|" "[✓](D)" "[X](K)")
+            ;; Long-term/container states
+            (sequence "LOOP(l)" "PROJ(j)" "IDEA(i)" "FEAT(f)" "|")))
+    (setq org-todo-keyword-faces
+          '(("PROJ" . (:foreground "#fbf1c7" :weight bold))
+            ("IDEA" . "#ebdbb2")
+            ("FEAT" . "#458588")
+            ("BUG" . "#fe8019")
+            ("TODO" . "#d3869b") ("[ ]" . "#d3869b") ("LOOP" . "#b16286")
+            ("STRT" . "#fabd2f") ("[-]" . "#fabd2f")
+            ("PUSH" . "#fe8019")
+            ("BLOCK" . "#cc241d")
+            ("KNOWNCAUSE" . "#83a598") ("TEST" . "#83a598")
+            ("REVIEW" . "#b8bb26") ("ACCEPTANCE" . "#b8bb26")
+            ("PUNT" . "#928374") ("CANCEL" . "#928374") ("[X]" . "#928374"))
+          org-priority-faces
+          '((?B . "#fabd2f")
+            (?C . "#bdae93")))
+
+  (setq org-log-into-drawer t)
+
   (setq org-latex-pdf-process '("latexmk --xelatex --shell-escape %f"))
   (require 'ox-bibtex)
   (require 'ox-extra)
@@ -319,7 +348,7 @@ biblatex
   (setq org-latex-title-command "\\maketitle")
   )
 
-(setq-default org-display-custom-times t)
+(setq-default org-display-custom-times nil)
 (setq org-time-stamp-custom-formats
       '("​%A, %d %B, %Y​" . "​%A, %d %B, %Y, %H:%M %Z​"))
 
@@ -338,7 +367,7 @@ biblatex
 
 (setq org-hide-emphasis-markers t)
 
-(setq org-latex-listings 'minted)
+(setq org-latex-src-block-backend 'minted)
 
 (setq org-ellipsis " ⌄")
 
@@ -400,11 +429,21 @@ biblatex
 ;;                                      (reply-to-text     . (text)))
 ;;       org-msg-convert-citation t)
 
-;; Extra keybinds
-(map! (:leader (:prefix "t" :desc "Golden ratio" "G" #'golden-ratio-mode))
-      (:leader (:prefix "t" :desc "Follow mode" "L" #'follow-mode))
-      (:leader (:prefix "t" :desc "Variable pitch" "v" #'variable-pitch-mode)))
+;; Quarto is org-adjacent, so I'll just drop this here
+(require 'quarto-mode)
 
+;; Extra keybinds
+;; Additional toggles
+(map! (:leader (:prefix "t"
+                :desc "Follow mode" "L" #'follow-mode))
+      (:leader (:prefix "t"
+                :desc "Golden ratio" "G" #'golden-ratio-mode))
+      (:leader (:prefix "t"
+                :desc "Variable pitch" "v" #'variable-pitch-mode))
+      (:leader (:prefix "t"
+                :desc "Rainbow mode" "R" #'rainbow-mode)))
+
+;; Debug commands
 (map! (:leader
        (:prefix-map ("d" . "debugger")
         :desc "Launch GDB" "d" #'gdb
@@ -413,3 +452,8 @@ biblatex
         :desc "Registers buffer" "r" #'gdb-display-registers-buffer
         :desc "Source buffer" "s" #'gdb-display-source-buffer
         :desc "UI many windows" "m" #'gdb-many-windows)))
+
+;; Extra window bindings
+(map! (:leader
+       (:prefix "w" (:prefix "g"
+                     :desc "Resize to Golden Ratio" "g" #'golden-ratio))))

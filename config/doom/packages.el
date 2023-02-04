@@ -13,10 +13,11 @@
 (package! org-ref)
 (package! edit-server)
 (package! atomic-chrome)
-(package! mu4e-alert)
-(package! adoc-mode)
+;; (package! mu4e-alert)
+;; (package! adoc-mode)
 (package! lorem-ipsum)
 (package! org-re-reveal-ref)
+(package! quarto-mode)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
