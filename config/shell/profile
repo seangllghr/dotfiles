@@ -5,6 +5,7 @@
 # command -v most 1>/dev/null 2>&1 && export PAGER="most"
 export EDITOR="/usr/bin/emacsclient -t -a nvim"
 export VISUAL="/usr/bin/emacsclient -c -a emacs"
+export XCOMPOSEFILE="$HOME/.config/x11/compose"
 SSH_AUTH_SOCK="/run/user/$(id -u)/keyring/ssh"
 export SSH_AUTH_SOCK
 export PASSWORD_STORE_DIR=~/.local/share/password-store

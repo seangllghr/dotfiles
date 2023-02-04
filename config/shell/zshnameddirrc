@@ -10,7 +10,7 @@ hash -d h=/home/sean
 hash -d m=/home/sean/Music
 hash -d mn=/mnt
 hash -d pp=/home/sean/Pictures
-hash -d sc=/home/sean/.local/bin
+hash -d lb=/home/sean/.local/bin
 hash -d src=/home/sean/.local/src
 hash -d vv=/home/sean/Videos
 hash -d cfx=/home/sean/.config/x11/xresources
@@ -32,6 +32,20 @@ hash -d res=/home/sean/Documents/Records/Resumes
 hash -d cl=/home/sean/Documents/Records/Resumes/applications
 hash -d pf=/home/sean/Documents/Records/Resumes/seangllghr.github.io
 hash -d minutes=/home/sean/Documents/Camp/TRC_Aquatics/Committee/meeting_notes
+
+# Work work
+## General
+hash -d 1s=/home/sean/Documents/Work/1Spatial
+hash -d 1repo=/home/sean/Documents/Work/1Spatial/repo
+hash -d proj=/home/sean/Documents/Work/1Spatial/Projects
+hash -d int=/home/sean/Documents/Work/1Spatial/1Integrate
+## Repos
+hash -d ng911=/home/sean/Documents/Work/1Spatial/repo/con_vaas_ng911
+hash -d egeom=/home/sean/Documents/Work/1Spatial/repo/con_geom_essentials
+## Projects
+hash -d mn=/home/sean/Documents/Work/1Spatial/Projects/MN911
+hash -d adoa=/home/sean/Documents/Work/1Spatial/Projects/ADOA
+hash -d clab=/home/sean/Documents/Work/1Spatial/Projects/CATTLab
 
 # Local Variables:
 # mode: sh
