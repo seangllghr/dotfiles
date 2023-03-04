@@ -34,7 +34,6 @@ from libqtile.config import Click, Drag, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
-from customact import no_bar_on_virtualization
 from customdata import Modifiers, DefaultApplications
 from floating_window_snapping import move_snap_window
 import groupconfig
@@ -241,17 +240,17 @@ def _autostart():
     home = expanduser('~/')
     Popen([home + '.config/qtile/autostart.sh'])
 
-@hook.subscribe.layout_change
-def _layout_change(layout, group):
-    no_bar_on_virtualization(qtile)
+# @hook.subscribe.layout_change
+# def _layout_change(layout, group):
+#     no_bar_on_virtualization(qtile)
 
-@hook.subscribe.changegroup
-def _group_change():
-    no_bar_on_virtualization(qtile)
+# @hook.subscribe.changegroup
+# def _group_change():
+#     no_bar_on_virtualization(qtile)
 
-@hook.subscribe.client_focus
-def _focus_change(window):
-    no_bar_on_virtualization(qtile)
+# @hook.subscribe.client_focus
+# def _focus_change(window):
+#     no_bar_on_virtualization(qtile)
 
 if __name__ == "__main__":
     print("Config loads successfully!")
