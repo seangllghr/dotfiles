@@ -146,7 +146,7 @@ screens = [
     Screen(
         top = bar.Bar(
             [
-                widget.GroupBox(),
+                widget.GroupBox(font='Font Awesome 6 Free', fontsize=14),
                 widget.CurrentLayoutIcon(),
                 widget.Prompt(),
                 widget.WindowName(),
@@ -168,7 +168,7 @@ screens = [
     Screen(
         top = bar.Bar(
             [
-                widget.GroupBox(),
+                widget.GroupBox(font='Font Awesome 6 Free', fontsize=14),
                 widget.CurrentLayoutIcon(),
                 widget.WindowName(),
                 widget.Chord(
