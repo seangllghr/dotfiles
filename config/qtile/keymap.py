@@ -50,29 +50,38 @@ def bind_layout_keys(mods):
         Key(mods.alternate, 'k',
             lazy.layout.shuffle_up(), lazy.layout.move_up(),
             desc='Move window up the stack'),
-        Key(mods.base, 's',
+        Key(mods.system, 's', # Not really a 'system' bind, but whatever
             lazy.layout.swap_main(),
             desc='Swap current client with main client'),
         Key(mods.alternate, 'f',
-            lazy.window.tile_floating(),
+            lazy.window.toggle_floating(),
             "Toggle current client between floating and tiling"),
 
         # Manipulate layout size ratios
         Key(mods.base, 'n',
             lazy.layout.reset(), lazy.layout.section_down(),
             desc='Reset window sizes (TreeTab: Move tab to next section)'),
+        Key(mods.base, 's',
+            lazy.layout.shrink(),
+            desc='Shrink current window'),
+        Key(mods.base, 'g',
+            lazy.layout.grow(),
+            desc='Expand current window'),
         Key(mods.base, 'h',
-            lazy.layout.shrink(), lazy.layout.collapse_branch(),
-            desc='Shrink current window (TreeTab: Collapse branch)'),
+            lazy.layout.collapse_branch(),
+            desc='TreeTab: Collapse branch'),
         Key(mods.base, 'l',
-            lazy.layout.grow(), lazy.layout.expand_branch(),
-            desc='Expand current window (TreeTab: Expand branch)'),
+            lazy.layout.expand_branch(),
+            desc='TreeTab: Expand branch'),
         Key(mods.alternate, 'n',
             lazy.layout.normalize(),
             desc='Normalize window sizes'),
         Key(mods.base, 'm',
             lazy.layout.maximize(),
             desc='Maximize current window (within layout)'),
+        Key(mods.base, 'a',
+            lazy.layout.flip(),
+            desc='Flip the main pane side'),
 
         # Move focus and clients between screens
         Key(mods.base, 'comma',
@@ -181,6 +190,9 @@ def bind_system_control_keys(mods):
         Key(mods.system, 'd',
             lazy.spawn(expanduser('~/dotfiles/bin/displayselect')),
             desc='Change display configuration'),
+        Key(mods.system, 'p',
+            lazy.spawn('maim -s | xclip -selection clipboard -t image/png'),
+            desc='Screenshot current window')
     ]
     return keys
 
