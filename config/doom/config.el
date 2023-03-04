@@ -22,7 +22,7 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 (setq doom-font (font-spec
-                 :family "JetBrains Mono"
+                 :family "FiraCode Nerd Font"
                  :size 15
                  )
       doom-variable-pitch-font (font-spec
@@ -77,9 +77,9 @@
   (set-face-attribute 'variable-pitch nil :height 1.3))
 
 ;; Modeline customizations
-(custom-set-faces!
-  '(mode-line :family "JetBrains Mono Medium" :height 0.9)
-  '(mode-line-inactive :family "JetBrains Mono Medium" :height 0.9))
+;; (custom-set-faces!
+;;   '(mode-line :family "JetBrains Mono Medium" :height 0.9)
+;;   '(mode-line-inactive :family "JetBrains Mono Medium" :height 0.9))
 (setq! doom-modeline-buffer-file-name-style 'truncate-with-project)
 
 ;; Treemacs
@@ -217,15 +217,16 @@ For all other headlines,
 
 (after! org
 
-  (setq org-agenda-skip-deadline-prewarning-if-scheduled t)
-  (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
-  (setq org-agenda-skip-scheduled-if-done t)
-  (setq org-agenda-skip-deadline-if-done t)
+  (setq org-agenda-skip-deadline-prewarning-if-scheduled t
+        org-agenda-skip-scheduled-if-deadline-is-shown t
+        org-agenda-skip-scheduled-if-done t
+        org-agenda-skip-deadline-if-done t
+        org-agenda-start-with-follow-mode t)
   ;; (setq! flycheck-global-modes '(not org-mode))
 
   (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/org/notes" "INBOX")
-           "* TODO %?\nDEADLINE: %t")))
+        '(("t" "Todo" entry (file+headline "~/org/notes.org" "INBOX")
+           "* TODO [#B] %?\nSCHEDULED: %t")))
 
     (setq org-todo-keywords
           '((sequence "TODO(t!)" "STRT(s)" "TEST(u!)" "REVIEW(r!)" "|" "DONE(d!)")
