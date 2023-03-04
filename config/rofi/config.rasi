@@ -4,14 +4,14 @@ configuration {
 	width: 50;
 	lines: 15;
 	columns: 1;
-	font: "JetBrainsMono Nerd Font 12";
+	font: "FiraCode Nerd Font 12";
 	bw: 1;
 	location: 0;
 	padding: 5;
 	yoffset: 0;
 	xoffset: 0;
 	fixed-num-lines: true;
-	show-icons: false;
+	show-icons: true;
 	terminal: "rofi-sensible-terminal";
 	ssh-client: "ssh";
 	ssh-command: "{terminal} -e {ssh-client} {host} [-p {port}]";
@@ -153,4 +153,7 @@ configuration {
 * {
 	highlight: bold italic;
 	scrollbar: false;
+}
+window {
+	border-radius: 8px;
 }
