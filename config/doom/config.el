@@ -22,7 +22,7 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 (setq doom-font (font-spec
-                 :family "FiraCode Nerd Font"
+                 :family "JetBrains Mono"
                  :size 15
                  )
       doom-variable-pitch-font (font-spec
@@ -147,6 +147,10 @@
                   (window-system . x))))
 (atomic-chrome-start-server)
 
+(require 'omn-mode)
+
+(require 'xonsh-mode)
+
 (custom-set-faces!
   '(doom-modeline-buffer-modified :foreground "orange"))
 
@@ -220,8 +224,7 @@ For all other headlines,
   (setq org-agenda-skip-deadline-prewarning-if-scheduled t
         org-agenda-skip-scheduled-if-deadline-is-shown t
         org-agenda-skip-scheduled-if-done t
-        org-agenda-skip-deadline-if-done t
-        org-agenda-start-with-follow-mode t)
+        org-agenda-skip-deadline-if-done t)
   ;; (setq! flycheck-global-modes '(not org-mode))
 
   (setq org-capture-templates
@@ -234,7 +237,7 @@ For all other headlines,
             (sequence "BLOCK(b@)" "KNOWNCAUSE(c@)" "ACCEPTANCE(R!)" "PUSH(p)"
                       "|" "PUNT(P@)" "CANCEL(k@)")
             ;; Lightweight/subtask states
-            (sequence "[ ](T)" "[-](S)" "|" "[✓](D)" "[X](K)")
+            (sequence "[ ](T)" "[-](S)" "[◆](U)" "|" "[✓](D)" "[X](K)")
             ;; Long-term/container states
             (sequence "LOOP(l)" "PROJ(j)" "IDEA(i)" "FEAT(f)" "|")))
     (setq org-todo-keyword-faces
@@ -246,7 +249,7 @@ For all other headlines,
             ("STRT" . "#fabd2f") ("[-]" . "#fabd2f")
             ("PUSH" . "#fe8019")
             ("BLOCK" . "#cc241d")
-            ("KNOWNCAUSE" . "#83a598") ("TEST" . "#83a598")
+            ("KNOWNCAUSE" . "#83a598") ("TEST" . "#83a598") ("[◆]" . "#83a598")
             ("REVIEW" . "#b8bb26") ("ACCEPTANCE" . "#b8bb26")
             ("PUNT" . "#928374") ("CANCEL" . "#928374") ("[X]" . "#928374"))
           org-priority-faces
@@ -389,47 +392,6 @@ biblatex
 (def-and-bind-quoted-text-obj "plus" "+" "+" "+")
 (def-and-bind-quoted-text-obj "underscore" "_" "_" "_")
 
-
-;; Email stuff ======================================================
-;;   Note: It's no longer safe (or, rather, it's never really been safe) to
-;;   assume that mail is configured when I reinstall. Thus, we're going to start
-;;   with this section commented.
-
-;; ;; Add mu4e to loadpath on Ubuntu
-;; (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
-
-;; ;; General email settings
-;; (set-email-account!
-;;  "seangllghr@gmail.com"
-;;  '((mu4e-sent-folder    . "/seangllghr@gmail.com/[Gmail]/Sent Mail")
-;;    (mu4e-drafts-folder  . "/seangllghr@gmail.com/[Gmail]/Drafts")
-;;    (mu4e-trash-folder   . "/seangllghr@gmail.com/[Gmail]/Trash")
-;;    (mu4e-refile-folder  . "/seangllghr@gmail.com/[Gmail]/All Mail")
-;;    (smtpmail-smtp-user  . "seangllghr@gmail.com"))
-;;  t)
-
-;; (setq message-send-mail-function 'smtpmail-send-it
-;;       mu4e-get-mail-command "true"
-;;       mu4e-index-cleanup t
-;;       mu4e-index-lazy-check nil
-;;       starttls-use-gnutls t
-;;       smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-;;       smtpmail-auth-credentials '(("smtp.gmail.com" 587 "seangllghr@gmail.com" nil))
-;;       smtpmail-default-smtp-server "smtp.gmail.com"
-;;       smtpmail-smtp-server "smtp.gmail.com"
-;;       smtpmail-smtp-service 587)
-
-;; ;; (mu4e-alert-set-default-style 'libnotify)
-;; ;; (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
-;; ;; (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
-;; ;; (setq! mu4e-update-interval 300)
-;; (setq org-msg-options "html-postamble:nil H:5 num:nil ^:{} toc:nil author:nil email:nil"
-;;       org-msg-startup "hidestars indent inlineimages"
-;;       org-msg-default-alternatives '((new               . (text html))
-;;                                      (reply-to-html     . (text html))
-;;                                      (reply-to-text     . (text)))
-;;       org-msg-convert-citation t)
-
 ;; Quarto is org-adjacent, so I'll just drop this here
 (require 'quarto-mode)
 
@@ -442,7 +404,11 @@ biblatex
       (:leader (:prefix "t"
                 :desc "Variable pitch" "v" #'variable-pitch-mode))
       (:leader (:prefix "t"
-                :desc "Rainbow mode" "R" #'rainbow-mode)))
+                :desc "Rainbow mode" "R" #'rainbow-mode))
+      (:leader (:prefix "t"
+                :desc "Org LSP" "o" #'lsp-org))
+      (:leader (:prefix "t"
+                :desc "Mixed pitch mode" "m" #'mixed-pitch-mode)))
 
 ;; Debug commands
 (map! (:leader
@@ -458,3 +424,16 @@ biblatex
 (map! (:leader
        (:prefix "w" (:prefix "g"
                      :desc "Resize to Golden Ratio" "g" #'golden-ratio))))
+
+;; Copilot config
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)))
+
+(map! (:leader
+       (:prefix "t"
+        :desc "Copilot" "C" #'global-copilot-mode)))
