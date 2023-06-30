@@ -54,7 +54,7 @@ class Modifiers:
     @property
     def alternate_system(self):
         """Return the modifier list for second-level system bindings."""
-        return [self._mod, self._ctrl, self.shft]
+        return [self._mod, self._ctrl, self._shft]
 
     @property
     def alternate_app(self):

@@ -59,8 +59,11 @@ def bind_layout_keys(mods):
 
         # Manipulate layout size ratios
         Key(mods.base, 'n',
-            lazy.layout.reset(), lazy.layout.section_down(),
-            desc='Reset window sizes (TreeTab: Move tab to next section)'),
+            lazy.layout.normalize(), lazy.layout.section_down(),
+            desc='Normalize window sizes (TreeTab: Move tab to next section)'),
+        Key(mods.alternate, 'n',
+            lazy.layout.reset(),
+            desc='Reset window sizes'),
         Key(mods.base, 's',
             lazy.layout.shrink(),
             desc='Shrink current window'),
@@ -73,9 +76,6 @@ def bind_layout_keys(mods):
         Key(mods.base, 'l',
             lazy.layout.expand_branch(),
             desc='TreeTab: Expand branch'),
-        Key(mods.alternate, 'n',
-            lazy.layout.normalize(),
-            desc='Normalize window sizes'),
         Key(mods.base, 'm',
             lazy.layout.maximize(),
             desc='Maximize current window (within layout)'),
@@ -191,7 +191,7 @@ def bind_system_control_keys(mods):
             lazy.spawn(expanduser('~/dotfiles/bin/displayselect')),
             desc='Change display configuration'),
         Key(mods.system, 'p',
-            lazy.spawn('maim -s | xclip -selection clipboard -t image/png'),
+            lazy.spawn('maimpick'),
             desc='Screenshot current window')
     ]
     return keys
@@ -199,27 +199,44 @@ def bind_system_control_keys(mods):
 def bind_application_launchers(mods, apps):
     """Define keybinds for application launchers and rofi runners."""
     keys = [
-        # Application launchers
+        # Shells
         Key(mods.base, 'Return',
             lazy.spawn(apps.term),
             desc='Launch a terminal emulator'),
+        Key(mods.app, 'Return',
+            lazy.spawn(apps.term + ' -e xonsh'),
+            desc='Launch an IPython terminal emulator'),
+        Key(mods.app, 'n',
+            lazy.spawn(apps.term + ' -e nu'),
+            desc='Launch a nushell terminal emulator'),
+        # Application launchers
         Key(mods.base, 'b',
             lazy.spawn(apps.browser),
             desc='Launch a browser window'),
         Key(mods.alternate, 'b',
             lazy.spawn('brave'),
             desc='Launch an alternate browser window'),
+        Key(mods.app, 'c',
+            lazy.spawn('chromium'),
+            desc='Launch a Chromium window'),
         Key(mods.app, 'space',
             lazy.spawn(apps.editor),
             desc='Launch an editor'),
         Key(mods.app, 'v',
             lazy.spawn('virt-manager'),
             desc='Launch virtual machine manager'),
+        Key(mods.app, 'g',
+            lazy.spawn('qgis'),
+            desc='Launch QGIS'),
 
         # Rofi runners and scripts
+        ## I don't seem to use this...
+        # Key(mods.alternate_app, 'space',
+        #     lazy.spawn('rofi-projectile'),
+        #     desc='Open projectile project'),
         Key(mods.alternate_app, 'space',
-            lazy.spawn('rofi-projectile'),
-            desc='Open projectile project'),
+            lazy.spawn('code'),
+            desc='Launch alternate IDE/Editor'),
         Key(mods.base, 'space',
             lazy.spawn('rofi -show drun'),
             desc='Show applications menu'),
@@ -277,8 +294,7 @@ def bind_group_keys(mods, groups):
     for group in groups:
         if len(group.name) == 1:
             # setup keybinds for base groups with single-character names
-            keys.extend(
-                [
+            keys.extend([
                     # mod + group name = switch to group
                     Key(mods.base, group.name,
                         lazy.group[group.name].toscreen(),
@@ -287,8 +303,19 @@ def bind_group_keys(mods, groups):
                     Key(mods.alternate, group.name,
                         lazy.window.togroup(group.name, switch_group=True),
                         desc=f'Move client to group {group.name} and follow',),
-                ]
-            )
+                ])
+        elif len(group.name) == 2 and group.name[1] == 'a':
+            # I've now reached a point where 10 workspaces isn't enough.
+            # Here we handle any alternate workspaces I've declared.
+            # We use system (Ctrl) keybinds for convenience, not semantics.
+            keys.extend([
+                Key(mods.system, group.name[0],
+                    lazy.group[group.name].toscreen(),
+                    desc=f'Switch to group {group.name}',),
+                Key(mods.alternate_system, group.name[0],
+                    lazy.window.togroup(group.name, switch_group=True),
+                    desc=f'Move client to group {group.name} and follow'),
+            ])
     return keys
 
 def bind_dropdown_keys(dropdown_specs):
