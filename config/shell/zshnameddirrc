@@ -4,15 +4,21 @@ hash -d cf=/home/sean/.config
 hash -d D=/home/sean/Downloads
 hash -d d=/home/sean/Documents
 hash -d dls=/home/sean/.local/share
+hash -d dlo=/home/sean/.local/opt
 hash -d dots=/home/sean/dotfiles
 hash -d dbin=/home/sean/dotfiles/bin
+hash -d gs=/home/sean/git-software
 hash -d h=/home/sean
+hash -d lb=/home/sean/.local/bin
 hash -d m=/home/sean/Music
 hash -d mn=/mnt
 hash -d pp=/home/sean/Pictures
-hash -d lb=/home/sean/.local/bin
+hash -d qk=/home/sean/git-software/qmk_firmware
 hash -d src=/home/sean/.local/src
+hash -d ut=/home/sean/tmp
 hash -d vv=/home/sean/Videos
+
+# Config stuff
 hash -d cfx=/home/sean/.config/x11/xresources
 hash -d cfv=/home/sean/.config/nvim/init.vim
 hash -d cfz=/home/sean/.config/zsh/.zshrc
@@ -22,7 +28,6 @@ hash -d cfp=/home/sean/.config/shell/profile
 hash -d cfl=/home/sean/.config/lf/lfrc
 hash -d cfL=/home/sean/.config/lf/scope
 hash -d cfX=/home/sean/.config/sxiv/exec/key-handler
-hash -d gs=/home/sean/git-software
 
 # Projects and stuff
 hash -d docs=/home/sean/Documents/reading/Documentation
@@ -32,6 +37,9 @@ hash -d res=/home/sean/Documents/Records/Resumes
 hash -d cl=/home/sean/Documents/Records/Resumes/applications
 hash -d pf=/home/sean/Documents/Records/Resumes/seangllghr.github.io
 hash -d minutes=/home/sean/Documents/Camp/TRC_Aquatics/Committee/meeting_notes
+hash -d s=/home/sean/scripts
+hash -d si=/home/sean/scripts/integrate
+hash -d sq=/home/sean/scripts/qgis
 
 # Work work
 ## General
@@ -40,12 +48,21 @@ hash -d 1repo=/home/sean/Documents/Work/1Spatial/repo
 hash -d proj=/home/sean/Documents/Work/1Spatial/Projects
 hash -d int=/home/sean/Documents/Work/1Spatial/1Integrate
 ## Repos
-hash -d ng911=/home/sean/Documents/Work/1Spatial/repo/con_vaas_ng911
-hash -d egeom=/home/sean/Documents/Work/1Spatial/repo/con_geom_essentials
+hash -d sc=/home/sean/Documents/Work/1Spatial/repo/sync_configs
+hash -d INT_EMPTY=/home/sean/Documents/Work/1Spatial/repo/EMPTY_SYNC
+hash -d dash=/home/sean/Documents/Work/1Spatial/repo/con_saas_dashboard
+hash -d ems=/home/sean/Documents/Work/1Spatial/repo/con_saas_ng911
+hash -d egc=/home/sean/Documents/Work/1Spatial/repo/con_geom_essentials
+hash -d enc=/home/sean/Documents/Work/1Spatial/repo/con_network_essentials
 ## Projects
 hash -d mn=/home/sean/Documents/Work/1Spatial/Projects/MN911
 hash -d adoa=/home/sean/Documents/Work/1Spatial/Projects/ADOA
 hash -d clab=/home/sean/Documents/Work/1Spatial/Projects/CATTLab
+hash -d nena=/home/sean/Documents/Work/1Spatial/Projects/NENA
+hash -d inp=/home/sean/Documents/Work/1Spatial/Projects/IN
+hash -d mt=/home/sean/Documents/Work/1Spatial/Projects/MT
+hash -d icli=/home/sean/Documents/Work/1Spatial/Projects/intcli
+hash -d nicli=/home/sean/Documents/Work/1Spatial/Projects/nicli
 
 # Local Variables:
 # mode: sh

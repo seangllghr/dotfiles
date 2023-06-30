@@ -2,11 +2,12 @@
 
 [ ! -f "$HOME/.config/rofi/chrome-apps" ] && touch "$HOME/.config/rofi/chrome-apps"
 appfile="$HOME/.config/rofi/chrome-apps"
-chromeapp=$(cat "$appfile" | dmenu -i -p "Enter URL")
+chromeapp=$(cat "$appfile" | dmenu -i -p "Enter URL" -display-columns 1)
 
 if ! [ "$chromeapp" = "" ]; then
-    if ! grep "$chromeapp" "$appfile"; then
-        echo "$chromeapp" >> "$appfile"
-    fi
-    chromium --app="$chromeapp"
+    # TODO: Re-implement adding new sites
+    # if ! grep "$chromeapp" "$appfile"; then
+    #     echo "$chromeapp" >> "$appfile"
+    # fi
+    chromium --app="$(echo "$chromeapp" | cut -d'	' -f2)"
 fi

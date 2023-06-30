@@ -3,8 +3,26 @@
 	email = sean@gallaghersw.dev
 [core]
 	editor = emacsclient -a emacs
+	pager = delta
 	autocrlf = input
 [credential]
 	helper = cache
 [init]
 	defaultBranch = main
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+	light = false
+	theme = Gruvbox Dark
+	line-numbers = true
+	true-color = always
+	side-by-side = true
+
+[merge]
+	conflictStyle = diff3
+
+[diff]
+	colorMoved = default

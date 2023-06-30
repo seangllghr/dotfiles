@@ -34,7 +34,6 @@ from libqtile.config import Click, Drag, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
-from customact import no_bar_on_virtualization
 from customdata import Modifiers, DefaultApplications
 from floating_window_snapping import move_snap_window
 import groupconfig
@@ -83,8 +82,12 @@ layout_theme = dict(
 
 layouts = [
     # layout.Columns(border_focus_stack=['#d75f5f', '#8f3d3d'], border_width=4),
-    layout.MonadTall(**layout_theme),
-    layout.MonadWide(ratio=0.85, min_ratio=0.15, **layout_theme),
+    layout.MonadTall(min_ratio=0.2, **layout_theme),
+    layout.MonadWide(ratio=0.85, max_ratio=0.85, min_secondary_size=150,
+                     **layout_theme),
+    layout.MonadThreeCol(ratio=.7, new_client_position='bottom',
+                         **layout_theme),
+    layout.VerticalTile(**layout_theme),
     layout.Max(**layout_theme),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
@@ -146,7 +149,7 @@ screens = [
     Screen(
         top = bar.Bar(
             [
-                widget.GroupBox(),
+                widget.GroupBox(font='Font Awesome 6 Free', fontsize=14),
                 widget.CurrentLayoutIcon(),
                 widget.Prompt(),
                 widget.WindowName(),
@@ -168,7 +171,7 @@ screens = [
     Screen(
         top = bar.Bar(
             [
-                widget.GroupBox(),
+                widget.GroupBox(font='Font Awesome 6 Free', fontsize=14),
                 widget.CurrentLayoutIcon(),
                 widget.WindowName(),
                 widget.Chord(
@@ -210,8 +213,11 @@ floating_layout = layout.Floating(
         Match(wm_class='maketag'),  # gitk
         Match(wm_class='ssh-askpass'),  # ssh-askpass
         Match(wm_class='pinentry-gtk-2'),
+        Match(wm_class='com-onespatial-ms-integrate-sync-SyncTool'),
         Match(title='branchdialog'),  # gitk
         Match(title='pinentry'),  # GPG key password entry
+        Match(title='New meeting | Microsoft Teams'),
+        Match(wm_class='qgis', title='Organize Table columns')
     ],
     **layout_theme
 )
@@ -241,17 +247,17 @@ def _autostart():
     home = expanduser('~/')
     Popen([home + '.config/qtile/autostart.sh'])
 
-@hook.subscribe.layout_change
-def _layout_change(layout, group):
-    no_bar_on_virtualization(qtile)
+# @hook.subscribe.layout_change
+# def _layout_change(layout, group):
+#     no_bar_on_virtualization(qtile)
 
-@hook.subscribe.changegroup
-def _group_change():
-    no_bar_on_virtualization(qtile)
+# @hook.subscribe.changegroup
+# def _group_change():
+#     no_bar_on_virtualization(qtile)
 
-@hook.subscribe.client_focus
-def _focus_change(window):
-    no_bar_on_virtualization(qtile)
+# @hook.subscribe.client_focus
+# def _focus_change(window):
+#     no_bar_on_virtualization(qtile)
 
 if __name__ == "__main__":
     print("Config loads successfully!")
