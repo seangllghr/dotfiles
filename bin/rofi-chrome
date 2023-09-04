@@ -9,5 +9,10 @@ if ! [ "$chromeapp" = "" ]; then
     # if ! grep "$chromeapp" "$appfile"; then
     #     echo "$chromeapp" >> "$appfile"
     # fi
-    chromium --app="$(echo "$chromeapp" | cut -d'	' -f2)"
+
+    # This is the chromium version
+    # chromium --app="$(echo "$chromeapp" | cut -d'	' -f2)"
+
+    # If using ui-less Firefox, use this
+    firefox --new-window "$(echo "$chromeapp" | cut -d'	' -f2)"
 fi

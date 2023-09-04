@@ -221,8 +221,16 @@ autoload -Uz compinit
 zstyle ':completion:*' menu select
 fpath+=~/.zfunc
 
+# Manually load completions
+for completion in ~/.zfunc/*; do
+  source $completion
+done
+
 # Load starship prompt if available
 command -v starship &> /dev/null && eval "$(starship init zsh)"
+
+# load zoxide if available
+command -v zoxide &> /dev/null && eval "$(zoxide init zsh)"
 
 # Local Variables:
 # mode: sh

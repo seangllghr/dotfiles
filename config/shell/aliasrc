@@ -57,7 +57,7 @@ alias \
   sctl="systemctl --user" \
   ssctl="sudo systemctl" \
   xo="xdg-open" \
-  z="zathura" \
+  zth="zathura" \
   q="qmk" \
   qc="qmk compile" \
   wcli="wally-cli" \

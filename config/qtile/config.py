@@ -187,6 +187,25 @@ screens = [
         wallpaper = expanduser('~/.config/qtile/wallpaper.png'),
         # wallpaper_mode='fill'
     ),
+    Screen(
+        top = bar.Bar(
+            [
+                widget.GroupBox(font='Font Awesome 6 Free', fontsize=14),
+                widget.CurrentLayoutIcon(),
+                widget.WindowName(),
+                widget.Chord(
+                    chords_colors={
+                        'launch': ('#ff0000', '#ffffff'),
+                    },
+                    name_transform=lambda name: name.upper(),
+                ),
+                widget.Clock(format='%a %Y-%m-%d | %H:%M'),
+            ],
+            28,
+        ),
+        wallpaper = expanduser('~/.config/qtile/wallpaper.png'),
+        # wallpaper_mode='fill'
+    ),
 ]
 
 # Drag floating layouts.

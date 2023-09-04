@@ -155,7 +155,7 @@ def configure_groups(mods, apps):
         Group('1', label='', layout='verticaltile'),
         Group('1a', label='', layout='monadthreecol'),
         Group('2', label='', layout='verticaltile'),
-        Group('2a', label='', layout='maximize'),
+        Group('2a', label='', layout='max'),
         Group('3', label='', layout='treetab'),
         Group('3a', label='', layout='treetab'),
         Group('4', label='', layout='monadtall'),
@@ -165,18 +165,18 @@ def configure_groups(mods, apps):
         Group('5a', label='', layout='max'),
         Group('6', layout='treetab', label=''),
         Group('6a', label='', layout='max'),
-        Group('7', label=''),
-        Group('7a', label='', layout='treetab'),
+        Group('7', label='', layout='treetab'),
+        Group('7a', label=''),
         Group('8', label='', layout='max'),
         Group('8a', label='', layout='max'),
-        Group('9', label='', layout='treetab', matches=[
+        Group('9', label='', layout='monadtall', matches=[
             Match(wm_class=['microsoft teams - preview']),
             Match(wm_class=['msoutlook-nativefier-9dd141']),
         ]),
         Group('9a', label='', layout='treetab', matches=[
             Match(wm_class=['jira-nativefier-894f7c'])
         ]),
-        Group('0', label='', layout='floating'),
+        Group('0', label='', layout='max'),
     ]
     keys = keymap.bind_keys(mods, apps, groups, specs)
     return (groups, keys)

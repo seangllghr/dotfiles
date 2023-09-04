@@ -128,25 +128,6 @@
   (remove-hook 'window-configuration-change-hook #'golden-ratio)
   (add-hook 'doom-switch-window-hook #'golden-ratio))
 
-;; Edit with Emacs edit server
-(use-package! edit-server
-  :ensure t
-  :commands edit-server-start
-  :init (if after-init-time
-            (edit-server-start)
-          (add-hook 'after-init-hook
-                    #'(lambda() (edit-server-start))))
-  :config (setq edit-server-new-frame-alist
-                '((name . "Edit with Emacs FRAME")
-                  (top . 200)
-                  (left . 200)
-                  (width . 80)
-                  (height . 25)
-                  (minibuffer . t)
-                  (menu-bar-lines . t)
-                  (window-system . x))))
-(atomic-chrome-start-server)
-
 (require 'omn-mode)
 
 (require 'xonsh-mode)
@@ -180,7 +161,7 @@
   (turn-off-auto-fill))
 
 ;; custom ox-extras function to include only headlines tagged 'noignore'
-(defun org-export-noignore-headlines (data backend info)
+(defun org-export-noignore-headlines (data _ info)
   "Remove headlines not tagged \"noignore\".
 The \"noignore\" tag marks headlines that will be retained.
 For all other headlines,
@@ -229,7 +210,9 @@ For all other headlines,
 
   (setq org-capture-templates
         '(("t" "Todo" entry (file+headline "~/org/notes.org" "INBOX")
-           "* TODO [#B] %?\nSCHEDULED: %t")))
+           "* TODO [#B] %?\nSCHEDULED: %t\n:LOGBOOK:\n- State \"TODO\"       from \"\"           %U\n:END:"
+           :empty-lines 0
+           :jump-to-captured t)))
 
     (setq org-todo-keywords
           '((sequence "TODO(t!)" "STRT(s)" "TEST(u!)" "REVIEW(r!)" "|" "DONE(d!)")
@@ -237,18 +220,18 @@ For all other headlines,
             (sequence "BLOCK(b@)" "KNOWNCAUSE(c@)" "ACCEPTANCE(R!)" "PUSH(p)"
                       "|" "PUNT(P@)" "CANCEL(k@)")
             ;; Lightweight/subtask states
-            (sequence "[ ](T)" "[-](S)" "[◆](U)" "|" "[✓](D)" "[X](K)")
+            (sequence "[ ](T)" "[-](S)" "[◆](U)" "[?](H)" "[!](B)" "|" "[✓](D)" "[X](K)")
             ;; Long-term/container states
             (sequence "LOOP(l)" "PROJ(j)" "IDEA(i)" "FEAT(f)" "|")))
     (setq org-todo-keyword-faces
           '(("PROJ" . (:foreground "#fbf1c7" :weight bold))
-            ("IDEA" . "#ebdbb2")
+            ("IDEA" . "#ebdbb2") ("[?]" ."#ebdbb2")
             ("FEAT" . "#458588")
             ("BUG" . "#fe8019")
             ("TODO" . "#d3869b") ("[ ]" . "#d3869b") ("LOOP" . "#b16286")
             ("STRT" . "#fabd2f") ("[-]" . "#fabd2f")
             ("PUSH" . "#fe8019")
-            ("BLOCK" . "#cc241d")
+            ("BLOCK" . "#cc241d") ("[!]" . "#cc241d")
             ("KNOWNCAUSE" . "#83a598") ("TEST" . "#83a598") ("[◆]" . "#83a598")
             ("REVIEW" . "#b8bb26") ("ACCEPTANCE" . "#b8bb26")
             ("PUNT" . "#928374") ("CANCEL" . "#928374") ("[X]" . "#928374"))
@@ -356,6 +339,8 @@ biblatex
 (setq org-time-stamp-custom-formats
       '("​%A, %d %B, %Y​" . "​%A, %d %B, %Y, %H:%M %Z​"))
 
+(setq org-duration-format 'h:mm)
+
 (setq org-superstar-headline-bullets-list
        '("◈"
          "▣"
@@ -419,6 +404,9 @@ biblatex
         :desc "Registers buffer" "r" #'gdb-display-registers-buffer
         :desc "Source buffer" "s" #'gdb-display-source-buffer
         :desc "UI many windows" "m" #'gdb-many-windows)))
+
+;; Org mode
+(map! (:leader (:prefix "m" (:prefix "b" :desc "Export table" "E" #'org-table-export))))
 
 ;; Extra window bindings
 (map! (:leader
