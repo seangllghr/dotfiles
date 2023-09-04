@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ $# -gt 0 ]; then
+  term=$1
+else
+  term=alacritty
+fi
+
+vcon=$(virsh list | tail -n +3 | awk '{print $2}' | dmenu -i -p "Select VM: ")
+
+if ! [ "$vcon" = ""  ]; then
+  "$term" -e virsh console "$vcon"
+fi
