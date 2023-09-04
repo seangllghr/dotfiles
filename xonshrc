@@ -39,6 +39,7 @@ from rich.console import Console
 from rich.text import Text
 from rich.theme import Theme
 from rich.tree import Tree
+import pyperclip
 import rich_tables.table
 import yaml
 
@@ -213,49 +214,34 @@ def _dg_logparse(args, stdin=None):
         rcon.print(rich_tables.generic.flexitable({'1Data Gateway Log': log}),
                 rich_tables.generic.flexitable(err))
 
-
-def render_action_rule(entity, name=None):
-    try:
-        print_with_pager(icli_render.rule(entity, name), rcon, ForceOption.ALWAYS)
-    except Exception:
-        with rcon.pager(styles=True):
-            rcon.print_exception(show_locals=True)
-
 def _icli_fzf(args):
-    """Fuzzy find a 1Integrate resource URL."""
+    """Fuzzy find a 1Integrate resource URL.
+    
+    Usage:
+        icli_fzf
+        icli_fzf --copy
+
+    Options:
+        -c, --copy  Copy the selected resource URL to the clipboard instead of
+                    printing it to stdout.
+    """
+    icli = _init_icli([])
+    args = docopt(_icli_fzf.__doc__, args)
     try:
         icli.get('grid') # Check that we can connect to the server.
     except Exception:
-        rcon.print_exception(show_locals=True)
+        CONSOLE.print_exception(show_locals=True)
         raise SystemExit(1)
     res_types = ['rules', 'actions', 'datastores', 'actionmaps', 'sessions']
     res_type = $(echo @('\n'.join(res_types)) | fzf --prompt='Resource Type: ').strip()
     if not res_type:
         raise ValueError('No resource type selected.')
-    return $(intcli raw ls @(res_type) | fzf --prompt='Resource: ').strip()
-
-def _remote_render_actionrule(args):
-    """Render an Action or Rule from a running 1Integrate instance."""
-    target = _icli_fzf([])
-    name = Path(target).name
-    if not target:
-        return
-    render_action_rule(icli.get(target), name)
-
-def _local_render_actionrule(args):
-    """Render an Action or Rule from a local file."""
-    target = Path(
-        $(fd . -e '.action' -e '.rule' | fzf --prompt='File: ').strip()
-    )
-    if not target or target.is_dir():
-        rcon.print('No file selected.')
-        return
-    elif not (target.suffix == '.action' or target.suffix == '.rule'):
-        rcon.print('Cannot render file: not an Action or Rule.')
-        return
-    data = json.loads(target.read_text())
-    name = target.name
-    render_action_rule(data, name)
+    
+    resource = $(intcli raw ls @(res_type) | fzf --prompt='Resource: ').strip()
+    if args['--copy']:
+        pyperclip.copy(resource)
+    else:
+        return resource
 
 def _isp(args):
     """Perform a sync with the detected or specified version of the sync tool.
@@ -282,158 +268,6 @@ def _isp(args):
     with ${...}.swap(INT_TARGET_VERSION=version):
         isync @(parsed_args['ARGS'])
 
-
-def _sync_ng911(args):
-    """Sync the entire NG911 package to the configured 1Integrate instance.
-    
-    The NG911 package is hosted in three (four, if the Dashboard is included)
-    separate repositories. This command will checkout and pull the latest
-    development branch from each repository, and then sync the entire package
-    to the configured 1Integrate instance.
-
-    Sync will use the sync.properties file in the NG911 package ruleset
-    directory as the baseline for instance url and authentication. Includes and
-    excludes for each package are specified in a YAML config file. Depends on
-    `isync` and `isp`, 1Integrate sync tool wrappers written for Xonsh.
-
-    TODO: Pull this out into a dedicated Xonsh script.
-    TODO: Pull `isp`'s version detection into isync so this depends only on isync.
-
-    Usage:
-        sync_ng911 [-dc FILE -p FILE]
-
-    Options:
-        -c, --config FILE   Path to the sync config file. [default: $INT_REPO_DIR/sync_configs/ng911.yaml]
-        -d, --dashboard     Include the Dashboard repository in the sync.
-        -p, --props FILE    Path to the sync.properties file. [default: $INT_REPO_DIR/con_saas_ng911/Ruleset/sync.properties]
-    """
-    parsed_args = docopt(_sync_ng911.__doc__, argv=args)
-    
-    # Setting default config files requires some extra work.
-    if parsed_args['--config'] == '$INT_REPO_DIR/sync_configs/ng911.yaml':
-        sync_config_file = pf'{$INT_REPO_DIR}/sync_configs/ng911.yaml'
-    else:
-        sync_config_file = Path(parsed_args['--config'])
-
-    if parsed_args['--props'] == '$INT_REPO_DIR/con_saas_ng911/Ruleset/sync.properties':
-        sync_props_file = pf'{$INT_REPO_DIR}/con_saas_ng911/Ruleset/sync.properties'
-    else:
-        sync_props_file = Path(parsed_args['--props'])
-
-    # Actually load the config files.
-    if sync_config_file.exists():
-        configs = yaml.safe_load(sync_config_file.read_text())
-    else:
-        rcon.print(Text.assemble(
-            Text('ERROR', style='bold red'),
-            Text(': No sync config file found at '),
-            Text(sync_config_file, style='bold')
-        ))
-        return 1
-    if sync_props_file.exists():
-        sync_props_parser = re.compile(r'(?P<key>[^=]+)=(?P<value>.+)')
-        sync_props = {}
-        for line in sync_props_file.read_text().splitlines():
-            match = sync_props_parser.match(line)
-            if match:
-                sync_props[match.group('key')] = match.group('value')
-    else:
-        rcon.print(Text.assemble(
-            Text('ERROR', style='bold red'),
-            Text(': No sync.properties file found at '),
-            Text(sync_props_file, style='bold')
-        ))
-        return 1
-
-    # FIXME: For some reason, trying to sync ng911 breaks with a cataclysmic
-    # "Unable to delete"-type error. I don't have time to debug this right now.
-    repos = ['con_geom_essentials', 'con_network_essentials'] #, 'con_saas_ng911']
-    if parsed_args['--dashboard']:
-        repos.append('con_saas_dashboard')
-
-    # Checkout and pull the latest development branch from each repository.
-    for repo in repos:
-        curr_dir = $(pwd).strip()
-        $[cd @(f'{$INT_REPO_DIR}/{repo}')]
-        # Record the current branch and stash any changes.
-        configs[repo]['current_branch'] = $(git rev-parse --abbrev-ref HEAD).strip()
-        if !(git diff --quiet):
-            configs[repo]['stashed'] = False
-            rcon.print(Text.assemble(
-                Text('INFO', style='bold blue'),
-                ': No changes to stash for ', Text(repo, style='bold'),
-                ' on branch ',
-                Text(configs[repo]['current_branch'], style='bold'),
-            ))
-        else:
-            rcon.print(Text.assemble(
-                Text('INFO', style='bold blue'),
-                f': Stashing changes for ', Text(repo, style='bold'),
-                ' on branch ',
-                Text(configs[repo]['current_branch'], style='bold'),
-            ))
-            configs[repo]['stashed'] = True
-            $[git stash]
-        # Checkout the development branch
-        if configs[repo]['current_branch'] == 'development':
-            rcon.print(Text.assemble(
-                Text('INFO', style='bold blue'),
-                ': Already on development branch for ', Text(repo, style='bold'),
-            ))
-        else:
-            rcon.print(Text.assemble(
-                Text('INFO', style='bold blue'),
-                f': Checking out development branch for ', Text(repo, style='bold'),
-            ))
-            $[git checkout development]
-        # Pull the latest changes
-        if !(git diff --quiet):
-            rcon.print(Text.assemble(
-                Text('INFO', style='bold blue'),
-                f': No changes to pull for ', Text(repo, style='bold'),
-            ))
-        else:
-            rcon.print(Text.assemble(
-                Text('INFO', style='bold blue'),
-                f': Pulling latest changes for ', Text(repo, style='bold'),
-            ))
-            $[git pull]
-
-        # Run the sync for each repository.
-        json_file = pf'{$INT_REPO_DIR}/sync_configs/sync_{repo}.json'.expanduser()
-        isp_command = [
-            '--',
-            '-j', '-f', str(json_file),
-            'push',
-            './',
-            '--',
-            f'-url={sync_props["url"]}',
-            f'-username={sync_props["username"]}',
-            f'-password={sync_props["password"]}',
-            f'-folders="{",".join(configs[repo]["folders"])}"',
-            f'-exclude="{",".join(configs[repo]["exclude"])}"',
-        ]
-        _isp(isp_command)
-
-        # TODO: Restore the original branch and stash for each repository.
-        if not configs[repo]['current_branch'] == 'development':
-            rcon.print(Text.assemble(
-                Text('INFO', style='bold blue'),
-                f': Checking out original branch for ', Text(repo, style='bold'),
-            ))
-            $[git checkout @(configs[repo]['current_branch'])]
-        if configs[repo]['stashed']:
-            rcon.print(Text.assemble(
-                Text('INFO', style='bold blue'),
-                f': Popping stash for ', Text(repo, style='bold'),
-            ))
-            $[git stash pop]
-
-        # Return to the original directory.
-        $[cd @(curr_dir)]
-
-    # TODO: Gee, wouldn't it be nice if we got summarized results here?
-
 aliases |= {
     'bap': 'bat --paging=always',
     'lr': 'tre',
@@ -442,11 +276,10 @@ aliases |= {
     'init_icli': lambda a, s=None: _init_icli(a, s),
     'dgpl': _dg_logparse,
     'isp': _isp,
-    'sync-ng911': _sync_ng911,
     'mofo': 'moar --follow',
     'icfz': _icli_fzf,
-    'rarr': _remote_render_actionrule,
-    'larr': _local_render_actionrule,
+    'rarr': 'icli-rule',
+    'larr': 'icli-rule -l',
 }
 
 execx($(starship init xonsh))
