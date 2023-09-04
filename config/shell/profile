@@ -11,6 +11,7 @@ SSH_AUTH_SOCK="/run/user/$(id -u)/keyring/ssh"
 export SSH_AUTH_SOCK
 export PASSWORD_STORE_DIR=~/.local/share/password-store
 export QT_QPA_PLATFORMTHEME=qt5ct
+export XCURSOR_SIZE=16
 
 # Make sure the path includes any of my user bins
 
