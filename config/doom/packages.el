@@ -8,16 +8,14 @@
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
-;; (package! zoom)
 (package! golden-ratio)
 (package! org-ref)
-(package! edit-server)
-(package! atomic-chrome)
-;; (package! mu4e-alert)
-;; (package! adoc-mode)
 (package! lorem-ipsum)
-(package! omn-mode)
 (package! org-re-reveal-ref)
+
+;; Extra languages
+(package! dts-mode)
+(package! omn-mode)
 (package! quarto-mode)
 (package! xonsh-mode)
 
