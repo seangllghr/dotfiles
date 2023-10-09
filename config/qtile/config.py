@@ -36,8 +36,9 @@ from libqtile.utils import guess_terminal
 
 from customdata import Modifiers, DefaultApplications
 from floating_window_snapping import move_snap_window
+import barconfig
 import groupconfig
-import keymap
+import layoutconfig
 import palette
 
 colors = palette.Palette(
@@ -70,139 +71,23 @@ apps = DefaultApplications(
     editor_command=[ 'emacsclient', '-c', '-a', 'emacs', ]
 )
 
-# groups = [Group(i) for i in '123456789']
 groups, keys = groupconfig.configure_groups(mods, apps)
 
-layout_theme = dict(
-    margin = 4,
-    border_width = 2,
-    border_focus = colors.fg[4],
-    border_normal = colors.bg[2],
-)
-
-layouts = [
-    # layout.Columns(border_focus_stack=['#d75f5f', '#8f3d3d'], border_width=4),
-    layout.MonadTall(min_ratio=0.2, **layout_theme),
-    layout.MonadWide(ratio=0.85, max_ratio=0.85, min_secondary_size=150,
-                     **layout_theme),
-    layout.MonadThreeCol(ratio=.7, new_client_position='bottom',
-                         **layout_theme),
-    layout.VerticalTile(**layout_theme),
-    layout.Max(**layout_theme),
-    # Try more layouts by unleashing below layouts.
-    # layout.Stack(num_stacks=2),
-    # layout.Bsp(),
-    # layout.Matrix(),
-    # layout.RatioTile(),
-    # layout.Tile(),
-    layout.TreeTab(
-        active_bg = colors.bg[3], active_fg = colors.fg[0],
-        inactive_bg = colors.bg[1], inactive_fg = colors.fg[3],
-        urgent_bg = colors.red.bright, urgent_fg = colors.bg[0],
-        section_fg = colors.fg[1],
-        bg_color = colors.bg[0],
-        sections = [ 'Default' ],
-        font = 'Libertinus Sans', fontsize = 18, section_fontsize = 16,
-        panel_width = 250,
-        **layout_theme
-    ),
-    layout.Columns(
-        insert_position = 1, # insert after
-        border_normal_stack = colors.bg[2],
-        border_focus_stack = colors.blue.norm,
-        **layout_theme
-    ),
-
-    # layout.Zoomy(),
-    layout.Floating(**layout_theme),
-]
-
-widget_defaults = dict(
-    # Fonts
-    font='Libertinus Sans',
-    fontsize = 18,
-    padding = 5,
-
-    # General colors
-    active = colors.fg[1],
-    background = colors.bg[0],
-    foreground = colors.fg[1],
-    inactive = colors.bg[3],
-
-    # GroupBox theming
-    highlight_method = 'line',
-    highlight_color = [ colors.bg[0], colors.bg[1] ],
-    this_current_screen_border = colors.blue.bright,
-    this_screen_border = colors.bg[4],
-    other_current_screen_border = colors.bg[2],
-    other_screen_border = colors.bg[2],
-    urgent_alert_method = 'line',
-    urgent_text = colors.red.bright,
-    urgent_border = colors.red.bright,
-
-    # Custom icon path for layout icons
-    custom_icon_paths = [ expanduser('~/.config/qtile/icons/layouts') ],
-)
-extension_defaults = widget_defaults.copy()
+layouts, floating_layout = layoutconfig.configure_layouts(colors)
 
 screens = [
     Screen(
-        top = bar.Bar(
-            [
-                widget.GroupBox(font='Font Awesome 6 Free', fontsize=14),
-                widget.CurrentLayoutIcon(),
-                widget.Prompt(),
-                widget.WindowName(),
-                widget.Chord(
-                    chords_colors={
-                        'launch': ('#ff0000', '#ffffff'),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
-                widget.Systray(),
-                # widget.Battery(charge_char='', discharge_char='', update_interval=5),
-                widget.Clock(format='%a %Y-%m-%d | %H:%M'),
-            ],
-            28,
-        ),
+        top = barconfig.configure_bar(colors, main_bar=True),
         wallpaper = expanduser('~/.config/qtile/wallpaper.png'),
         # wallpaper_mode='fill'
     ),
     Screen(
-        top = bar.Bar(
-            [
-                widget.GroupBox(font='Font Awesome 6 Free', fontsize=14),
-                widget.CurrentLayoutIcon(),
-                widget.WindowName(),
-                widget.Chord(
-                    chords_colors={
-                        'launch': ('#ff0000', '#ffffff'),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
-                widget.Clock(format='%a %Y-%m-%d | %H:%M'),
-            ],
-            28,
-        ),
+        top = barconfig.configure_bar(colors, main_bar=False),
         wallpaper = expanduser('~/.config/qtile/wallpaper.png'),
         # wallpaper_mode='fill'
     ),
     Screen(
-        top = bar.Bar(
-            [
-                widget.GroupBox(font='Font Awesome 6 Free', fontsize=14),
-                widget.CurrentLayoutIcon(),
-                widget.WindowName(),
-                widget.Chord(
-                    chords_colors={
-                        'launch': ('#ff0000', '#ffffff'),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
-                widget.Clock(format='%a %Y-%m-%d | %H:%M'),
-            ],
-            28,
-        ),
+        top = barconfig.configure_bar(colors, main_bar=False),
         wallpaper = expanduser('~/.config/qtile/wallpaper.png'),
         # wallpaper_mode='fill'
     ),
@@ -223,26 +108,9 @@ dgroups_app_rules = []  # type: list
 follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = True
-floating_layout = layout.Floating(
-    float_rules=[
-        # Run the utility of `xprop` to see the wm class and name of an X client.
-        *layout.Floating.default_float_rules,
-        Match(wm_class='confirmreset'),  # gitk
-        Match(wm_class='makebranch'),  # gitk
-        Match(wm_class='maketag'),  # gitk
-        Match(wm_class='ssh-askpass'),  # ssh-askpass
-        Match(wm_class='pinentry-gtk-2'),
-        Match(wm_class='com-onespatial-ms-integrate-sync-SyncTool'),
-        Match(title='branchdialog'),  # gitk
-        Match(title='pinentry'),  # GPG key password entry
-        Match(title='New meeting | Microsoft Teams'),
-        Match(wm_class='qgis', title='Organize Table columns')
-    ],
-    **layout_theme
-)
 auto_fullscreen = True
 focus_on_window_activation = 'smart'
-reconfigure_screens = False
+reconfigure_screens = True
 
 # If things like steam games want to auto-minimize themselves when losing
 # focus, should we respect this or not?
