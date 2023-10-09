@@ -29,7 +29,7 @@ from pprint import pp
 from os.path import expanduser
 from subprocess import Popen
 
-from libqtile import bar, hook, layout, widget, qtile
+from libqtile import hook, qtile
 from libqtile.config import Click, Drag, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
