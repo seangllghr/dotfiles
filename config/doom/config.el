@@ -23,14 +23,14 @@
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 (setq doom-font (font-spec
                  :family "JetBrains Mono"
-                 :size 15
+                 :size 14
                  )
       doom-variable-pitch-font (font-spec
                                 :family "Libertinus Sans"
-                                :size 20)
+                                :size 18)
       doom-unicode-font (font-spec
                          :family "JuliaMono"
-                         :size 15))
+                         :size 14))
 
 (setq! +ligatures-extra-symbols
        ;; Not sure why, but several of the default symbols don't seem to exist
