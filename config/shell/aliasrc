@@ -42,7 +42,7 @@ alias cal="cal -m"
 alias \
   diff="diff --color=auto" \
   grep="grep --color=auto" \
-  ls="exa --icons --color=always" \
+  ls="eza --icons --color=always" \
   less="moar --no-linenumbers"
 
 # Shorten commands that I use ALL. THE. TIME.
