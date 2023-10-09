@@ -5,7 +5,7 @@ hi CursorLineNr guifg=#658c9c guibg=#030304 gui=NONE
 hi LineNr guifg=#33474f guibg=#07080a gui=NONE
 
 if exists('g:GtkGuiLoaded') 
-	call rpcnotify(1, 'Gui', 'Font', 'Fira Code 16')
+	call rpcnotify(1, 'Gui', 'Font', 'Fira Code 14')
 	call rpcnotify(1, 'Gui', 'Option', 'Tabline', 0)
 el
   if exists('g:gui_firenvim')

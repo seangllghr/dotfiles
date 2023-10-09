@@ -17,17 +17,6 @@ set smartcase
 " Add autoload to runtime path
 set runtimepath+=$HOME/.config/nvim/autoload
 
-" Colorschemes I like:
-" colorscheme desert		" Very muted dark with black-on-white status
-" colorscheme industry	" Like desert, but better contrast
-" colorscheme koehler		" Higher contrast. Default statusbar is ugly
-" colorscheme murphy		" Nice, muted dark with kelly-green statusbars
-" colorscheme pablo			" Very dark, super low-contrast comments
-" colorscheme peachpuff	" Muted and moody. A little like desert
-" colorscheme ron				" High contrast dark pastel
-" colorscheme slate			" High con dark pastel. Comments... ++yellow.
-" colorscheme torte			" Low-con dark pastel. Not bad
-
 " Some settings from my vimrc:
 set mouse=a
 set number
@@ -40,18 +29,6 @@ set laststatus=0
 set noshowcmd
 set nohlsearch
 set spelllang=en_us
-
-" Load 16-bit default colorscheme and change some of the irritating colors
-colorscheme dim
-highlight clear ColorColumn
-highlight clear SpellBad
-highlight clear SpellLocal
-highlight clear SpellCap
-let &colorcolumn="80"
-highlight ColorColumn ctermbg=16
-highlight SpellBad cterm=underline,italic ctermfg=196
-highlight SpellLocal cterm=italic ctermfg=44
-highlight SpellCap cterm=underline,italic ctermfg=44
 
 " let base16colorspace=256
 
@@ -135,7 +112,7 @@ Plug 'alvan/vim-closetag'
 Plug 'https://bitbucket.org/natemaia/vim-jinx'
 Plug 'rainglow/vim'
 Plug 'glacambre/firenvim'
-" Plug 'chriskempson/base16-vim'
+Plug 'morhetz/gruvbox'
 
 " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
@@ -200,3 +177,30 @@ let g:firenvim_config = {
         \ }
     \ }
 \ }
+
+" Gruvbox apparently requires quite the call, and some stuff to tweak colors
+autocmd vimenter * ++nested colorscheme gruvbox
+
+"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
+"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
+"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
+if (empty($TMUX) && getenv('TERM_PROGRAM') != 'Apple_Terminal')
+  if (has("nvim"))
+    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  endif
+  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+  if (has("termguicolors"))
+    set termguicolors
+  endif
+endif
+
+let g:gruvbox_contrast_dark = "hard"
+let g:gruvbox_color_column = "bg2"
+
+" Neovide-related GUI settings
+if exists("g:neovide")
+  set guifont=FiraCode\ Nerd\ Font:h11
+endif
