@@ -1,6 +1,7 @@
 """This file defines my keybinds and keybind helper functions."""
 
 from os.path import expanduser
+import re
 
 from libqtile.config import Key
 from libqtile.lazy import lazy
@@ -41,6 +42,11 @@ def bind_layout_keys(mods):
             desc="Toggle between split and unsplit sides of the stack"),
         Key(mods.base, 't',
             lazy.spawn('rofi -show windowcd'),
+            desc='Show window switcher'),
+
+        # Rofi switcher to move focus to any arbitrary window
+        Key(mods.alternate, 't',
+            lazy.spawn('rofi -show window'),
             desc='Show window switcher'),
 
         # Move clients within group
@@ -161,10 +167,10 @@ def bind_layout_keys(mods):
         Key(mods.base, 'p',
             lazy.layout.section_up(),
             desc='Move tab to previous section'),
-        Key(mods.alternate, 't',
+        Key(mods.system, 't',
             customact.add_named_section(),
             desc='Add a section to the tab list'),
-        Key(mods.alternate, 'x',
+        Key(mods.system, 'x',
             customact.del_named_section(),
             desc='Delete a section from the tab list'),
     ]
@@ -222,11 +228,8 @@ def bind_application_launchers(mods, apps):
         Key(mods.app, 'space',
             lazy.spawn(apps.editor),
             desc='Launch an editor'),
-        Key(mods.alternate_app, 'v',
-            lazy.spawn('virt-manager'),
-            desc='Launch virtual machine manager'),
         Key(mods.app, 'g',
-            lazy.spawn('qgis'),
+            lazy.spawn('qgis -n'),
             desc='Launch QGIS'),
         Key(mods.alternate_app, 'space',
             lazy.spawn('code'),
@@ -234,11 +237,6 @@ def bind_application_launchers(mods, apps):
         Key(mods.app, 'r',
             lazy.spawn(apps.term + ' -e icli-rule'),
             desc='Inspect a 1Integrate rule from the configured instance'),
-        Key(mods.app, 't',
-            lazy.spawn(['/usr/bin/chromium',
-                        '--profile-directory=Default',
-                        '--app-id=heimggeelmnffondmjfpamclenidekkp']),
-            desc='Launch Microsoft Teams'),
 
         # Rofi runners and scripts
         Key(mods.base, 'space',
@@ -299,30 +297,59 @@ def bind_group_keys(mods, groups):
     """Generate keybinds for a list of group objects with a `name`."""
     keys = []
     for group in groups:
-        if len(group.name) == 1:
+        if re.match(r'^[0-9]$', group.name):
             # setup keybinds for base groups with single-character names
             keys.extend([
                     # mod + group name = switch to group
                     Key(mods.base, group.name,
-                        lazy.group[group.name].toscreen(),
+                        lazy.group[group.name].toscreen(toggle=True),
                         desc=f'Switch to group {group.name}',),
                     # mod + shift + group name = switch to group with client
                     Key(mods.alternate, group.name,
                         lazy.window.togroup(group.name, switch_group=True),
                         desc=f'Move client to group {group.name} and follow',),
                 ])
-        elif len(group.name) == 2 and group.name[1] == 'a':
+        elif re.match(r"^[0-9]'$", group.name):
             # I've now reached a point where 10 workspaces isn't enough.
-            # Here we handle any alternate workspaces I've declared.
+            # Here we handle any prime workspaces I've declared.
             # We use system (Ctrl) keybinds for convenience, not semantics.
             keys.extend([
                 Key(mods.system, group.name[0],
-                    lazy.group[group.name].toscreen(),
+                    lazy.group[group.name].toscreen(toggle=True),
                     desc=f'Switch to group {group.name}',),
                 Key(mods.alternate_system, group.name[0],
                     lazy.window.togroup(group.name, switch_group=True),
                     desc=f'Move client to group {group.name} and follow'),
             ])
+        elif re.match(r'^[0-9]"$', group.name):
+            # I'm rapidly approaching a level of organizational complexity that
+            # demands more than 20 workspaces (or, at least, more than 2 per
+            # digit). Here we handle any double-prime workspaces I've declared.
+            # These use app-launcher and alternate-app-launcher keybinds.
+            keys.extend([
+                Key(mods.app, group.name[0],
+                    lazy.group[group.name].toscreen(toggle=True),
+                    desc=f'Switch to group {group.name}',),
+                Key(mods.alternate_app, group.name[0],
+                    lazy.window.togroup(group.name, switch_group=True),
+                    desc=f'Move client to group {group.name} and follow'),
+            ])
+        elif re.match(r'^[-_a-zA-Z]*$', group.name):
+            # There are a handful of groups that I want to be able to switch to
+            # using alpha-mnemonic keybinds. For the most part, these are
+            # applications (or groups of applications) I'd prefer to have as
+            # dropdowns, but can't for one reason or another.
+            # These naively use app-launcher and alt-app-launcher keybinds with
+            # the first letter of the group name, so name your groups wisely.
+            keys.extend([
+                Key(mods.app, group.name[0].lower(),
+                    lazy.group[group.name].toscreen(toggle=True),
+                    desc=f'Switch to group {group.name}'),
+                Key(mods.alternate_app, group.name[0].lower(),
+                    lazy.window.togroup(group.name, switch_group=True),
+                    desc=f'Move client to group {group.name} and follow'),
+            ])
+
     return keys
 
 def bind_dropdown_keys(dropdown_specs):

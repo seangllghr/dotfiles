@@ -10,8 +10,7 @@ case "$(hostname)" in
     ;;
 esac
 picom &
-dropbox-cli start
 dunst &
 xset r rate 300 50 &
 light-locker &
-teams
+xplugd &

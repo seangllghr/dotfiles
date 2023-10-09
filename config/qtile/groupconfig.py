@@ -1,8 +1,10 @@
 """Define a function to configure dropdowns."""
 
 from pprint import pp
+import re
 
 from libqtile.config import DropDown, Group, Key, Match, ScratchPad
+from libqtile.config import hook
 from libqtile.lazy import lazy
 
 import keymap
@@ -82,7 +84,7 @@ class DDSpec:
 
 def configure_dd_spec_list(mods, apps):
     """Configure and return a list of dropdowns."""
-    config = DDConfig(width=0.6, height=0.6, x=0, y=0)
+    config = DDConfig(width=0.6, height=0.6, x=0.0025, y=0.005)
 
     dropdowns = [
         DDSpec('terminal',
@@ -115,6 +117,28 @@ def configure_dd_spec_list(mods, apps):
                config.modify(opacity=1.0,
                              height=0.8,
                              width=0.4)),
+        DDSpec('virt-manager',
+               Keybind(mods.alternate_app, 'v'),
+               ['virt-manager'],
+               config.modify(
+                   match=Match(wm_class=['virt-manager']),
+                   opacity=1.0,
+                   height=0.45,
+                   width=0.2,
+                )),
+        DDSpec('blueman',
+               Keybind(mods.app, 'z'),
+               ['blueman-manager'],
+               config.modify(
+                    match=Match(wm_class=['blueman-manager']),
+                    opacity=1.0,
+                    height=0.3,
+                    width=0.2,
+                )),
+        DDSpec('bluetoothctl',
+               Keybind(mods.alternate_app, 'z'),
+               [apps.term, '-t', 'bluetoothctl', '-e', 'bluetoothctl'],
+               config.defaults),
         DDSpec('emacs scratch',
                Keybind(mods.app, 'e'),
                [*apps.editor, '-n', '-F', '((name . \"emacs-scratch\"))'],
@@ -152,31 +176,46 @@ def configure_groups(mods, apps):
     specs = configure_dd_spec_list(mods, apps)
     groups = [
         ScratchPad('scratch', config_dropdowns(specs)),
+        # These groups are main workspace groups, with [[poly]prime-]numeric
+        # names that are automatically assigned to keybindings.
         Group('1', label='', layout='verticaltile'),
-        Group('1a', label='', layout='monadthreecol'),
-        Group('2', label='', layout='verticaltile'),
-        Group('2a', label='', layout='max'),
-        Group('3', label='', layout='treetab'),
-        Group('3a', label='', layout='treetab'),
-        Group('4', label='', layout='monadtall'),
-        Group('4a', label='', layout='monadtall'),
-        Group('5', label='', layout='max',
-              matches=[Match(wm_class=['emacs'])]),
-        Group('5a', label='', layout='max'),
-        Group('6', layout='treetab', label=''),
-        Group('6a', label='', layout='max'),
-        Group('7', label='', layout='treetab'),
-        Group('7a', label=''),
-        Group('8', label='', layout='max'),
-        Group('8a', label='', layout='max'),
-        Group('9', label='', layout='monadtall', matches=[
-            Match(wm_class=['microsoft teams - preview']),
-            Match(wm_class=['msoutlook-nativefier-9dd141']),
+        Group("1'", label='', layout='monadthreecol'),
+        Group('2', label=''),
+        Group("2'", label=''),
+        Group('3', label=''),
+        Group("3'", label=''),
+        Group('3"', label=''),
+        Group('4', label='', layout='monadtall', matches=[
+            Match(wm_class=['QGIS3'], wm_type=['normal']),
         ]),
-        Group('9a', label='', layout='treetab', matches=[
-            Match(wm_class=['jira-nativefier-894f7c'])
+        Group("4'", label='', layout='monadtall', matches=[
+            Match(wm_class=['QGIS3'], title=['Browser']),
+            Match(wm_class=['QGIS3'], title=['Layers']),
+            Match(wm_class=['QGIS3'], title=['Layer Styling']),
+            Match(wm_class=['QGIS3'], title=['Processing Toolbox']),
         ]),
-        Group('0', label='', layout='max'),
+        Group('5', label='', matches=[Match(wm_class=['emacs'])]),
+        Group("5'", label=''),
+        Group('6', label=''),
+        Group("6'", label=''),
+        Group('7', label=''),
+        Group("7'", label=''),
+        Group('8', label=''),
+        Group("8'", label=''),
+        Group('8"', label=''),
+        Group('9', label=''),
+        Group("9'", label='', matches=[
+            Match(wm_class=['crx_habikikacbmmokmhefnofnfajafkhfhe']),
+            Match(wm_class=['crx_nkcdcndihgboaagljeipaiihjiajcclj']),
+        ]),
+        Group('0', label=''),
+        # These groups are non-workspace groups; they can have any name that
+        # starts with an alphabetic character. They will automatically be bound
+        # to the key that corresponds to the first letter of their name.
+        Group('Teams', label='', layout='monadtall', matches=[
+            Match(wm_class=['crx_cifhbcnohmdccbgoicgdjpfamggdegmo']),
+            Match(wm_class=['crx_faolnafnngnfdaknnbpnkhgohbobgegn']),
+        ]),
     ]
     keys = keymap.bind_keys(mods, apps, groups, specs)
     return (groups, keys)
