@@ -53,10 +53,11 @@ if status is-interactive
     abbr -a gds 'git diff --staged'
     abbr -a gf 'git fetch'
     abbr -a gg 'git status'  # gs is awkard on my keyboard layout
-    abbr -a ggo 'git checkout'
     abbr -a gl 'git log'
     abbr -a gla 'git log --all'
     abbr -a glp 'git log --patch'
+    abbr -a go 'git checkout'
+    abbr -a god 'git checkout development'
     abbr -a gp 'git pull'
     abbr -a gpu 'git push'
     abbr -a gsh 'git show'
@@ -83,9 +84,20 @@ if status is-interactive
     abbr -a dts 'date "+%Y%m%d_%H%M%S"'
     abbr -a lamk 'latexmk -xelatex -shell-escape'
     abbr -a lns 'ln -sv'
+    abbr -a xc 'xonsh -c'
     abbr -a xco 'xclip -selection clipboard -o'
     abbr -a xcp 'xclip -selection clipboard'
     abbr -a xo 'xdg-open'
+
+    ## 1Int sync tool aliases (if the sync tool is installed)
+    if type -q xonsh and type -q isync
+        abbr -a --set-cursor ip 'xonsh -c "isp %"'
+        abbr -a ipu 'xonsh -c "isp push"'
+        abbr -a ipd 'xonsh -c "isp pull"'
+        abbr -a --set-cursor iv 'xonsh -c "isp -v %"'
+        abbr -a --set-cursor ivu 'xonsh -c "isp -v % push"'
+        abbr -a --set-cursor ivd 'xonsh -c "isp -v % pull"'
+    end
 
     # Alias-like functions
     function cd
