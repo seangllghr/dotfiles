@@ -107,10 +107,6 @@ def configure_dd_spec_list(mods, apps):
                Keybind(mods.app, 'minus'),
                [apps.term, '-t', 'Calculator', '-e', 'qalc'],
                config.defaults),
-        # DDSpec('python shell',
-        #        Keybind(mods.app, 'p'),
-        #        [ apps.term, '-t', 'PyShell', '-e bpython' ],
-        #        config.defaults),
         DDSpec('signal',
                Keybind(mods.app, 's'),
                ['signal-desktop'],
@@ -178,10 +174,12 @@ def configure_groups(mods, apps):
         ScratchPad('scratch', config_dropdowns(specs)),
         # These groups are main workspace groups, with [[poly]prime-]numeric
         # names that are automatically assigned to keybindings.
-        Group('1', label='', layout='verticaltile'),
+        Group('1', label='', layout='verticaltile'),
         Group("1'", label='', layout='monadthreecol'),
+        Group('1"', label=''),
         Group('2', label=''),
         Group("2'", label=''),
+        Group('2"', label=''),
         Group('3', label=''),
         Group("3'", label=''),
         Group('3"', label=''),
@@ -194,20 +192,24 @@ def configure_groups(mods, apps):
             Match(wm_class=['QGIS3'], title=['Layer Styling']),
             Match(wm_class=['QGIS3'], title=['Processing Toolbox']),
         ]),
-        Group('5', label='', matches=[Match(wm_class=['emacs'])]),
-        Group("5'", label=''),
+        Group('4"', label='', layout='monadtall'),
+        Group('5', label='', matches=[Match(wm_class=['emacs'])]),
+        Group("5'", label=''),
+        Group('5"', label=''),
         Group('6', label=''),
         Group("6'", label=''),
+        Group('6"', label=''),
         Group('7', label=''),
         Group("7'", label=''),
-        Group('8', label=''),
+        Group('7"', label=''),
+        Group('8', label=''),
         Group("8'", label=''),
         Group('8"', label=''),
-        Group('9', label=''),
-        Group("9'", label='', matches=[
+        Group("9", label='', matches=[
             Match(wm_class=['crx_habikikacbmmokmhefnofnfajafkhfhe']),
             Match(wm_class=['crx_nkcdcndihgboaagljeipaiihjiajcclj']),
         ]),
+        Group("9'", label=''),
         Group('0', label=''),
         # These groups are non-workspace groups; they can have any name that
         # starts with an alphabetic character. They will automatically be bound
@@ -215,6 +217,9 @@ def configure_groups(mods, apps):
         Group('Teams', label='', layout='monadtall', matches=[
             Match(wm_class=['crx_cifhbcnohmdccbgoicgdjpfamggdegmo']),
             Match(wm_class=['crx_faolnafnngnfdaknnbpnkhgohbobgegn']),
+        ]),
+        Group('Messages', label='', layout='monadtall', matches=[
+            Match(wm_class=['crx_hpfldicfbfomlpcikngkocigghgafkph']),
         ]),
     ]
     keys = keymap.bind_keys(mods, apps, groups, specs)
