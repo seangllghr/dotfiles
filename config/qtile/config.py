@@ -73,6 +73,9 @@ apps = DefaultApplications(
 
 groups, keys = groupconfig.configure_groups(mods, apps)
 
+widget_defaults = layoutconfig.configure_defaults(colors)
+extension_defaults = widget_defaults.copy()
+
 layouts, floating_layout = layoutconfig.configure_layouts(colors)
 
 screens = [

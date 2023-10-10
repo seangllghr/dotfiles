@@ -1,5 +1,7 @@
 """Functions to configure layout-related settings."""
 
+from os.path import expanduser
+
 from libqtile import layout
 from libqtile.config import Match
 
@@ -49,3 +51,33 @@ def configure_layouts(colors):
     )
 
     return layouts, floating_layout
+
+
+def configure_defaults(colors):
+    """Configure the default layout settings."""
+    return dict(
+        # Fonts
+        font='Libertinus Sans',
+        fontsize = 18,
+        padding = 5,
+
+        # General colors
+        active = colors.fg[1],
+        background = colors.bg[0],
+        foreground = colors.fg[1],
+        inactive = colors.bg[3],
+
+        # GroupBox theming
+        highlight_method = 'line',
+        highlight_color = [ colors.bg[0], colors.bg[1] ],
+        this_current_screen_border = colors.blue.bright,
+        this_screen_border = colors.bg[4],
+        other_current_screen_border = colors.bg[2],
+        other_screen_border = colors.bg[2],
+        urgent_alert_method = 'line',
+        urgent_text = colors.red.bright,
+        urgent_border = colors.red.bright,
+
+        # Custom icon path for layout icons
+        custom_icon_paths = [ expanduser('~/.config/qtile/icons/layouts') ],
+    )
