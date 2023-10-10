@@ -27,12 +27,14 @@ def configure_bar(colors, main_bar=False):
 
     bar_config = [
         widget.GroupBox(**groupbox_config),
-        widget.CurrentLayoutIcon(),
         widget.TaskList(**tasklist_config),
-        widget.Clock(format='%a %Y-%m-%d | %H:%M'),
+        widget.CurrentLayoutIcon(),
     ]
 
     if main_bar:
-        return bar.Bar(bar_config[0:-1] + [widget.Systray()] + [bar_config[-1]], 28)
+        return bar.Bar(bar_config + [
+            widget.Systray(),
+            widget.Clock(format='%a %Y-%m-%d | %H:%M')
+        ], 28)
     else:
         return bar.Bar(bar_config, 28)
