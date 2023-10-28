@@ -237,6 +237,9 @@ def bind_application_launchers(mods, apps):
         Key(mods.app, 'r',
             lazy.spawn(apps.term + ' -e icli-rule'),
             desc='Inspect a 1Integrate rule from the configured instance'),
+        Key(mods.app, 'w',
+            lazy.spawn('sh "/home/sean/.local/bin/spawn_work_apps.sh"'),
+            desc='Launch work applications'),
 
         # Rofi runners and scripts
         Key(mods.base, 'space',
@@ -309,7 +312,7 @@ def bind_group_keys(mods, groups):
                         lazy.window.togroup(group.name, switch_group=True),
                         desc=f'Move client to group {group.name} and follow',),
                 ])
-        elif re.match(r"^[0-9]'$", group.name):
+        elif re.match(r"^[0-9]′$", group.name):
             # I've now reached a point where 10 workspaces isn't enough.
             # Here we handle any prime workspaces I've declared.
             # We use system (Ctrl) keybinds for convenience, not semantics.
@@ -321,7 +324,7 @@ def bind_group_keys(mods, groups):
                     lazy.window.togroup(group.name, switch_group=True),
                     desc=f'Move client to group {group.name} and follow'),
             ])
-        elif re.match(r'^[0-9]"$', group.name):
+        elif re.match(r'^[0-9]″$', group.name):
             # I'm rapidly approaching a level of organizational complexity that
             # demands more than 20 workspaces (or, at least, more than 2 per
             # digit). Here we handle any double-prime workspaces I've declared.
@@ -331,6 +334,19 @@ def bind_group_keys(mods, groups):
                     lazy.group[group.name].toscreen(toggle=True),
                     desc=f'Switch to group {group.name}',),
                 Key(mods.alternate_app, group.name[0],
+                    lazy.window.togroup(group.name, switch_group=True),
+                    desc=f'Move client to group {group.name} and follow'),
+            ])
+        elif re.match(r'^[0-9]‴$', group.name):
+            # Oh, god, I'm a monster. I'm so sorry.
+            # As penance, all of the [poly]prime workspaces now use real
+            # unicode prime characters. You're welcome.
+            # These use all of the modifier keys. I had no other choice.
+            keys.extend([
+                Key(mods.cag, group.name[0],
+                    lazy.group[group.name].toscreen(toggle=True),
+                    desc=f'Switch to group {group.name}',),
+                Key(mods.cags, group.name[0],
                     lazy.window.togroup(group.name, switch_group=True),
                     desc=f'Move client to group {group.name} and follow'),
             ])

@@ -70,6 +70,16 @@ class Modifiers:
         """
         return []
 
+    @property
+    def cag(self):
+        """Return (nearly) all of the modifiers (control, alt, and GUI)."""
+        return [self._mod, self._alt, self._ctrl]
+
+    @property
+    def cags(self):
+        """Return all of the modifiers (control, alt, GUI, and shift)."""
+        return [self._mod, self._alt, self._ctrl, self._shft]
+
 class DefaultApplications:
     """Defines the user's default applications."""
 
