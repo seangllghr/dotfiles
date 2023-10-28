@@ -70,6 +70,20 @@ if status is-interactive
     abbr -a gstul 'git stash list --include-untracked'
     abbr -a gstup 'git stash pop --include-untracked'
 
+    ## Aliases to launch other shells in new terminals
+    if type -q nu
+        abbr -a nt 'alacritty -e nu &'
+    end
+    if type -q xonsh
+        abbr -a xt 'alacritty -e xonsh &'
+    end
+    if type -q zsh
+        abbr -a zt 'alacritty -e zsh &'
+    end
+    if type -q bash
+        abbr -a bt 'alacritty -e bash &' # I don't use bash, but it's there
+    end
+
     ## Bat aliases (if bat is installed)
     if type -q bat
         abbr -a bap 'bat --paging=always'
@@ -77,6 +91,7 @@ if status is-interactive
         abbr -a bapl 'bat --paging=always --language'
         abbr -a baj 'bat --language json' # I deal with a *lot* of json
         abbr -a bapj 'bat --paging=always --language json'
+        abbr -a bail 'bat --paging=always --language clj --number'
     end
 
     ## Miscelaneous
@@ -84,6 +99,7 @@ if status is-interactive
     abbr -a dts 'date "+%Y%m%d_%H%M%S"'
     abbr -a lamk 'latexmk -xelatex -shell-escape'
     abbr -a lns 'ln -sv'
+    abbr -a xs 'xonsh'
     abbr -a xc 'xonsh -c'
     abbr -a xco 'xclip -selection clipboard -o'
     abbr -a xcp 'xclip -selection clipboard'
@@ -91,15 +107,29 @@ if status is-interactive
 
     ## 1Int sync tool aliases (if the sync tool is installed)
     if type -q xonsh and type -q isync
-        abbr -a --set-cursor ip 'xonsh -c "isp %"'
-        abbr -a ipu 'xonsh -c "isp push"'
-        abbr -a ipd 'xonsh -c "isp pull"'
-        abbr -a --set-cursor iv 'xonsh -c "isp -v %"'
-        abbr -a --set-cursor ivu 'xonsh -c "isp -v % push"'
-        abbr -a --set-cursor ivd 'xonsh -c "isp -v % pull"'
+        abbr -a --set-cursor isp 'xonsh -c "isp %"'
+        abbr -a ispu 'xonsh -c "isp push"'
+        abbr -a ispd 'xonsh -c "isp pull"'
+        abbr -a --set-cursor isv 'xonsh -c "isp -v %"'
+        abbr -a --set-cursor isvu 'xonsh -c "isp -v % push"'
+        abbr -a --set-cursor isvd 'xonsh -c "isp -v % pull"'
+    end
+
+    ## intcli aliases (if intcli is installed)
+    if type -q intcli
+        abbr -a icli 'intcli'
     end
 
     # Alias-like functions
+    function bah
+        # Run $command --help and pipe it through bat if it's installed
+        if type -q bat
+            $argv --help | bat -ppf --language help
+        else
+            $argv --help
+        end
+    end
+
     function cd
         builtin cd $argv
         if test $status -eq 0
@@ -110,6 +140,11 @@ if status is-interactive
             end
         end
     end
+
+    function unzr
+        unzip $argv && rm $argv
+    end
+
 
     function lr
         # Recursively list all files in the current directory and its children
@@ -170,4 +205,9 @@ if status is-interactive
     if type -q zoxide
         zoxide init fish | source
     end
+end
+
+# init pyenv
+if type -q pyenv
+    pyenv init - | source
 end

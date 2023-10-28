@@ -1,6 +1,7 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR --export D:/home/sean/Downloads
+SETUVAR --export PYENV_ROOT:/home/sean/\x2epyenv/
 SETUVAR __fish_initialized:3400
 SETUVAR --export adoa:/home/sean/Documents/Work/1Spatial/Projects/ADOA
 SETUVAR --export cf:/home/sean/\x2econfig
