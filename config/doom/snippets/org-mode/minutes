@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: minutes
+# key: aquatics_minutes
+# condition: t
+# --
+#+include: ~/Documents/org/aquatics_minutes.orgt
+#+export_file_name: `(format-time-string "%Y-%m-%d" (current-time))`_Meeting_Minutes
+#+subtitle: Minutes of the `(format-time-string "%B %Y" (current-time))` Meeting
+#+date: `(format-time-string "%d %B, %Y" (current-time))`
+* Attendance
+#+call: proc_attend[:results raw](attendees)
+** Attendees :noexport:
+#+name: attendees
+- Sean Gallagher
+- $1
+* Minutes
+Call to order: $2
+** $0
+** Next Meeting:
+Meeting adjourned:
