@@ -25,7 +25,7 @@ def configure_layouts(colors):
             **layout_theme
         ),
         layout.MonadThreeCol(
-            ratio=.7,
+            ratio=.44,
             new_client_position='bottom',
             **layout_theme
         ),
@@ -40,6 +40,7 @@ def configure_layouts(colors):
             Match(wm_class='makebranch'),  # gitk
             Match(wm_class='maketag'),  # gitk
             Match(wm_class='ssh-askpass'),  # ssh-askpass
+            Match(wm_class='lxqt-openssh-askpass'),  # lxqt's ssh-askpass
             Match(wm_class='pinentry-gtk-2'),
             Match(wm_class='com-onespatial-ms-integrate-sync-SyncTool'),
             Match(title='branchdialog'),  # gitk
