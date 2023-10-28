@@ -265,8 +265,32 @@ def _isp(args):
     else:
         version = parsed_args['--version']
 
-    with ${...}.swap(INT_TARGET_VERSION=version):
+    with ${...}.swap({'INT_TARGET_VERSION': version}):
         isync @(parsed_args['ARGS'])
+
+
+def _ms_isync(args):
+    """Alias for the functioning thin wrapper around the sync tool.
+
+    Usage:
+        msi_sync [-v VERSION] [--] ARGS...
+
+    Arguments:
+        ARGS        Arguments to pass to the sync tool.
+
+    Options:
+        -v, --version VERSION   Version of the sync tool to use. If unspecified,
+                                uses the version specified in the environment
+                                variable INT_TARGET_VERSION. If that is also
+                                unspecified, defaults to the wrapper's default
+                                version.
+    """
+    parsed_args = docopt(_ms_isync.__doc__, argv=args)
+    if parsed_args['--version']:
+        with ${...}.swap({'INT_TARGET_VERSION': parsed_args['--version']}):
+            ms-int-sync @(parsed_args['ARGS'])
+    else:
+        ms-int-sync @(parsed_args['ARGS'])
 
 aliases |= {
     'bap': 'bat --paging=always',
@@ -277,6 +301,7 @@ aliases |= {
     'dgpl': _dg_logparse,
     'isp': _isp,
     'mofo': 'moar --follow',
+    'msis': _ms_isync,
     'icfz': _icli_fzf,
     'rarr': 'icli-rule',
     'larr': 'icli-rule -l',
