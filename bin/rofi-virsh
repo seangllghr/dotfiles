@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ -z "$(command -v virsh)" ]; then
+  notify-send "Command not found: virsh"
+  exit 1
+fi
+
 if [ $# -gt 0 ]; then
   term=$1
 else
