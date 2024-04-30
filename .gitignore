@@ -8,3 +8,4 @@ config/spotify-tui/client.yml
 config/doom/.custom.bak
 config/doom/custom.el
 __pycache__/
+*.vim.old
