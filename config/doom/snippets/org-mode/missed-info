@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: missed info
+# key: minfo
+# condition: t
+# --
+[​/MISSING INFO: ${1:info}/​]$0

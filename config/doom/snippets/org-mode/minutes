@@ -3,7 +3,7 @@
 # key: aquatics_minutes
 # condition: t
 # --
-#+include: ~/Documents/org/aquatics_minutes.orgt
+#+include: ~/Documents/Templates/org/aquatics_minutes.orgt
 #+export_file_name: `(format-time-string "%Y-%m-%d" (current-time))`_Meeting_Minutes
 #+subtitle: Minutes of the `(format-time-string "%B %Y" (current-time))` Meeting
 #+date: `(format-time-string "%d %B, %Y" (current-time))`
