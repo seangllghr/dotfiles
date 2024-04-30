@@ -36,23 +36,34 @@ if status is-interactive
     ## ls (if exa is installed)
     if type -q exa
         abbr -a ls 'eza --icons --color=always'
-        abbr -a la 'eza --icons --color=always'
-        abbr -a ll 'eza --long --icons --color=always --git'
+        abbr -a la 'eza --all --icons --color=always'
+        abbr -a ll 'eza --all --long --icons --color=always --git'
     end
 
     ## systemctl
     abbr -a sctl 'systemctl --user'
     abbr -a ssctl 'sudo systemctl'
 
+    ## editors (if they're installed)
+    if type -q nvim
+        abbr -a vim nvim
+        abbr -a vi nvim
+        abbr vimdiff 'nvim -d'
+    end
+
+    if type -q emacs
+        abbr -a em 'emacsclient -c'
+    end
+
     ## A boatload of git aliases that I'll never remember
-    abbr -a g 'git'
+    abbr -a g git
     abbr -a gc 'git commit'
     abbr -a gca 'git commit --amend'
     abbr -a gcm 'git commit -m'
     abbr -a gd 'git diff'
     abbr -a gds 'git diff --staged'
     abbr -a gf 'git fetch'
-    abbr -a gg 'git status'  # gs is awkard on my keyboard layout
+    abbr -a gg 'git status' # gs is awkard on my keyboard layout
     abbr -a gl 'git log'
     abbr -a gla 'git log --all'
     abbr -a glp 'git log --patch'
@@ -99,13 +110,31 @@ if status is-interactive
     abbr -a dts 'date "+%Y%m%d_%H%M%S"'
     abbr -a lamk 'latexmk -xelatex -shell-escape'
     abbr -a lns 'ln -sv'
-    abbr -a xs 'xonsh'
+    abbr -a xs xonsh
     abbr -a xc 'xonsh -c'
     abbr -a xco 'xclip -selection clipboard -o'
     abbr -a xcp 'xclip -selection clipboard'
-    abbr -a xo 'xdg-open'
+    abbr -a xo xdg-open
 
-    ## 1Int sync tool aliases (if the sync tool is installed)
+    ## Aggressively situational aliases
+    ### pdm
+    ### I use pdm for python package management, but my keyboard layout makes
+    ### pdm a bit awkward to type ('p' and 'd' are on the same finger)
+    if type -q pdm
+        abbr -a ppm pdm
+        abbr -a pt 'pdm test'
+        abbr -a pta 'pdm test-all'
+        function pva
+            set sel (pdm venv list | tail -n+3 | fzf | awk '{print $1}')
+            if test $sel = "*"
+                eval (pdm venv activate)
+            else
+                eval (pdm venv activate $sel)
+            end
+        end
+    end
+
+    ### 1Int sync tool
     if type -q xonsh and type -q isync
         abbr -a --set-cursor isp 'xonsh -c "isp %"'
         abbr -a ispu 'xonsh -c "isp push"'
@@ -115,9 +144,14 @@ if status is-interactive
         abbr -a --set-cursor isvd 'xonsh -c "isp -v % pull"'
     end
 
-    ## intcli aliases (if intcli is installed)
+    ### intcli
     if type -q intcli
-        abbr -a icli 'intcli'
+        abbr -a icli intcli
+    end
+
+    ### intlc
+    if type -q intlc
+        abbr -a ilr "intlc render"
     end
 
     # Alias-like functions
