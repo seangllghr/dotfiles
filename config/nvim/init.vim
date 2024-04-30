@@ -37,7 +37,7 @@ set switchbuf=useopen,newtab
 
 " Autocommands
 autocmd!
-au FocusLost * :wa
+" au FocusLost * :wa
 au WinLeave * set nowrap
 au WinEnter * set wrap
 au WinEnter * set lbr
