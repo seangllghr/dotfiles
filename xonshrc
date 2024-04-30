@@ -2,7 +2,7 @@
 del aliases['ls']
 
 source-zsh "echo loading xonsh foreign shell"
-xontrib load coconut fish_completer fzf-widgets readable-traceback vox whole_word_jumping zoxide
+# xontrib load fish_completer fzf-widgets readable-traceback whole_word_jumping zoxide
 
 # Xonsh envvars
 $AUTO_CD = True
@@ -21,227 +21,81 @@ $fzf_find_command = 'fd --type f --hidden --follow --exclude .git'
 $fzf_dir_binding = 'c-g'
 $fzf_find_dirs_command = 'fd --type d --hidden --follow --exclude .git'
 
-from argparse import ArgumentParser
 from datetime import datetime as dt
-from docopt import docopt
-import json
+from json import loads, dumps
 from pathlib import Path
-import re
-from typing import Iterable
-from zipfile import ZipFile
 
-from intcli.api.intclient import IntegrateClient
-from intcli.config import Config as IcliConfig
-from intcli.cli.util import print_with_pager, ForceOption
-import icli_render
-from rich import inspect
-from rich.console import Console
-from rich.text import Text
-from rich.theme import Theme
-from rich.tree import Tree
-import pyperclip
-import rich_tables.table
-import yaml
-
-rcon = Console(
-    theme=Theme(icli_render.THEME_DICT),
-)
+from rich import inspect, get_console
 
 def rp(*args, **kwargs):
     """Print to the rich console."""
     try:
-        rcon.print(*args, **kwargs)
+        get_console().print(*args, **kwargs)
     except Exception:
-        rcon.print_exception(show_locals=True)
+        get_console().print_exception(show_locals=True)
 
-def jls(jstring: str):
+def jls(jstring):
     """Load a JSON string."""
-    return json.loads(jstring)
+    return loads(jstring)
 
-def jlf(jfile: str | Path):
+def jlf(jfile):
     """Load a JSON file."""
     if isinstance(jfile, str):
-        jfile = Path(jfile)
-    with jfile.open() as f:
-        return json.load(f)
+        jfile = pf"{jfile}"
+    return loads(jfile.read_text())
 
-def jds(data: dict):
+def jds(data):
     """Dump a JSON string."""
-    return json.dumps(data)
+    return dumps(data)
 
-def jdf(data: dict, jfile: str | Path):
+def jdf(data, jfile):
     """Dump a JSON file."""
     if isinstance(jfile, str):
-        jfile = Path(jfile)
-    with jfile.open('w') as f:
-        json.dump(data, f)
+        jfile = pf"{jfile}"
+    jfile.write_text(dumps(data))
 
 def rinse(obj):
     """Dump an object through rich's inspect."""
-    with rcon.pager(styles=True):
-        inspect(obj, console=rcon)
+    with get_console().pager(styles=True):
+        inspect(obj, console=get_console)
 
-def _tree_recursive(data):
-    """Build a rich tree from a nested data structure."""
-    if type(data) in (str, int, float, bool):
-        return Text(str(data))
-    elif isinstance(data, dict):
-        for k, v in data.items():
-            tree = Tree(Text(k, style='bold blue'))
-            if isinstance(v, Iterable):
-                for _v in v:
-                    tree.add(_tree_recursive(_v))
-            else:
-                tree.add(_tree_recursive(v))
-        return tree
-    elif isinstance(data, Iterable):
-        tree = Tree('List')
-        for v in data:
-            tree.add(_tree_recursive(v))
-        return tree
-    else:
-        raise ValueError(f'Cannot build tree from {data}')
+# def _ls_zip(args):
+#     from argparse import ArgumentParser
+#     parser = ArgumentParser()
+#     parser.add_argument('zipfile', type=str, help='zipfile to list')
+#     parser.add_argument('-j', '--json', action='store_true', help='output json')
 
-def _ls_zip(args):
-    parser = ArgumentParser()
-    parser.add_argument('zipfile', type=str, help='zipfile to list')
-    parser.add_argument('-j', '--json', action='store_true', help='output json')
+#     ns = parser.parse_args(args)
+#     zipfile = ns.zipfile
 
-    ns = parser.parse_args(args)
-    zipfile = ns.zipfile
-
-    with ZipFile(zipfile, 'r') as zf:
-        ls = {
-            'name': zipfile,
-            'size': sum(zi.file_size for zi in zf.infolist()),
-            'modified': str(dt(*max(zi.date_time for zi in zf.infolist()))),
-            'contents': []
-        }
-        info = zf.infolist()
-        ls['contents'].extend([{
-            'name': zi.filename,
-            'size': zi.file_size,
-            'modified': str(dt(*zi.date_time))
-        } for zi in info])
+#     with ZipFile(zipfile, 'r') as zf:
+#         ls = {
+#             'name': zipfile,
+#             'size': sum(zi.file_size for zi in zf.infolist()),
+#             'modified': str(dt(*max(zi.date_time for zi in zf.infolist()))),
+#             'contents': []
+#         }
+#         info = zf.infolist()
+#         ls['contents'].extend([{
+#             'name': zi.filename,
+#             'size': zi.file_size,
+#             'modified': str(dt(*zi.date_time))
+#         } for zi in info])
 
 
-    if ns.json:
-        print(json.dumps(ls))
-    else:
-        ripr(ls)
+#     if ns.json:
+#         print(json.dumps(ls))
+#     else:
+#         ripr(ls)
 
 
-def ripr(data, json=False):
-    """Render a fancy rich table from an arbitrary data structure."""
-    if json:
-        rcon.print_json(data=data)
-    else:
-        for ret in rich_tables.table.draw_data(data):
-            rp(ret)
-
-
-def _init_icli(args, stdin=None):
-    """(Re)initialize the intcli config, either from a file or stdin.
-
-    Takes up to one argument, a file to read the config from. If no argument is
-    given, reads from stdin. If no argument is given and stdin is empty, reads
-    from ~/.intcli/config.yaml.
-
-    Usage:
-        init_icli
-        init_icli [FILE]
-        init_icli < FILE
-    """
-    from intcli.config import Config as IcliConfig
-    from intcli.api.intclient import IntegrateClient
-    if stdin is not None:
-        icli_config = IcliConfig.from_yaml(stdin)
-    elif len(args) > 0:
-        icli_config = IcliConfig.from_yaml(args[0])
-    else:
-        icli_config = IcliConfig.from_yaml(p'~/.config/intcli/config.yaml')
-    return IntegrateClient.from_config(icli_config)
-
-
-icli = _init_icli([])
-
-
-def _dg_logparse(args, stdin=None):
-    patt = re.compile(r'''(?xs)
-(?P<Timestamp>
-    (?:\d{4}(?:-\d{2}){2}) # date
-    [ T] # date/time separator
-    \d{2}(?::\d{2}){2}(?:[.,]\d{1,9})? # time
-    (?:Z|[-+]\d{2}(?::\d{2})?)? # timezone
-)\s+
-(?P<Task>\[.*?\])\s+
-(?P<Level>[A-Z]+)\s+
-(?P<Message>
-    .*?-\s((?=From\s1Integrate:))?(?(5)(?:)|(?:.*$))
-)
-(?P<ErrorMsg>(?(5).*))
-    ''')
-    parser = ArgumentParser()
-    parser.add_argument('logfile', type=str, help='logfile to parse', default=None)
-    ns = parser.parse_args(args)
-    c = Console()
-
-    if ns.logfile is None:
-        if stdin is None:
-            raise ValueError('No logfile specified and no stdin')
-        else:
-            log_str = stdin
-    else:
-        with open(ns.logfile, 'r') as f:
-            log_str = f.read()
-    
-    log_lines = re.split(r'\n(?=\d{4}-\d{2}-\d{2})', log_str)
-    
-    log, err = [], {}
-
-    for line in log_lines:
-        m = patt.match(line).groupdict()
-        if m['ErrorMsg']:
-            err.update({f'Error {len(err.items()) + 1}': m['ErrorMsg']})
-        log.append({
-            'Timestamp': m['Timestamp'],
-            'Task': m['Task'],
-            'Level': m['Level'],
-            'Message': m['Message']
-        })
-
-    with rcon.pager(styles=True):
-        rcon.print(rich_tables.generic.flexitable({'1Data Gateway Log': log}),
-                rich_tables.generic.flexitable(err))
-
-def _icli_fzf(args):
-    """Fuzzy find a 1Integrate resource URL.
-    
-    Usage:
-        icli_fzf
-        icli_fzf --copy
-
-    Options:
-        -c, --copy  Copy the selected resource URL to the clipboard instead of
-                    printing it to stdout.
-    """
-    icli = _init_icli([])
-    args = docopt(_icli_fzf.__doc__, args)
-    try:
-        icli.get('grid') # Check that we can connect to the server.
-    except Exception:
-        CONSOLE.print_exception(show_locals=True)
-        raise SystemExit(1)
-    res_types = ['rules', 'actions', 'datastores', 'actionmaps', 'sessions']
-    res_type = $(echo @('\n'.join(res_types)) | fzf --prompt='Resource Type: ').strip()
-    if not res_type:
-        raise ValueError('No resource type selected.')
-    
-    resource = $(intcli raw ls @(res_type) | fzf --prompt='Resource: ').strip()
-    if args['--copy']:
-        pyperclip.copy(resource)
-    else:
-        return resource
+# def ripr(data, json=False):
+#     """Render a fancy rich table from an arbitrary data structure."""
+#     if json:
+#         get_console().print_json(data=data)
+#     else:
+#         for ret in rich_tables.table.draw_data(data):
+#             rp(ret)
 
 def _isp(args):
     """Perform a sync with the detected or specified version of the sync tool.
@@ -257,11 +111,13 @@ def _isp(args):
         -v, --version VERSION   Version of the sync tool to use. If not specified, tries
                                 to detect the version from the configured 1Integrate instance.
     """
+    from docopt import docopt
     parsed_args = docopt(_isp.__doc__, argv=args)
     if parsed_args['--debug']:
-        rcon.print_json(json.dumps(parsed_args, indent=2))
+        get_console().print_json(json.dumps(parsed_args, indent=2))
     if parsed_args['--version'] is None:
-        version = icli.version['version']
+        # version = icli.version['version']
+        raise NotImplementedError('Automatic version detection not implemented.')
     else:
         version = parsed_args['--version']
 
@@ -269,42 +125,13 @@ def _isp(args):
         isync @(parsed_args['ARGS'])
 
 
-def _ms_isync(args):
-    """Alias for the functioning thin wrapper around the sync tool.
-
-    Usage:
-        msi_sync [-v VERSION] [--] ARGS...
-
-    Arguments:
-        ARGS        Arguments to pass to the sync tool.
-
-    Options:
-        -v, --version VERSION   Version of the sync tool to use. If unspecified,
-                                uses the version specified in the environment
-                                variable INT_TARGET_VERSION. If that is also
-                                unspecified, defaults to the wrapper's default
-                                version.
-    """
-    parsed_args = docopt(_ms_isync.__doc__, argv=args)
-    if parsed_args['--version']:
-        with ${...}.swap({'INT_TARGET_VERSION': parsed_args['--version']}):
-            ms-int-sync @(parsed_args['ARGS'])
-    else:
-        ms-int-sync @(parsed_args['ARGS'])
-
 aliases |= {
     'bap': 'bat --paging=always',
     'lr': 'tre',
-    'lz': _ls_zip,
     'ric': ['python', '-m', 'rich_tables.table'],
-    'init_icli': lambda a, s=None: _init_icli(a, s),
-    'dgpl': _dg_logparse,
+    'dgpl': 'dg-logparse',
     'isp': _isp,
     'mofo': 'moar --follow',
-    'msis': _ms_isync,
-    'icfz': _icli_fzf,
-    'rarr': 'icli-rule',
-    'larr': 'icli-rule -l',
 }
 
 execx($(starship init xonsh))
