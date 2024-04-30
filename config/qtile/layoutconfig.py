@@ -17,7 +17,7 @@ def configure_layouts(colors):
 
     layouts = [
         layout.Max(**layout_theme),
-        layout.MonadTall(min_ratio=0.2, **layout_theme),
+        layout.MonadTall(ratio=0.6, min_ratio=0.2, **layout_theme),
         layout.MonadWide(
             ratio=0.85,
             max_ratio=0.85,

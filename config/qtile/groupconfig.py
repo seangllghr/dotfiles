@@ -107,17 +107,17 @@ def configure_dd_spec_list(mods, apps):
                Keybind(mods.app, 'minus'),
                [apps.term, '-t', 'Calculator', '-e', 'qalc'],
                config.defaults),
-        DDSpec('signal',
-               Keybind(mods.app, 's'),
-               ['signal-desktop'],
-               config.modify(opacity=1.0,
-                             height=0.8,
-                             width=0.4)),
+        # DDSpec('signal',
+        #        Keybind(mods.app, 's'),
+        #        ['signal-desktop'],
+        #        config.modify(opacity=1.0,
+        #                      height=0.8,
+        #                      width=0.4)),
         DDSpec('virt-manager',
                Keybind(mods.alternate_app, 'v'),
                ['virt-manager'],
                config.modify(
-                   match=Match(wm_class=['virt-manager']),
+                   Match=Match(wm_class=re.compile(r'^virt-manager$')),
                    opacity=1.0,
                    height=0.45,
                    width=0.2,
@@ -126,7 +126,7 @@ def configure_dd_spec_list(mods, apps):
                Keybind(mods.app, 'z'),
                ['blueman-manager'],
                config.modify(
-                    match=Match(wm_class=['blueman-manager']),
+                    match=Match(wm_class=re.compile(r'^blueman-manager$')),
                     opacity=1.0,
                     height=0.3,
                     width=0.2,
@@ -139,14 +139,16 @@ def configure_dd_spec_list(mods, apps):
                Keybind(mods.app, 'e'),
                [*apps.editor, '-n', '-F', '((name . \"emacs-scratch\"))'],
                config.modify(
-                   match=Match(title=['emacs-scratch']),
+                   # match=Match(title=['emacs-scratch']),
+                   match=Match(title=re.compile(r'^.*emacs-scratch.*$')),
                    opacity=1.0,
                    height=0.7,
                )),
         DDSpec('psensor', Keybind(mods.alternate_app, 'Delete'),
                ['psensor'],
                config.modify(
-                   match=Match(wm_class=['psensor', 'Psensor']),
+                   # match=Match(wm_class=['psensor', 'Psensor']),
+                   match=Match(wm_class=re.compile(r'^[pP]sensor$')),
                    opacity=1.0,
                    height=0.275, width=0.6,
                    x=0.396, y=0.7205
@@ -174,8 +176,8 @@ def configure_groups(mods, apps):
         ScratchPad('scratch', config_dropdowns(specs)),
         # These groups are main workspace groups, with [[poly]prime-]numeric
         # names that are automatically assigned to keybindings.
-        Group('1', label='', layout='verticaltile'),
-        Group('1′', label='', layout='monadthreecol'),
+        Group('1', label='', layout='monadthreecol'),
+        Group('1′', label='', layout='verticaltile'),
         Group('1″', label=''),
         Group('2', label=''),
         Group('2′', label=''),
@@ -183,21 +185,20 @@ def configure_groups(mods, apps):
         Group('3', label=''),
         Group('3′', label=''),
         Group('3″', label=''),
-        Group('4', label='', layout='monadtall', matches=[
-            Match(wm_class=['QGIS3'], wm_type=['normal'],),
+        Group('4', label='', layout='monadwide', matches=[
+            Match(wm_class=re.compile(r'^QGIS3$'), wm_type=re.compile(r'normal'),),
         ]),
-        Group('4′', label='', layout='monadthreecol', matches=[
-            Match(wm_class=['QGIS3'], title=['Browser']),
-            Match(wm_class=['QGIS3'], title=['Layers']),
-            Match(wm_class=['QGIS3'], title=['Layer Styling']),
-            Match(wm_class=['QGIS3'], title=['Processing Toolbox']),
+        Group('4′', label='', layout='monadtall', matches=[
+            Match(wm_class=re.compile(r'^QGIS3'), title=re.compile(r'^Browser$')),
+            Match(wm_class=re.compile(r'^QGIS3'), title=re.compile(r'^Layers$')),
+            Match(wm_class=re.compile(r'^QGIS3'), title=re.compile(r'^Layer Styling$')),
+            Match(wm_class=re.compile(r'^QGIS3'), title=re.compile(r'^Processing Toolbox$')),
         ]),
         Group('4″', label='', layout='verticaltile', matches=[
-            Match(wm_class=['QGIS3'],
-                  title=[re.compile(r'^.*Features Total.*$')]),
+            Match(wm_class=re.compile(r'^QGIS3'), title=re.compile(r'^.*Features Total.*$')),
         ]),
         Group('4‴', label='‴', layout='verticaltile'),
-        Group('5', label='', matches=[Match(wm_class=['emacs'])]),
+        Group('5', label=''),
         Group('5′', label=''),
         Group('5″', label=''),
         Group('6', label=''),
@@ -210,20 +211,21 @@ def configure_groups(mods, apps):
         Group('8′', label=''),
         Group('8″', label=''),
         Group('9', label='', matches=[
-            Match(wm_class=['crx_habikikacbmmokmhefnofnfajafkhfhe']),
-            Match(wm_class=['crx_nkcdcndihgboaagljeipaiihjiajcclj']),
+            Match(wm_class=re.compile(r'^crx_habikikacbmmokmhefnofnfajafkhfhe$')),
+            Match(wm_class=re.compile(r'^crx_nkcdcndihgboaagljeipaiihjiajcclj$')),
         ]),
-        Group('9′', label=''),
+        Group('9′', label=''),
+        Group('9″', label=''),
         Group('0', label=''),
         # These groups are non-workspace groups; they can have any name that
         # starts with an alphabetic character. They will automatically be bound
         # to the key that corresponds to the first letter of their name.
         Group('Teams', label='', layout='monadtall', matches=[
-            Match(wm_class=['crx_cifhbcnohmdccbgoicgdjpfamggdegmo']),
-            Match(wm_class=['crx_faolnafnngnfdaknnbpnkhgohbobgegn']),
+            Match(wm_class=re.compile(r'^crx_cifhbcnohmdccbgoicgdjpfamggdegmo$')),
+            Match(wm_class=re.compile(r'^crx_faolnafnngnfdaknnbpnkhgohbobgegn$')),
         ]),
         Group('Messages', label='', layout='monadtall', matches=[
-            Match(wm_class=['crx_hpfldicfbfomlpcikngkocigghgafkph']),
+            Match(wm_class=re.compile(r'^crx_hpfldicfbfomlpcikngkocigghgafkph$')),
         ]),
     ]
     keys = keymap.bind_keys(mods, apps, groups, specs)
