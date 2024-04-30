@@ -9,3 +9,5 @@ config/doom/.custom.bak
 config/doom/custom.el
 __pycache__/
 *.vim.old
+/config/nushell/history.txt
+/config/nushell/zoxide.nu
