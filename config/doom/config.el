@@ -236,7 +236,7 @@
         '((sequence "TODO(t!)" "STRT(s!)" "TEST(u!)" "REVIEW(r!)" "|" "DONE(d!)")
           ;; Exceptional/alternate states
           (sequence "BLOCK(b@!)" "KNOWNCAUSE(c@!)" "ACCEPTANCE(R!)" "PUSH(p!)"
-                    "|" "PUNT(P@)" "CANCEL(k@)")
+                    "|" "PUNT(P@!)" "CANCEL(k@!)")
           ;; Lightweight/subtask states
           (sequence "[ ](T)" "[-](S)" "[◆](U)" "[?](H)" "[!](B)" "|" "[✓](D)" "[X](K)")
           ;; Long-term/container states

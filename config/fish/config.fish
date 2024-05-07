@@ -144,11 +144,6 @@ if status is-interactive
         abbr -a --set-cursor isvd 'xonsh -c "isp -v % pull"'
     end
 
-    ### intcli
-    if type -q intcli
-        abbr -a icli intcli
-    end
-
     ### intlc
     if type -q intlc
         abbr -a ilr "intlc render"
