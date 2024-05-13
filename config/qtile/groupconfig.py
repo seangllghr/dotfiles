@@ -135,15 +135,15 @@ def configure_dd_spec_list(mods, apps):
                Keybind(mods.alternate_app, 'z'),
                [apps.term, '-t', 'bluetoothctl', '-e', 'bluetoothctl'],
                config.defaults),
-        DDSpec('emacs scratch',
-               Keybind(mods.app, 'e'),
-               [*apps.editor, '-n', '-F', '((name . \"emacs-scratch\"))'],
-               config.modify(
-                   # match=Match(title=['emacs-scratch']),
-                   match=Match(title=re.compile(r'^.*emacs-scratch.*$')),
-                   opacity=1.0,
-                   height=0.7,
-               )),
+        # DDSpec('emacs scratch',
+        #        Keybind(mods.app, 'e'),
+        #        [*apps.editor, '-n', '-F', '((name . \"emacs-scratch\"))'],
+        #        config.modify(
+        #            # match=Match(title=['emacs-scratch']),
+        #            match=Match(title=re.compile(r'^.*emacs-scratch.*$')),
+        #            opacity=1.0,
+        #            height=0.7,
+        #        )),
         DDSpec('psensor', Keybind(mods.alternate_app, 'Delete'),
                ['psensor'],
                config.modify(
@@ -198,9 +198,9 @@ def configure_groups(mods, apps):
             Match(wm_class=re.compile(r'^QGIS3'), title=re.compile(r'^.*Features Total.*$')),
         ]),
         Group('4‴', label='‴', layout='verticaltile'),
-        Group('5', label=''),
-        Group('5′', label=''),
-        Group('5″', label=''),
+        Group('5', label='󰅲'),
+        Group('5′', label='󰅩'),
+        Group('5″', label='󰅪'),
         Group('6', label=''),
         Group('6′', label=''),
         Group('6″', label=''),
@@ -211,21 +211,25 @@ def configure_groups(mods, apps):
         Group('8′', label=''),
         Group('8″', label=''),
         Group('9', label='', matches=[
-            Match(wm_class=re.compile(r'^crx_habikikacbmmokmhefnofnfajafkhfhe$')),
-            Match(wm_class=re.compile(r'^crx_nkcdcndihgboaagljeipaiihjiajcclj$')),
+            Match(wm_class="Google-chrome", wm_instance_class="1spatial.jira.com"),
+            Match(wm_class="Google-chrome", wm_instance_class=re.compile(r'.*bitbucket.*')),
         ]),
-        Group('9′', label=''),
+        Group('9′', label=''),
         Group('9″', label=''),
         Group('0', label=''),
         # These groups are non-workspace groups; they can have any name that
         # starts with an alphabetic character. They will automatically be bound
         # to the key that corresponds to the first letter of their name.
+        Group('Emacs', label="", layout="max"),
         Group('Teams', label='', layout='monadtall', matches=[
-            Match(wm_class=re.compile(r'^crx_cifhbcnohmdccbgoicgdjpfamggdegmo$')),
-            Match(wm_class=re.compile(r'^crx_faolnafnngnfdaknnbpnkhgohbobgegn$')),
+            Match(wm_class="Google-chrome", wm_instance_class="teams.microsoft.com__v2"),
+            Match(wm_class="Google-chrome", wm_instance_class="outlook.office.com__owa"),
         ]),
         Group('Messages', label='', layout='monadtall', matches=[
             Match(wm_class=re.compile(r'^crx_hpfldicfbfomlpcikngkocigghgafkph$')),
+        ]),
+        Group('Windows', label='', layout='max', matches=[
+            Match(wm_class=re.compile(r'^.*Remmina$')),
         ]),
     ]
     keys = keymap.bind_keys(mods, apps, groups, specs)

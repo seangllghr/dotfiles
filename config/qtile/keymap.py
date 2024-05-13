@@ -225,6 +225,9 @@ def bind_application_launchers(mods, apps):
         Key(mods.app, 'c',
             lazy.spawn('chromium'),
             desc='Launch a Chromium window'),
+        Key(mods.system, "space",
+            lazy.spawn([*apps.editor, '-n', '-F', '((name . \"emacs-main\"))']),
+            desc='Launch the main Emacs window'),
         Key(mods.app, 'space',
             lazy.spawn(apps.editor),
             desc='Launch an editor'),
@@ -237,9 +240,18 @@ def bind_application_launchers(mods, apps):
         Key(mods.app, 'r',
             lazy.spawn(apps.term + ' -e icli-rule'),
             desc='Inspect a 1Integrate rule from the configured instance'),
-        Key(mods.app, 'w',
-            lazy.spawn('sh "/home/sean/.local/bin/spawn_work_apps.sh"'),
+        Key(mods.alternate_system, 'w',
+            lazy.spawn('xonsh "/home/sean/.local/bin/spawn_work"'),
             desc='Launch work applications'),
+        Key(mods.system, "w",
+            lazy.spawn([
+                "/usr/bin/remmina",
+                "-c",
+                "/".join([
+                    "/home/sean/.local/share/remmina",
+                    "group_rdp_muspelheim_muspelheim-gallaghersw-dev.remmina"
+                ])
+            ])),
 
         # Rofi runners and scripts
         Key(mods.base, 'space',
