@@ -42,8 +42,10 @@ Doom's ~doctor~ command will complain loudly about the matter, but this shuts it
 (setq user-full-name "Sean Gallagher"
       user-mail-address "sean@gallaghersw.dev")
 #+end_src
+
 * Matters of Style
 Wright might argue that form follows function, but I'd rather get it out of the way early.
+
 ** Theme
 I've grown fond of [[https://github.com/morhetz/gruvbox][gruvbox]], with its warm grays and retro-inspired colors.
 I don't have any science to back the assertion that it's easier on the eyes than cool palettes, but I /did/ order a deskmat in the colorscheme, so now I'm committed.
@@ -52,11 +54,13 @@ I don't have any science to back the assertion that it's easier on the eyes than
 (setq! doom-theme 'doom-gruvbox
        doom-gruvbox-dark-variant "hard")
 #+end_src
+
 ** Fonts
 I'm fond of [[https://github.com/tonsky/FiraCode][Fira Code]]---I find programming ligatures dramatically improve the legibility of code.
 I use the NerdFont version for its expanded symbol support.
 For variable-pitch, I've abandoned the delicate pseudo-serifs of [[https://github.com/alerque/libertinus][Libertinus Sans]] for the utilitarian legibility and consistency of [[https://mozilla.github.io/Fira/][Fira Sans]].
 I've also got [[https://juliamono.netlify.app/][Julia Mono]] as a fallback for symbolics.
+
 #+begin_src emacs-lisp
 (setq! doom-font (font-spec :family "FiraCode Nerd Font" :size 14 :weight 'medium)
        doom-variable-pitch-font (font-spec :family "Fira Sans")
@@ -159,6 +163,7 @@ Just a couple.
            :pipe ""  :dot "•"))
   (global-ligature-mode t))
 #+end_src
+
 ** Miscellaneous visual settings
 Finally, we have a few additional bits of visual miscellanea.
 
@@ -170,12 +175,14 @@ Finally, we have a few additional bits of visual miscellanea.
 (setq! indent-tabs-mode nil
        adaptive-wrap-extra-indent 6)
 #+end_src
+
 * Mode-specific configuration
 ** Python
 #+begin_src emacs-lisp
 (defun python-mode-tweaks () (rainbow-delimiters-mode 1) (rainbow-mode 1))
 (add-hook! 'python-mode-hook 'python-mode-tweaks)
 #+end_src
+
 ** JSON
 #+begin_src emacs-lisp
 (defun json-mode-tweaks ()
@@ -192,6 +199,7 @@ Finally, we have a few additional bits of visual miscellanea.
   (apheleia-mode -1))
 (add-hook! 'json-mode-hook 'json-mode-tweaks)
 #+end_src
+
 ** Markdown
 Since I discovered =org-mode=, I use Markdown /almost/ exclusively for READMEs in shared projects that others might work on[fn:1].
 I won't force them to adopt to my particulare SemBr quirks---which I myself have started to drift away from---so we'll configure =markdown-mode= to give us a pleasant reading and editing experience.
@@ -212,6 +220,7 @@ I won't force them to adopt to my particulare SemBr quirks---which I myself have
 #+end_src
 
 [fn:1] The exception here is Quarto, which I will occasionally use for notebooks in lieu of Org.
+
 ** Org
 This one's destined to be a doozy.
 First things first, let's get this pointed at my Org files.
@@ -270,6 +279,7 @@ I don't use it much anymore, but it's nice to have, and I don't want to lose the
   (ox-extras-deactivate '(ignore-headlines))
   (ox-extras-activate '(noignore-headlines)))
 #+end_src
+
 *** Appearance Tweaks
 I use a collection of minor modes and tweaks to make editing Org documents a little easier on the eyes.
 #+begin_src emacs-lisp
@@ -326,9 +336,11 @@ I also have some custom datetime formatting for exports.
       '("​%A, %d %B, %Y​" . "​%A, %d %B, %Y, %H:%M %Z​")
       org-duration-format 'h:mm)
 #+end_src
+
 *** Tasks and Agenda
-I have a whole collection of custom TODO states, because I like to have the option to use granular progress tracking.
+I have a whole collection of custom TODO states, which enable very fine-grained progress tracking.
 I don't really use them all that often, but I like knowing the option exists.
+Also, if I ever get around to Plane/Jira sync, this'll keep things less lossy.
 #+begin_src emacs-lisp
 (setq org-todo-keywords
         '((sequence "TODO(t!)" "STRT(s!)" "TEST(u!)" "REVIEW(r!)" "|" "DONE(d!)")
@@ -380,6 +392,7 @@ Some custom capture templates...
       org-agenda-skip-scheduled-delay-if-deadline t
       org-agenda-skip-scheduled-if-done t)
 #+end_src
+
 *** TODO Latex export settings
 *** Close ~after! org~
 This section is just here to close the src_emacs-lisp{(after! org)}.
@@ -387,6 +400,7 @@ I'm aware that it'll generate ugly Lisp.
 #+begin_src emacs-lisp
 )
 #+end_src
+
 ** TODO Other crap I'm sure I forgot
 ** Copilot, which Copilot suggests I use "because I'm a lazy bum".
 #+begin_src emacs-lisp
@@ -399,10 +413,12 @@ I'm aware that it'll generate ugly Lisp.
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word)))
 #+end_src
+
 * Keybinds
 Doom provides most of the keybinds I find myself using.
 Every now and then, I stumble across something I want more ready access to.
 Those things end up here, clogging up my keymap with garbage that I only use occasionally.
+
 ** Mode toggles
 #+begin_src emacs-lisp
 (map! (:leader (:prefix "t"
@@ -424,6 +440,7 @@ Those things end up here, clogging up my keymap with garbage that I only use occ
       (:leader (:prefix "t"
                 :desc "Mixed pitch mode" "M" #'mixed-pitch-mode)))
 #+end_src
+
 ** Debug commands
 #+begin_src emacs-lisp
 (map! (:leader
@@ -435,20 +452,29 @@ Those things end up here, clogging up my keymap with garbage that I only use occ
         :desc "Source buffer" "s" #'gdb-display-source-buffer
         :desc "UI many windows" "m" #'gdb-many-windows)))
 #+end_src
+
 ** Windowing
 #+begin_src emacs-lisp
 (map! (:leader
        (:prefix "w" (:prefix "g"
                      :desc "Resize to Golden Ratio" "g" #'golden-ratio))))
 #+end_src
+
 ** Miscellaneous
 *** Extra one-offs
 #+begin_src emacs-lisp
 (map! (:leader (:prefix "c" :desc "Format buffer (apheleia)" "F" #'apheleia-format-buffer)))
 #+end_src
+
 *** TODO Figure out how to get =yas= working
 * TODOs
 :properties:
 :visibility: content
 :end:
-** TODO Adaptive wrap prefixing is broken in =org-mode= (again)
+** DONE Adaptive wrap prefixing is broken in =org-mode= (again)
+:LOGBOOK:
+- Note taken on [2024-05-14 Tue 08:46] \\
+  This /appears/ to be working.
+  Time will tell.
+- State "DONE"       from "TODO"       [2024-05-14 Tue 08:46]
+:END:
