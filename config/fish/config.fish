@@ -94,6 +94,9 @@ if status is-interactive
     if type -q bash
         abbr -a bt 'alacritty -e bash &' # I don't use bash, but it's there
     end
+    if type -q ptpython
+        abbr -a pyt 'alacritty -e ptpython &'
+    end
 
     ## Bat aliases (if bat is installed)
     if type -q bat
@@ -149,6 +152,11 @@ if status is-interactive
         abbr -a ilr "intlc render"
     end
 
+    ### rich_tables
+    if type -q table
+        abbr -a tt table
+    end
+
     # Alias-like functions
     function bah
         # Run $command --help and pipe it through bat if it's installed
@@ -186,6 +194,11 @@ if status is-interactive
             type -q exa || echo '  exa'
             type -q moar || echo '  moar'
         end
+    end
+
+    function te
+        # Execute a cammand line in a new terminal window and fork
+        alacritty -e $argv &
     end
 
     # Name some directories that I use often

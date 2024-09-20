@@ -286,14 +286,21 @@ $env.config = {
     vi_normal: block # block, underscore, line, blink_block, blink_underscore, blink_line (underscore is the default)
   }
   color_config: $dark_theme   # if you want a light theme, replace `$dark_theme` to `$light_theme`
-  use_grid_icons: true
+  # use_grid_icons: true
   footer_mode: "25" # always, never, number_of_rows, auto
   float_precision: 2 # the precision for displaying floats in tables
   # buffer_editor: "emacs" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
   use_ansi_coloring: true
   bracketed_paste: true # enable bracketed paste, currently useless on windows
   edit_mode: vi # emacs, vi
-  shell_integration: true # enables terminal markers and a workaround to arrow keys stop working issue
+  shell_integration: {
+    osc2: false,
+    osc8: false,
+    osc9_9: false,
+    osc133: false,
+    osc633: false,
+    reset_application_mode: false
+  }
   render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
 
   hooks: {
@@ -538,7 +545,11 @@ $env.config = {
   ]
 }
 
+alias fj = from json
+
 source ~/.config/nushell/zoxide.nu
+
+overlay use ~/.config/nushell/ex-icli.nu
 
 # overlay use --prefix ~/.config/nushell/icli.nu
 # overlay use --prefix ~/.config/nushell/dgi.nu
