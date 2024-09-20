@@ -104,7 +104,7 @@
            :pipe ""  :dot "•"))
   (global-ligature-mode t))
 
-(setq display-line-numbers-type 'visual)
+(setq display-line-numbers-type 'relative)
 (setq! doom-modeline-buffer-file-name-style 'truncate-with-project
        fill-column 88)  ;; Make sure the DeLorean is up to 88 mph
 (global-display-fill-column-indicator-mode)
@@ -232,6 +232,8 @@
       '("​%A, %d %B, %Y​" . "​%A, %d %B, %Y, %H:%M %Z​")
       org-duration-format 'h:mm)
 
+(setq! org-default-notes-file (concat org-directory "work.org"))
+
 (setq org-todo-keywords
         '((sequence "TODO(t!)" "STRT(s!)" "TEST(u!)" "REVIEW(r!)" "|" "DONE(d!)")
           ;; Exceptional/alternate states
@@ -243,28 +245,45 @@
           (sequence "LOOP(l)" "PROJ(j)" "IDEA(i)" "FEAT(f)" "|")))
 
 (setq org-todo-keyword-faces
-        '(("PROJ" . (:foreground "#fbf1c7" :weight bold))
-          ("IDEA" . "#ebdbb2") ("[?]" ."#ebdbb2")
-          ("FEAT" . "#458588")
-          ("BUG" . "#fe8019")
-          ("TODO" . "#d3869b") ("[ ]" . "#d3869b") ("LOOP" . "#b16286")
-          ("STRT" . "#fabd2f") ("[-]" . "#fabd2f")
-          ("PUSH" . "#fe8019")
-          ("BLOCK" . "#cc241d") ("[!]" . "#cc241d")
-          ("KNOWNCAUSE" . "#83a598") ("TEST" . "#83a598") ("[◆]" . "#83a598")
-          ("REVIEW" . "#b8bb26") ("ACCEPTANCE" . "#b8bb26")
-          ("PUNT" . "#928374") ("CANCEL" . "#928374") ("[X]" . "#928374"))
-        org-priority-faces
-        '((?B . "#fabd2f")
-          (?C . "#bdae93")))
+      '(("PROJ" . (:foreground "#fbf1c7" :weight bold))
+        ("IDEA" . "#ebdbb2") ("[?]" ."#ebdbb2")
+        ("FEAT" . "#458588")
+        ("BUG" . "#fe8019")
+        ("TODO" . "#d3869b") ("[ ]" . "#d3869b") ("LOOP" . "#b16286")
+        ("STRT" . "#fabd2f") ("[-]" . "#fabd2f")
+        ("PUSH" . "#fe8019")
+        ("BLOCK" . "#cc241d") ("[!]" . "#cc241d")
+        ("KNOWNCAUSE" . "#83a598") ("TEST" . "#83a598") ("[◆]" . "#83a598")
+        ("REVIEW" . "#b8bb26") ("ACCEPTANCE" . "#b8bb26")
+        ("PUNT" . "#928374") ("CANCEL" . "#928374") ("[X]" . "#928374")))
+
+(setq! org-priority-highest ?A
+       org-priority-lowest ?E
+       org-priority-default ?C
+       org-priority-faces
+       '((?A . "#fb4934")
+         (?B . "#fe8019")
+         (?C . "#fabd2f")
+         (?D . "#83a598")
+         (?E . "#bdae93"))
+       org-fancy-priorities-list
+       '((?A . "‼")
+         (?B . "⯅")
+         (?C . "━")
+         (?D . "⯆")
+         (?E . "⯀")))
 
 (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/org/notes.org" "INBOX")
-           "* TODO [#B] %?\nSCHEDULED: %t\n:LOGBOOK:\n- State \"TODO\"       from \"\"           %U\n:END:"
-           :empty-lines 0
-           :jump-to-captured t)
-          ("c" "Calendar Event" entry (file+headline "~/org/notes.org" "INBOX")
-           "* %?\n%t")))
+      '(("t" "Todo" entry (file+headline "~/org/work.org" "INBOX")
+         "* TODO [#B] %?\nSCHEDULED: %t\n:LOGBOOK:\n- State \"TODO\"       from \"\"           %U\n:END:"
+         :empty-lines 0)
+        ("T" "Personal todo" entry (file+headline "~/org/personal.org" "INBOX")
+         "* TODO [#B] %?\nSCHEDULED: %t\n:LOGBOOK:\n- State \"TODO\"       from \"\"           %U\n:END:"
+         :empty-lines 0)
+        ("c" "Calendar event" entry (file+headline "~/org/work.org" "INBOX")
+         "* %?\n%t")
+        ("C" "Personal calendar event" entry (file+headline "~/org/work.org" "INBOX")
+         "* %?\n%t")))
 
 (setq org-log-into-drawer t
       org-agenda-skip-deadline-if-done t
@@ -272,6 +291,8 @@
       org-agenda-skip-scheduled-if-deadline-is-shown t
       org-agenda-skip-scheduled-delay-if-deadline t
       org-agenda-skip-scheduled-if-done t)
+
+
 
 )
 

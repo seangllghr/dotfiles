@@ -45,7 +45,6 @@ Doom's ~doctor~ command will complain loudly about the matter, but this shuts it
 
 * Matters of Style
 Wright might argue that form follows function, but I'd rather get it out of the way early.
-
 ** Theme
 I've grown fond of [[https://github.com/morhetz/gruvbox][gruvbox]], with its warm grays and retro-inspired colors.
 I don't have any science to back the assertion that it's easier on the eyes than cool palettes, but I /did/ order a deskmat in the colorscheme, so now I'm committed.
@@ -168,7 +167,7 @@ Just a couple.
 Finally, we have a few additional bits of visual miscellanea.
 
 #+begin_src emacs-lisp
-(setq display-line-numbers-type 'visual)
+(setq display-line-numbers-type 'relative)
 (setq! doom-modeline-buffer-file-name-style 'truncate-with-project
        fill-column 88)  ;; Make sure the DeLorean is up to 88 mph
 (global-display-fill-column-indicator-mode)
@@ -338,6 +337,14 @@ I also have some custom datetime formatting for exports.
 #+end_src
 
 *** Tasks and Agenda
+**** Files
+My two Org files in standard rotation are =work.org= and =personal.org=.
+Org's default capture destination---=notes.org=---is a name that I tend to use for project files, so calling the primary agenda file =notes.org= increases the number of same-name buffers that I'm likely to have open in any given session.
+I'd like to capture into =work.org= by default, so we'll set that here.
+#+begin_src emacs-lisp
+(setq! org-default-notes-file (concat org-directory "work.org"))
+#+end_src
+**** Workflow states
 I have a whole collection of custom TODO states, which enable very fine-grained progress tracking.
 I don't really use them all that often, but I like knowing the option exists.
 Also, if I ever get around to Plane/Jira sync, this'll keep things less lossy.
@@ -356,33 +363,54 @@ Also, if I ever get around to Plane/Jira sync, this'll keep things less lossy.
 With all of those custom states come a whole boatload of custom colors...
 #+begin_src emacs-lisp
 (setq org-todo-keyword-faces
-        '(("PROJ" . (:foreground "#fbf1c7" :weight bold))
-          ("IDEA" . "#ebdbb2") ("[?]" ."#ebdbb2")
-          ("FEAT" . "#458588")
-          ("BUG" . "#fe8019")
-          ("TODO" . "#d3869b") ("[ ]" . "#d3869b") ("LOOP" . "#b16286")
-          ("STRT" . "#fabd2f") ("[-]" . "#fabd2f")
-          ("PUSH" . "#fe8019")
-          ("BLOCK" . "#cc241d") ("[!]" . "#cc241d")
-          ("KNOWNCAUSE" . "#83a598") ("TEST" . "#83a598") ("[◆]" . "#83a598")
-          ("REVIEW" . "#b8bb26") ("ACCEPTANCE" . "#b8bb26")
-          ("PUNT" . "#928374") ("CANCEL" . "#928374") ("[X]" . "#928374"))
-        org-priority-faces
-        '((?B . "#fabd2f")
-          (?C . "#bdae93")))
+      '(("PROJ" . (:foreground "#fbf1c7" :weight bold))
+        ("IDEA" . "#ebdbb2") ("[?]" ."#ebdbb2")
+        ("FEAT" . "#458588")
+        ("BUG" . "#fe8019")
+        ("TODO" . "#d3869b") ("[ ]" . "#d3869b") ("LOOP" . "#b16286")
+        ("STRT" . "#fabd2f") ("[-]" . "#fabd2f")
+        ("PUSH" . "#fe8019")
+        ("BLOCK" . "#cc241d") ("[!]" . "#cc241d")
+        ("KNOWNCAUSE" . "#83a598") ("TEST" . "#83a598") ("[◆]" . "#83a598")
+        ("REVIEW" . "#b8bb26") ("ACCEPTANCE" . "#b8bb26")
+        ("PUNT" . "#928374") ("CANCEL" . "#928374") ("[X]" . "#928374")))
 #+end_src
-
+**** Priorities
+I think I'm also going to switch to custom priorities.
+It'll probably break my pretty priority symbols, but that's something I'm going to have to live with.
+#+begin_src emacs-lisp
+(setq! org-priority-highest ?A
+       org-priority-lowest ?E
+       org-priority-default ?C
+       org-priority-faces
+       '((?A . "#fb4934")
+         (?B . "#fe8019")
+         (?C . "#fabd2f")
+         (?D . "#83a598")
+         (?E . "#bdae93"))
+       org-fancy-priorities-list
+       '((?A . "‼")
+         (?B . "⯅")
+         (?C . "━")
+         (?D . "⯆")
+         (?E . "⯀")))
+#+end_src
+**** Capture Templates
 Some custom capture templates...
 #+begin_src emacs-lisp
 (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/org/notes.org" "INBOX")
-           "* TODO [#B] %?\nSCHEDULED: %t\n:LOGBOOK:\n- State \"TODO\"       from \"\"           %U\n:END:"
-           :empty-lines 0
-           :jump-to-captured t)
-          ("c" "Calendar Event" entry (file+headline "~/org/notes.org" "INBOX")
-           "* %?\n%t")))
+      '(("t" "Todo" entry (file+headline "~/org/work.org" "INBOX")
+         "* TODO [#B] %?\nSCHEDULED: %t\n:LOGBOOK:\n- State \"TODO\"       from \"\"           %U\n:END:"
+         :empty-lines 0)
+        ("T" "Personal todo" entry (file+headline "~/org/personal.org" "INBOX")
+         "* TODO [#B] %?\nSCHEDULED: %t\n:LOGBOOK:\n- State \"TODO\"       from \"\"           %U\n:END:"
+         :empty-lines 0)
+        ("c" "Calendar event" entry (file+headline "~/org/work.org" "INBOX")
+         "* %?\n%t")
+        ("C" "Personal calendar event" entry (file+headline "~/org/work.org" "INBOX")
+         "* %?\n%t")))
 #+end_src
-
+**** Misc settings
 ... and any miscellaneous task-tracking settings.
 #+begin_src emacs-lisp
 (setq org-log-into-drawer t
@@ -392,8 +420,12 @@ Some custom capture templates...
       org-agenda-skip-scheduled-delay-if-deadline t
       org-agenda-skip-scheduled-if-done t)
 #+end_src
-
-*** TODO Latex export settings
+*** TODO LaTeX export settings
+At some point, I had a whole bunch of LaTeX export classes and related settings.
+I /believe/ some component therein may have been the source of my config headaches.
+So we're going to take this slow.
+#+begin_src emacs-lisp
+#+end_src
 *** Close ~after! org~
 This section is just here to close the src_emacs-lisp{(after! org)}.
 I'm aware that it'll generate ugly Lisp.

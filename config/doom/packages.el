@@ -59,6 +59,7 @@
 ;; Extra languages
 (package! xonsh-mode)
 (package! quarto-mode)
+(package! dts-mode)
 
 ;; And Copilot. Because LLMs are coming for my job.
 (package! copilot
