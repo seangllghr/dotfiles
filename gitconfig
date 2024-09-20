@@ -1,28 +1,47 @@
 [user]
 	name = Sean Gallagher
 	email = sean@gallaghersw.dev
+
 [core]
 	editor = emacsclient -a emacs
-	pager = delta
+	# pager = delta
 	autocrlf = input
+
 [credential]
 	helper = cache
+
 [init]
 	defaultBranch = main
 
-[interactive]
-	diffFilter = delta --color-only
+[diff]
+	colorMoved = default
+  tool = difftastic
 
-[delta]
-	navigate = true
-	light = false
-	theme = Gruvbox Dark
-	line-numbers = true
-	true-color = always
-	side-by-side = true
+[difftool]
+  prompt = false
+
+[difftool "difftastic"]
+  cmd = difft "$LOCAL" "$REMOTE"
+
+[pager]
+  difftool = true
+
+[interactive]
+	# diffFilter = delta --color-only
+
+# [delta]
+# 	navigate = true
+# 	light = false
+# 	theme = Gruvbox Dark
+# 	line-numbers = true
+# 	true-color = always
+# 	side-by-side = true
 
 [merge]
 	conflictStyle = diff3
 
-[diff]
-	colorMoved = default
+[alias]
+  dt = difftool
+[gui]
+	fontui = -family \"Fira Sans\" -size 10 -weight normal -slant roman -underline 0 -overstrike 0
+	fontdiff = -family \"FiraCode Nerd Font\" -size 10 -weight normal -slant roman -underline 0 -overstrike 0
