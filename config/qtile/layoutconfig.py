@@ -1,6 +1,7 @@
 """Functions to configure layout-related settings."""
 
 from os.path import expanduser
+from re import compile as re_compile
 
 from libqtile import layout
 from libqtile.config import Match
@@ -46,7 +47,8 @@ def configure_layouts(colors):
             Match(title='branchdialog'),  # gitk
             Match(title='pinentry'),  # GPG key password entry
             Match(title='New meeting | Microsoft Teams'),
-            Match(wm_class='qgis', title='Organize Table columns')
+            Match(wm_class='qgis', title='Organize Table columns'),
+            Match(wm_class=re_compile(r'[Bb]lueman-manager'))
         ],
         **layout_theme
     )

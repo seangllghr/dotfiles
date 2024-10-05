@@ -34,10 +34,7 @@ class DDConfig:
     def defaults(self):
         """Return a default set of dropdown settings."""
         config = dict(
-            on_focus_lost_hide=False,
-            warp_pointer=True,
-            **self.size,
-            **self.position
+            on_focus_lost_hide=False, warp_pointer=True, **self.size, **self.position
         )
         return config
 
@@ -71,9 +68,12 @@ class DDSpec:
     @property
     def key(self):
         """Return the Qtile key binding for the dropdown."""
-        return Key(self.keybind.mods, self.keybind.key,
-                   lazy.group['scratch'].dropdown_toggle(self.name),
-                   desc=f'Toggle {self.name} dropdown')
+        return Key(
+            self.keybind.mods,
+            self.keybind.key,
+            lazy.group["scratch"].dropdown_toggle(self.name),
+            desc=f"Toggle {self.name} dropdown",
+        )
 
     @property
     def dropdown(self):
@@ -87,54 +87,67 @@ def configure_dd_spec_list(mods, apps):
     config = DDConfig(width=0.6, height=0.6, x=0.0025, y=0.005)
 
     dropdowns = [
-        DDSpec('terminal',
-               Keybind(mods.base, 'apostrophe'),
-               [apps.term],
-               config.defaults),
-        DDSpec('tasks',
-               Keybind(mods.app, 'Delete'),
-               [apps.term, '-t', 'btm', '-e', 'btm'],
-               config.modify(width=0.7, height=0.7)),
-        DDSpec('mixer',
-               Keybind(mods.app, 'F4'),
-               [apps.term, '-t', 'PulseMixer', '-e', 'pulsemixer'],
-               config.defaults),
-        DDSpec('files',
-               Keybind(mods.app, 'f'),
-               [apps.term, '-t', 'files', '-e', 'lf'],
-               config.defaults),
-        DDSpec('calculator',
-               Keybind(mods.app, 'minus'),
-               [apps.term, '-t', 'Calculator', '-e', 'qalc'],
-               config.defaults),
+        DDSpec(
+            "terminal", Keybind(mods.base, "apostrophe"), [apps.term], config.defaults
+        ),
+        DDSpec(
+            "tasks",
+            Keybind(mods.app, "Delete"),
+            [apps.term, "-t", "btm", "-e", "btm"],
+            config.modify(width=0.7, height=0.7),
+        ),
+        DDSpec(
+            "mixer",
+            Keybind(mods.app, "F4"),
+            [apps.term, "-t", "PulseMixer", "-e", "pulsemixer"],
+            config.defaults,
+        ),
+        DDSpec(
+            "files",
+            Keybind(mods.app, "f"),
+            [apps.term, "-t", "files", "-e", "lf"],
+            config.defaults,
+        ),
+        DDSpec(
+            "calculator",
+            Keybind(mods.app, "minus"),
+            [apps.term, "-t", "Calculator", "-e", "qalc"],
+            config.defaults,
+        ),
         # DDSpec('signal',
         #        Keybind(mods.app, 's'),
         #        ['signal-desktop'],
         #        config.modify(opacity=1.0,
         #                      height=0.8,
         #                      width=0.4)),
-        DDSpec('virt-manager',
-               Keybind(mods.alternate_app, 'v'),
-               ['virt-manager'],
-               config.modify(
-                   Match=Match(wm_class=re.compile(r'^virt-manager$')),
-                   opacity=1.0,
-                   height=0.45,
-                   width=0.2,
-                )),
-        DDSpec('blueman',
-               Keybind(mods.app, 'z'),
-               ['blueman-manager'],
-               config.modify(
-                    match=Match(wm_class=re.compile(r'^blueman-manager$')),
-                    opacity=1.0,
-                    height=0.3,
-                    width=0.2,
-                )),
-        DDSpec('bluetoothctl',
-               Keybind(mods.alternate_app, 'z'),
-               [apps.term, '-t', 'bluetoothctl', '-e', 'bluetoothctl'],
-               config.defaults),
+        DDSpec(
+            "virt-manager",
+            Keybind(mods.alternate_app, "v"),
+            ["virt-manager"],
+            config.modify(
+                Match=Match(wm_class=re.compile(r"^virt-manager$")),
+                opacity=1.0,
+                height=0.45,
+                width=0.2,
+            ),
+        ),
+        DDSpec(
+            "blueman",
+            Keybind(mods.app, "z"),
+            ["blueman-manager"],
+            config.modify(
+                match=Match(wm_class=re.compile(r"^blueman-manager$")),
+                opacity=1.0,
+                height=0.3,
+                width=0.2,
+            ),
+        ),
+        DDSpec(
+            "bluetoothctl",
+            Keybind(mods.alternate_app, "z"),
+            [apps.term, "-t", "bluetoothctl", "-e", "bluetoothctl"],
+            config.defaults,
+        ),
         # DDSpec('emacs scratch',
         #        Keybind(mods.app, 'e'),
         #        [*apps.editor, '-n', '-F', '((name . \"emacs-scratch\"))'],
@@ -144,22 +157,26 @@ def configure_dd_spec_list(mods, apps):
         #            opacity=1.0,
         #            height=0.7,
         #        )),
-        DDSpec('psensor', Keybind(mods.alternate_app, 'Delete'),
-               ['psensor'],
-               config.modify(
-                   # match=Match(wm_class=['psensor', 'Psensor']),
-                   match=Match(wm_class=re.compile(r'^[pP]sensor$')),
-                   opacity=1.0,
-                   height=0.275, width=0.6,
-                   x=0.396, y=0.7205
-               )),
-        DDSpec('manpage',
-               Keybind(mods.app, 'slash'),
-               [apps.term],
-               config.modify(
-                   height=0.99,
-                   width=0.5
-               )),
+        DDSpec(
+            "psensor",
+            Keybind(mods.alternate_app, "Delete"),
+            ["psensor"],
+            config.modify(
+                # match=Match(wm_class=['psensor', 'Psensor']),
+                match=Match(wm_class=re.compile(r"^[pP]sensor$")),
+                opacity=1.0,
+                height=0.275,
+                width=0.6,
+                x=0.396,
+                y=0.7205,
+            ),
+        ),
+        DDSpec(
+            "manpage",
+            Keybind(mods.app, "slash"),
+            [apps.term],
+            config.modify(height=0.99, width=0.5),
+        ),
     ]
     return dropdowns
 
@@ -173,64 +190,96 @@ def configure_groups(mods, apps):
     """Return a configured list of groups."""
     specs = configure_dd_spec_list(mods, apps)
     groups = [
-        ScratchPad('scratch', config_dropdowns(specs)),
+        ScratchPad("scratch", config_dropdowns(specs)),
         # These groups are main workspace groups, with [[poly]prime-]numeric
         # names that are automatically assigned to keybindings.
-        Group('1', label='', layout='monadthreecol'),
-        Group('1′', label='', layout='verticaltile'),
-        Group('1″', label=''),
-        Group('2', label=''),
-        Group('2′', label=''),
-        Group('2″', label=''),
-        Group('3', label=''),
-        Group('3′', label=''),
-        Group('3″', label=''),
-        Group('4', label='', layout='monadwide', matches=[
-            Match(wm_class=re.compile(r'^QGIS3$'), wm_type=re.compile(r'normal'),),
-        ]),
-        Group('4′', label='', layout='monadtall', matches=[
-            Match(wm_class=re.compile(r'^QGIS3'), title=re.compile(r'^Browser$')),
-            Match(wm_class=re.compile(r'^QGIS3'), title=re.compile(r'^Layers$')),
-            Match(wm_class=re.compile(r'^QGIS3'), title=re.compile(r'^Layer Styling$')),
-            Match(wm_class=re.compile(r'^QGIS3'), title=re.compile(r'^Processing Toolbox$')),
-        ]),
-        Group('4″', label='', layout='verticaltile', matches=[
-            Match(wm_class=re.compile(r'^QGIS3'), title=re.compile(r'^.*Features Total.*$')),
-        ]),
-        Group('4‴', label='‴', layout='verticaltile'),
-        Group('5', label='󰅲'),
-        Group('5′', label='󰅩'),
-        Group('5″', label='󰅪'),
-        Group('6', label=''),
-        Group('6′', label=''),
-        Group('6″', label=''),
-        Group('7', label=''),
-        Group('7′', label=''),
-        Group('7″', label=''),
-        Group('8', label=''),
-        Group('8′', label=''),
-        Group('8″', label=''),
-        Group('9', label='', matches=[
-            Match(wm_class="Google-chrome", wm_instance_class="1spatial.jira.com"),
-            Match(wm_class="Google-chrome", wm_instance_class=re.compile(r'.*bitbucket.*')),
-        ]),
-        Group('9′', label=''),
-        Group('9″', label=''),
-        Group('0', label=''),
-        # These groups are non-workspace groups; they can have any name that
-        # starts with an alphabetic character. They will automatically be bound
-        # to the key that corresponds to the first letter of their name.
-        Group('Emacs', label="", layout="max"),
-        Group('Teams', label='', layout='monadtall', matches=[
-            Match(wm_class="Google-chrome", wm_instance_class="teams.microsoft.com__v2"),
-            Match(wm_class="Google-chrome", wm_instance_class="outlook.office.com__owa"),
-        ]),
-        Group('Messages', label='', layout='monadtall', matches=[
-            Match(wm_class=re.compile(r'^crx_hpfldicfbfomlpcikngkocigghgafkph$')),
-        ]),
-        Group('Windows', label='', layout='max', matches=[
-            Match(wm_class=re.compile(r'^.*Remmina$')),
-        ]),
+        Group("1", label="", layout="monadthreecol"),
+        Group("1′", label="", layout="verticaltile"),
+        Group("1″", label=""),
+        Group("1‴", label="󰓅", matches=[Match(title="btm-perf")]),
+        Group("2", label=""),
+        Group("2′", label=""),
+        Group("2″", label=""),
+        Group("3", label=""),
+        Group("3′", label=""),
+        Group("3″", label=""),
+        Group("4", label="", layout="monadwide", matches=[
+                Match(
+                    wm_class=re.compile(r"^QGIS3$"),
+                    wm_type=re.compile(r"normal"),
+                ),
+            ],
+        ),
+        Group("4′", label="", layout="monadtall", matches=[
+                Match(wm_class=re.compile(r"^QGIS3"), title=re.compile(r"^Browser$")),
+                Match(wm_class=re.compile(r"^QGIS3"), title=re.compile(r"^Layers$")),
+                Match(
+                    wm_class=re.compile(r"^QGIS3"), title=re.compile(r"^Layer Styling$")
+                ),
+                Match(
+                    wm_class=re.compile(r"^QGIS3"),
+                    title=re.compile(r"^Processing Toolbox$"),
+                ),
+            ],
+        ),
+        Group("4″", label="", layout="monadtall", matches=[
+                Match(
+                    wm_class=re.compile(r"^QGIS3"),
+                    title=re.compile(r"^.*Features Total.*$"),
+                ),
+            ],
+        ),
+        Group("4‴", label="‴"),
+        Group("5", label="󰅲"),
+        Group("5′", label="󰅩"),
+        Group("5″", label="󰅪"),
+        Group("6", label=""),
+        Group("6′", label=""),
+        Group("6″", label=""),
+        Group("7", label=""),
+        Group("7′", label=""),
+        Group("7″", label=""),
+        Group("8", label=""),
+        Group("8′", label=""),
+        Group("8″", label=""),
+        Group("9", label="", matches=[
+                Match(wm_class="Google-chrome", wm_instance_class="1spatial.jira.com"),
+                Match(
+                    wm_class="Google-chrome",
+                    wm_instance_class=re.compile(r".*bitbucket.*"),
+                ),
+            ],
+        ),
+        Group("9′", label=""),
+        Group("9″", label=""),
+        Group("0", label=""),
+        # Application-specific or group-of-applications groups. The group name
+        # starts with an alphabetic character, and must be a single "word". They will
+        # automatically be bound to the first letter of their name.
+        Group("Emacs", label="", layout="max"),
+        Group("Code", label="󰨞", layout="max"),
+        Group("Teams", label="󰊻", layout="monadtall", matches=[
+                Match(
+                    wm_class="Google-chrome",
+                    wm_instance_class="teams.microsoft.com__v2",
+                ),
+                Match(
+                    wm_class="Google-chrome",
+                    wm_instance_class="outlook.office.com__owa",
+                ),
+            ],
+        ),
+        Group("Messages", label="", layout="monadtall", matches=[
+                Match(wm_class=re.compile(r"^crx_hpfldicfbfomlpcikngkocigghgafkph$")),
+            ],
+        ),
+        Group("Windows", label="", layout="max", matches=[
+                Match(wm_class=re.compile(r"^.*Remmina$")),
+            ],
+        ),
+        Group("Python REPL", label="", layout="max", matches=[
+            Match(title="Python REPL (ptpython)")
+        ])
     ]
     keys = keymap.bind_keys(mods, apps, groups, specs)
     return (groups, keys)

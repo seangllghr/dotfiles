@@ -63,21 +63,26 @@ colors = palette.Palette(
         "#1d2021",
         "#ebdbb2",
     ],
-    bg = ['#1d2021', '#3c3836', '#504945', '#665c54', '#7c6f64'],
-    fg = ['#fbf1c7', '#ebdbb2', '#d5c4a1', '#bdae93', '#a89984']
+    bg=["#1d2021", "#3c3836", "#504945", "#665c54", "#7c6f64"],
+    fg=["#fbf1c7", "#ebdbb2", "#d5c4a1", "#bdae93", "#a89984"],
 )
 
 mods = Modifiers(
-    mod_key_string='mod4',
-    alt_key_string='mod1',
-    shift_key_string='shift',
-    control_key_string='control'
+    mod_key_string="mod4",
+    alt_key_string="mod1",
+    shift_key_string="shift",
+    control_key_string="control",
 )
 
 apps = DefaultApplications(
     terminal_command=guess_terminal(),
-    browser_command='firefox',
-    editor_command=[ 'emacsclient', '-c', '-a', 'emacs', ]
+    browser_command="firefox",
+    editor_command=[
+        "emacsclient",
+        "-c",
+        "-a",
+        "emacs",
+    ],
 )
 
 groups, keys = groupconfig.configure_groups(mods, apps)
@@ -88,31 +93,46 @@ extension_defaults = widget_defaults.copy()
 layouts, floating_layout = layoutconfig.configure_layouts(colors)
 
 screens = [
+    # Primary screen
     Screen(
-        top = barconfig.configure_bar(colors, main_bar=True),
-        wallpaper = expanduser('~/.config/qtile/wallpaper.png'),
-        # wallpaper_mode='fill'
+        top=barconfig.configure_bar(colors, main_bar=True),
+        wallpaper=expanduser("~/.config/qtile/wallpaper.png"),
+        wallpaper_mode="fill",
     ),
+    # Secondary screen
     Screen(
-        top = barconfig.configure_bar(colors, main_bar=False),
-        wallpaper = expanduser('~/.config/qtile/wallpaper.png'),
-        # wallpaper_mode='fill'
+        top=barconfig.configure_bar(colors, main_bar=False),
+        wallpaper=expanduser("~/.config/qtile/wallpaper.png"),
+        wallpaper_mode="fill",
     ),
+    # Tertiary screen for... Third screen stuff.
     Screen(
-        top = barconfig.configure_bar(colors, main_bar=False),
-        wallpaper = expanduser('~/.config/qtile/wallpaper.png'),
-        # wallpaper_mode='fill'
+        top=barconfig.configure_bar(colors, main_bar=False),
+        wallpaper=expanduser("~/.config/qtile/wallpaper.png"),
+        wallpaper_mode="fill",
+    ),
+    # Mini screen. For when you need a little screen to do a little thing.
+    Screen(
+        wallpaper=expanduser("~/.config/qtile/wallpaper.png"),
+        wallpaper_mode="fill",
     ),
 ]
 
 # Drag floating layouts.
 mouse = [
-    Drag(mods.base, 'Button1',
-         move_snap_window(snap_dist=20), start=lazy.window.get_position()),
-    Drag(mods.base, 'Button3',
-         lazy.window.set_size_floating(), start=lazy.window.get_size()),
-    Click(mods.base, 'Button2',
-          lazy.window.bring_to_front()),
+    Drag(
+        mods.base,
+        "Button1",
+        move_snap_window(snap_dist=20),
+        start=lazy.window.get_position(),
+    ),
+    Drag(
+        mods.base,
+        "Button3",
+        lazy.window.set_size_floating(),
+        start=lazy.window.get_size(),
+    ),
+    Click(mods.base, "Button2", lazy.window.bring_to_front()),
 ]
 
 dgroups_key_binder = None
@@ -121,7 +141,7 @@ follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = True
 auto_fullscreen = True
-focus_on_window_activation = 'smart'
+focus_on_window_activation = "smart"
 reconfigure_screens = True
 
 # If things like steam games want to auto-minimize themselves when losing
@@ -139,12 +159,15 @@ wl_input_rules = None
 #
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
-wmname = 'LG3D'
+wmname = "LG3D"
+
 
 @hook.subscribe.startup_once
 def _autostart():
-    home = expanduser('~/')
-    Popen([home + '.config/qtile/autostart.sh'])
+    home = expanduser("~/")
+    Popen([home + ".config/qtile/autoxrandr.py"])
+    Popen([home + ".config/qtile/autostart.sh"])
+
 
 # @hook.subscribe.layout_change
 # def _layout_change(layout, group):

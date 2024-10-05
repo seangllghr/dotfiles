@@ -3,6 +3,7 @@
 from os.path import expanduser
 import re
 
+from libqtile import qtile
 from libqtile.config import Key
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
@@ -90,18 +91,38 @@ def bind_layout_keys(mods):
             desc='Flip the main pane side'),
 
         # Move focus and clients between screens
-        Key(mods.base, 'comma',
+        ## Sequential
+        Key(mods.base, 'minus',
             lazy.prev_screen(),
             desc='Move focus to previous screen'),
-        Key(mods.base, 'period',
+        Key(mods.base, 'slash',
             lazy.next_screen(),
             desc='Move focus to next screen'),
-        Key(mods.alternate, 'comma',
+        Key(mods.alternate, 'minus',
             customact.move_window_to_prev_screen(),
             desc='Move current client to previous screen'),
-        Key(mods.alternate, 'period',
+        Key(mods.alternate, 'slash',
             customact.move_window_to_next_screen(),
             desc='Move current client to next screen'),
+        ## Direct
+        Key(mods.base, 'comma',
+            lazy.to_screen(0),
+            desc='Move focus to main screen'),
+        Key(mods.base, 'period',
+            lazy.to_screen(1),
+            desc='Move focus to secondary screen'),
+        Key(mods.base, 'w',
+            lazy.to_screen(2),
+            desc='Move focus to tertiary screen'),
+        Key(mods.alternate, 'comma',
+            customact.move_window_direct_to_screen(0),
+            desc='Move current client to main screen'),
+        Key(mods.alternate, 'period',
+            customact.move_window_direct_to_screen(1),
+            desc='Move current client to secondary screen'),
+        Key(mods.alternate, 'w',
+            customact.move_window_direct_to_screen(2),
+            desc='Move current client to tertiary screen'),
 
         # Directional keybinds, mostly for Columns, but generally applicable
         # These are on vim home row positions for my Moonlander layout
@@ -158,21 +179,21 @@ def bind_layout_keys(mods):
             desc='Step backward through the layout list'),
 
         # TreeTab-exclusive bindings
-        Key(mods.alternate, 'h',
-            lazy.layout.move_left(),
-            desc='Decrease tab nesting by one level'),
-        Key(mods.alternate, 'l',
-            lazy.layout.move_right(),
-            desc='Increase tab nesting by one level'),
-        Key(mods.base, 'p',
-            lazy.layout.section_up(),
-            desc='Move tab to previous section'),
-        Key(mods.system, 't',
-            customact.add_named_section(),
-            desc='Add a section to the tab list'),
-        Key(mods.system, 'x',
-            customact.del_named_section(),
-            desc='Delete a section from the tab list'),
+        # Key(mods.alternate, 'h',
+        #     lazy.layout.move_left(),
+        #     desc='Decrease tab nesting by one level'),
+        # Key(mods.alternate, 'l',
+        #     lazy.layout.move_right(),
+        #     desc='Increase tab nesting by one level'),
+        # Key(mods.base, 'p',
+        #     lazy.layout.section_up(),
+        #     desc='Move tab to previous section'),
+        # Key(mods.system, 't',
+        #     customact.add_named_section(),
+        #     desc='Add a section to the tab list'),
+        # Key(mods.system, 'x',
+        #     customact.del_named_section(),
+        #     desc='Delete a section from the tab list'),
     ]
 
     return keys
@@ -207,7 +228,7 @@ def bind_application_launchers(mods, apps):
     keys = [
         # Shells
         Key(mods.base, 'Return',
-            lazy.spawn(apps.term),
+            lazy.spawn(apps.term + ' -e fish'),
             desc='Launch a terminal emulator'),
         Key(mods.app, 'Return',
             lazy.spawn(apps.term + ' -e xonsh'),
@@ -215,12 +236,18 @@ def bind_application_launchers(mods, apps):
         Key(mods.app, 'n',
             lazy.spawn(apps.term + ' -e nu'),
             desc='Launch a nushell terminal emulator'),
+        Key(mods.base, 'p',
+            lazy.spawn(apps.term + ' -e ptpython'),
+            desc='Launch the sexiest Python REPL'),
+        Key(mods.alternate, 'p',
+            lazy.spawn(f"{apps.term} -e ptpython --asyncio"),
+            desc='Launch the sexiest Python REPL (with asyncio)'),
         # Application launchers
         Key(mods.base, 'b',
             lazy.spawn(apps.browser),
             desc='Launch a browser window'),
         Key(mods.alternate, 'b',
-            lazy.spawn('brave'),
+            lazy.spawn('mercury-browser'),
             desc='Launch an alternate browser window'),
         Key(mods.app, 'c',
             lazy.spawn('chromium'),
@@ -237,9 +264,9 @@ def bind_application_launchers(mods, apps):
         Key(mods.alternate_app, 'space',
             lazy.spawn('code'),
             desc='Launch alternate IDE/Editor'),
-        Key(mods.app, 'r',
-            lazy.spawn(apps.term + ' -e icli-rule'),
-            desc='Inspect a 1Integrate rule from the configured instance'),
+        # Key(mods.app, 'r',
+        #     lazy.spawn(apps.term + ' -e icli-rule'),
+        #     desc='Inspect a 1Integrate rule from the configured instance'),
         Key(mods.alternate_system, 'w',
             lazy.spawn('xonsh "/home/sean/.local/bin/spawn_work"'),
             desc='Launch work applications'),
@@ -362,7 +389,7 @@ def bind_group_keys(mods, groups):
                     lazy.window.togroup(group.name, switch_group=True),
                     desc=f'Move client to group {group.name} and follow'),
             ])
-        elif re.match(r'^[-_a-zA-Z]*$', group.name):
+        elif re.match(r'^[-_a-zA-Z ]*$', group.name):
             # There are a handful of groups that I want to be able to switch to
             # using alpha-mnemonic keybinds. For the most part, these are
             # applications (or groups of applications) I'd prefer to have as

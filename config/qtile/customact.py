@@ -29,18 +29,24 @@ def del_named_section(qtile, widget='prompt'):
     except KeyError:
         logger.exception(f'No widget named "{widget}" present')
 
-def move_window_to_screen(qtile, window, screen):
+def move_window_to_screen(window, index):
     """Move window to a screen and focus it."""
+    screen = qtile.screens[index]
     window.togroup(screen.group.name)
     qtile.focus_screen(screen.index)
     screen.group.focus(window, True)
+
+@lazy.function
+def move_window_direct_to_screen(qtile, index):
+    """Move the current window to the specified screen."""
+    move_window_to_screen(qtile.current_window, index)
 
 @lazy.function
 def move_window_to_prev_screen(qtile):
     """Move window to the previous screen."""
     index = qtile.current_screen.index
     index = index - 1 if index > 0 else len(qtile.screens) - 1
-    move_window_to_screen(qtile, qtile.current_window, qtile.screens[index])
+    move_window_to_screen(qtile.current_window, index)
 
 
 @lazy.function
@@ -48,7 +54,7 @@ def move_window_to_next_screen(qtile):
     """Move window to the next screen."""
     index = qtile.current_screen.index
     index = index + 1 if index < len(qtile.screens) - 1 else 0
-    move_window_to_screen(qtile, qtile.current_window, qtile.screens[index])
+    move_window_to_screen(qtile.current_window, index)
 
 def toggle_focus_floating():
     """Toggle focus between floating window and other windows in group."""
