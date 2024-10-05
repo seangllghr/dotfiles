@@ -49,6 +49,9 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;; (unpin! t)
 
+;; Packages that make emacs lisp programming easier
+(package! yaml)
+
 ;; Visual/aesthetic packages
 (package! golden-ratio)
 (package! visual-fill-column)
@@ -60,6 +63,9 @@
 (package! xonsh-mode)
 (package! quarto-mode)
 (package! dts-mode)
+
+;; Org-mode packages
+(package! ox-context :recipe (:host github :repo "Jason-S-Ross/ox-context"))
 
 ;; And Copilot. Because LLMs are coming for my job.
 (package! copilot
