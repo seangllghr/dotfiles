@@ -62,7 +62,7 @@ configuration {
 	/* color-window: ; */
 	max-history-size: 25;
 	combi-hide-mode-prefix: false;
-	matching-negate-char: '-' /* unsupported */;
+	/* matching-negate-char: '-' unsupported */
 	/* cache-dir: ; */
 	window-thumbnail: false;
 	drun-use-desktop-cache: false;
@@ -149,8 +149,7 @@ configuration {
 	me-accept-entry: "MouseDPrimary";
 	me-accept-custom: "Control+MouseDPrimary";
 }
-@import "/usr/share/rofi/themes/gruvbox-dark-hard.rasi"
-* {
+@import "/usr/share/rofi/themes/gruvbox-dark-hard.rasi" * {
 	highlight: bold italic;
 	scrollbar: false;
 }
