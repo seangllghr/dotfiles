@@ -2,7 +2,7 @@
 
 case "$(hostname)" in
   "Asgard")
-    setxkbmap -option shift:both_capslock_cancel,compose:ralt
+    setxkbmap -option compose:ralt
     ;;
   *)
     setxkbmap -option caps:super,shift:both_capslock_cancel,compose:ralt
@@ -12,4 +12,5 @@ esac
 picom &
 dunst &
 xset r rate 300 50 &
-light-locker &
+alacritty --title "btm-perf" -e btm --theme=gruvbox -C /home/sean/dotfiles/config/btm/config.toml &
+blueman-applet &
